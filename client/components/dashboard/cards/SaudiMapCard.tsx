@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import dynamic from "next/compat/lib/dynamic";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import HighchartsMaps from "highcharts/modules/map";
