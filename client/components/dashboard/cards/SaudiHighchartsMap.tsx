@@ -9,7 +9,7 @@ interface SaudiHighchartsMapProps {
   totalMovements?: number;
 }
 
-// Load Highcharts Maps and map data
+// Load Highcharts Maps and map data with timeout
 const loadHighchartsMaps = (): Promise<boolean> => {
   return new Promise((resolve) => {
     // Check if maps module already loaded
@@ -19,32 +19,56 @@ const loadHighchartsMaps = (): Promise<boolean> => {
     }
 
     let loadedCount = 0;
+    let hasError = false;
+    const timeout = setTimeout(() => {
+      if (!hasError) {
+        hasError = true;
+        console.warn("Script loading timeout");
+        resolve(false);
+      }
+    }, 8000); // 8 second timeout
+
     const checkBothLoaded = () => {
       loadedCount++;
-      if (loadedCount === 2) {
+      if (loadedCount === 2 && !hasError) {
+        hasError = true;
+        clearTimeout(timeout);
         resolve(true);
       }
     };
 
-    // Load maps module
-    const mapsScript = document.createElement("script");
-    mapsScript.src = "https://code.highcharts.com/maps/highmaps.js";
-    mapsScript.onload = checkBothLoaded;
-    mapsScript.onerror = () => {
-      console.warn("Failed to load highmaps");
-      checkBothLoaded();
+    const handleError = (scriptName: string) => () => {
+      if (!hasError) {
+        console.warn(`Failed to load ${scriptName}`);
+        loadedCount++;
+        if (loadedCount === 2) {
+          hasError = true;
+          clearTimeout(timeout);
+          resolve(false);
+        }
+      }
     };
-    document.head.appendChild(mapsScript);
 
-    // Load Saudi Arabia map data
-    const saScript = document.createElement("script");
-    saScript.src = "https://code.highcharts.com/mapdata/countries/sa/sa-all.js";
-    saScript.onload = checkBothLoaded;
-    saScript.onerror = () => {
-      console.warn("Failed to load SA map data");
-      checkBothLoaded();
-    };
-    document.head.appendChild(saScript);
+    try {
+      // Load maps module
+      const mapsScript = document.createElement("script");
+      mapsScript.src = "https://code.highcharts.com/maps/highmaps.js";
+      mapsScript.async = true;
+      mapsScript.onload = checkBothLoaded;
+      mapsScript.onerror = handleError("highmaps");
+      document.head.appendChild(mapsScript);
+
+      // Load Saudi Arabia map data
+      const saScript = document.createElement("script");
+      saScript.src = "https://code.highcharts.com/mapdata/countries/sa/sa-all.js";
+      saScript.async = true;
+      saScript.onload = checkBothLoaded;
+      saScript.onerror = handleError("SA map data");
+      document.head.appendChild(saScript);
+    } catch (error) {
+      console.error("Error loading scripts:", error);
+      resolve(false);
+    }
   });
 };
 
@@ -57,11 +81,17 @@ export function SaudiHighchartsMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
   const [mapsReady, setMapsReady] = useState(false);
+  const [loadError, setLoadError] = useState(false);
 
   // Load maps module on mount
   useEffect(() => {
-    loadHighchartsMaps().then(() => {
-      setMapsReady(true);
+    loadHighchartsMaps().then((success) => {
+      if (success) {
+        setMapsReady(true);
+      } else {
+        setLoadError(true);
+        setMapsReady(true); // Still set ready to show error state
+      }
     });
   }, []);
 
@@ -78,12 +108,20 @@ export function SaudiHighchartsMap({
 
   // Create map chart when ready
   useEffect(() => {
-    if (!mapsReady || !containerRef.current || !chartData.length) return;
+    if (!mapsReady || !containerRef.current || !chartData.length || loadError) return;
 
     try {
       // Destroy previous chart
       if (chartRef.current) {
         chartRef.current.destroy();
+        chartRef.current = null;
+      }
+
+      // Check if Highcharts.mapChart is available
+      if (typeof (window as any).Highcharts?.mapChart !== "function") {
+        console.warn("Highcharts.mapChart not available");
+        setLoadError(true);
+        return;
       }
 
       // Create choropleth map using Highcharts.mapChart()
@@ -181,12 +219,24 @@ export function SaudiHighchartsMap({
       );
     } catch (error) {
       console.error("Error creating choropleth map:", error);
+      setLoadError(true);
     }
 
     return () => {
       // Don't destroy on unmount to prevent flashing
     };
-  }, [mapsReady, chartData, maxMetric, title]);
+  }, [mapsReady, chartData, maxMetric, title, loadError]);
+
+  if (loadError) {
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center min-h-0">
+        <div className="text-center">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Unable to load map visualization</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500">Please try refreshing the page</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!mapsReady) {
     return (
