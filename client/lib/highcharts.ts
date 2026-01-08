@@ -1,49 +1,51 @@
 import Highcharts from "highcharts";
 
-// Register modules synchronously with error handling
-function registerModules() {
+// Track if modules have been initialized
+let modulesInitialized = false;
+
+/**
+ * Initialize Highcharts modules dynamically
+ * This function can be called from components that need the modules
+ */
+export async function ensureHighchartsModules() {
+  if (modulesInitialized || typeof window === "undefined") {
+    return;
+  }
+
   try {
-    // Map module
-    try {
-      const mapModule = require("highcharts/modules/map");
-      const mapFn = mapModule.default || mapModule;
-      if (typeof mapFn === "function") {
-        mapFn(Highcharts);
-        console.log("✓ Map module registered");
-      }
-    } catch (e) {
-      console.warn("Map module loading skipped:", e);
+    // Check if modules are already on the global Highcharts object
+    if ((Highcharts as any).mapChart && (Highcharts as any).Chart.prototype.getCSV) {
+      modulesInitialized = true;
+      return;
     }
 
-    // Exporting module
-    try {
-      const exportingModule = require("highcharts/modules/exporting");
-      const exportingFn = exportingModule.default || exportingModule;
-      if (typeof exportingFn === "function") {
-        exportingFn(Highcharts);
-        console.log("✓ Exporting module registered");
-      }
-    } catch (e) {
-      console.warn("Exporting module loading skipped:", e);
+    // Import modules dynamically
+    const mapModule = await import("highcharts/modules/map.js");
+    const exportingModule = await import("highcharts/modules/exporting.js");
+    const exportDataModule = await import("highcharts/modules/export-data.js");
+
+    // Get the actual function from the module (handle both ES and CommonJS exports)
+    const mapFn = (mapModule as any).default || mapModule;
+    const exportingFn = (exportingModule as any).default || exportingModule;
+    const exportDataFn = (exportDataModule as any).default || exportDataModule;
+
+    // Register modules
+    if (typeof mapFn === "function") {
+      mapFn(Highcharts);
+    }
+    if (typeof exportingFn === "function") {
+      exportingFn(Highcharts);
+    }
+    if (typeof exportDataFn === "function") {
+      exportDataFn(Highcharts);
     }
 
-    // Export Data module
-    try {
-      const exportDataModule = require("highcharts/modules/export-data");
-      const exportDataFn = exportDataModule.default || exportDataModule;
-      if (typeof exportDataFn === "function") {
-        exportDataFn(Highcharts);
-        console.log("✓ Export Data module registered");
-      }
-    } catch (e) {
-      console.warn("Export Data module loading skipped:", e);
-    }
+    modulesInitialized = true;
+    console.log("✓ Highcharts modules initialized");
   } catch (error) {
-    console.error("Error registering Highcharts modules:", error);
+    console.error("Failed to initialize Highcharts modules:", error);
+    // Don't throw - let the component handle missing modules
   }
 }
-
-// Register modules on module load
-registerModules();
 
 export default Highcharts;
