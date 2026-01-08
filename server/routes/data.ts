@@ -172,24 +172,57 @@ function processData(rows: any[]) {
  */
 const processedDataHandler: RequestHandler = async (req, res) => {
   try {
-    console.log("Fetching data from Google Sheets...");
-    const response = await fetch(CSV_URL);
+    let csvData: string | null = null;
+    let lastError: Error | null = null;
 
-    if (!response.ok) {
-      throw new Error(`Google Sheets returned ${response.status}`);
+    // Try each URL format
+    for (const url of CSV_URLS) {
+      try {
+        console.log(`Attempting to fetch from: ${url}`);
+        const response = await fetch(url, {
+          headers: {
+            "User-Agent": "Mozilla/5.0",
+          },
+        });
+
+        if (response.ok) {
+          csvData = await response.text();
+          console.log(`✓ Successfully fetched CSV data (${csvData.length} bytes)`);
+          break;
+        } else {
+          lastError = new Error(`HTTP ${response.status}`);
+          console.warn(`✗ URL failed with ${response.status}`);
+        }
+      } catch (e) {
+        lastError = e instanceof Error ? e : new Error(String(e));
+        console.warn(`✗ URL fetch failed:`, lastError.message);
+      }
     }
 
-    const csvData = await response.text();
+    if (!csvData) {
+      throw new Error(
+        `Failed to fetch from all URLs. Last error: ${lastError?.message || "Unknown"}`
+      );
+    }
+
     const rows = parseCSVData(csvData);
+
+    if (rows.length === 0) {
+      throw new Error("No data rows found in Google Sheet");
+    }
+
     const processedData = processData(rows);
 
-    console.log(`✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`);
+    console.log(
+      `✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`
+    );
     res.json(processedData);
   } catch (error) {
     console.error("Error processing Google Sheet data:", error);
     res.status(500).json({
-      error: "Failed to process data from Google Sheets",
-      message: error instanceof Error ? error.message : "Unknown error",
+      error: "Failed to fetch data from Google Sheets",
+      details: error instanceof Error ? error.message : "Unknown error",
+      hint: "Please ensure the Google Sheet is published to the web and the URL is correct.",
     });
   }
 };
