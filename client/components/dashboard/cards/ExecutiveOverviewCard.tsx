@@ -93,7 +93,7 @@ export function ExecutiveOverviewCard({
           return (
             <div
               key={metric.label}
-              className={`${metric.bgColor} rounded-lg p-3 border border-gray-200 dark:border-gray-800`}
+              className={`kpi-card hover-lift ${metric.bgColor}`}
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -104,7 +104,7 @@ export function ExecutiveOverviewCard({
                     {metric.value}
                   </p>
                 </div>
-                <div className={`bg-gradient-to-br ${metric.color} p-2 rounded-lg`}>
+                <div className={`metric-badge bg-gradient-to-br ${metric.color}`}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -118,7 +118,7 @@ export function ExecutiveOverviewCard({
         {summaryStats.map((stat, idx) => (
           <div
             key={idx}
-            className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+            className="card-modern-sm hover-lift"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="text-blue-500">{stat.icon}</div>
@@ -131,8 +131,8 @@ export function ExecutiveOverviewCard({
 
       {/* Movement Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-shrink-0 mb-6">
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Movement Classification</h3>
+        <div className="card-modern hover-lift">
+          <h3 className="card-header">Movement Classification</h3>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600 dark:text-gray-400">Full Moves (Site→Site)</span>
