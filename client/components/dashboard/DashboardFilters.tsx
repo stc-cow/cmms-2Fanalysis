@@ -158,11 +158,11 @@ export function DashboardFiltersComponent({
             Event Type
           </label>
           <Select
-            value={filters.eventType || ""}
+            value={filters.eventType || "__all__"}
             onValueChange={(value) =>
               onFiltersChange({
                 ...filters,
-                eventType: value as any || undefined,
+                eventType: value === "__all__" ? undefined : (value as any),
               })
             }
           >
@@ -170,7 +170,7 @@ export function DashboardFiltersComponent({
               <SelectValue placeholder="All Events" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Events</SelectItem>
+              <SelectItem value="__all__">All Events</SelectItem>
               {EVENT_TYPES.map((type) => (
                 <SelectItem key={type} value={type}>
                   {type}
