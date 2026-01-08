@@ -1,7 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Highcharts from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
-import saudiGeo from "@highcharts/map-collection/countries/sa/sa-all.geo.json";
 import { regionToHcKey } from "@/lib/saudiRegionMapping";
 
 interface SaudiHighchartsMapProps {
