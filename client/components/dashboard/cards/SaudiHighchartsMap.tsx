@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import Highcharts from "@/lib/highcharts";
+import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { regionToHcKey } from "@/lib/saudiRegionMapping";
 
