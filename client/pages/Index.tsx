@@ -1,10 +1,16 @@
 import { useState, useMemo } from "react";
-import { DashboardFiltersComponent } from "@/components/dashboard/DashboardFilters";
-import { KpiStrip } from "@/components/dashboard/KpiStrip";
-import { MovementAnalytics } from "@/components/dashboard/MovementAnalytics";
-import { WarehouseIntelligence } from "@/components/dashboard/WarehouseIntelligence";
-import { CowUtilization } from "@/components/dashboard/CowUtilization";
-import { EventRoyalAnalysis } from "@/components/dashboard/EventRoyalAnalysis";
+import { MapPin, Database } from "lucide-react";
+import { CardTabs, DASHBOARD_CARDS } from "@/components/dashboard/CardTabs";
+import { HeaderFilters } from "@/components/dashboard/HeaderFilters";
+import { ExecutiveOverviewCard } from "@/components/dashboard/cards/ExecutiveOverviewCard";
+import { MovementTypesCard } from "@/components/dashboard/cards/MovementTypesCard";
+import { RegionAnalysisCard } from "@/components/dashboard/cards/RegionAnalysisCard";
+import { WarehouseIntelligenceCard } from "@/components/dashboard/cards/WarehouseIntelligenceCard";
+import { COWUtilizationCard } from "@/components/dashboard/cards/COWUtilizationCard";
+import { EventsAnalysisCard } from "@/components/dashboard/cards/EventsAnalysisCard";
+import { RoyalEBUAnalysisCard } from "@/components/dashboard/cards/RoyalEBUAnalysisCard";
+import { DistanceCostProxyCard } from "@/components/dashboard/cards/DistanceCostProxyCard";
+import { AIReadinessCard } from "@/components/dashboard/cards/AIReadinessCard";
 import { DashboardFilters as DashboardFiltersType } from "@shared/models";
 import { generateMockDatabase } from "@/lib/mockData";
 import {
@@ -14,7 +20,6 @@ import {
   filterMovements,
   calculateKPIs,
 } from "@/lib/analytics";
-import { MapPin, Database } from "lucide-react";
 
 export default function Dashboard() {
   // Load mock data
@@ -29,6 +34,7 @@ export default function Dashboard() {
 
   // Dashboard filters state
   const [filters, setFilters] = useState<DashboardFiltersType>({});
+  const [activeCard, setActiveCard] = useState("executive");
 
   // Calculate metrics
   const filteredMovements = useMemo(
@@ -69,132 +75,139 @@ export default function Dashboard() {
   const vendors = Array.from(new Set(cows.map((c) => c.Vendor))).sort();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
-                <MapPin className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                  COW Analytics Dashboard
-                </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Comprehensive Cell on Wheels Fleet Management
-                </p>
-              </div>
+    <div className="h-screen w-screen flex flex-col bg-gray-50 dark:bg-slate-950 overflow-hidden">
+      {/* Fixed Header */}
+      <header className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="px-4 py-4 flex items-center justify-between">
+          {/* Logo Section */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
+              <MapPin className="w-6 h-6 text-white" />
             </div>
-            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-              <Database className="w-5 h-5" />
-              <span className="text-sm font-medium">STC & ACES</span>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                COW Analytics
+              </h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                STC & ACES Fleet Management
+              </p>
             </div>
+          </div>
+
+          {/* Filters Section */}
+          <div className="flex-1 mx-6">
+            <HeaderFilters
+              filters={filters}
+              onFiltersChange={setFilters}
+              vendors={vendors}
+              years={years}
+            />
+          </div>
+
+          {/* Org Badge */}
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+            <Database className="w-5 h-5" />
+            <span className="text-sm font-medium">Live Data</span>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Filters */}
-          <DashboardFiltersComponent
-            filters={filters}
-            onFiltersChange={setFilters}
-            vendors={vendors}
-            years={years}
+      {/* Card Navigation Tabs */}
+      <CardTabs
+        tabs={DASHBOARD_CARDS}
+        activeTab={activeCard}
+        onTabChange={setActiveCard}
+      />
+
+      {/* Card Content Area - Full Screen */}
+      <div className="flex-1 overflow-hidden bg-gray-50 dark:bg-slate-950">
+        {/* Executive Overview */}
+        {activeCard === "executive" && (
+          <ExecutiveOverviewCard
+            kpis={kpis}
+            cows={cows}
+            locations={locations}
+            movements={filteredMovements}
+            cowMetrics={cowMetrics}
           />
+        )}
 
-          {/* KPI Strip */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span className="inline-block w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></span>
-              Key Performance Indicators
-            </h2>
-            <KpiStrip
-              totalCOWs={kpis.totalCOWs}
-              totalMovements={kpis.totalMovements}
-              totalDistanceKM={kpis.totalDistanceKM}
-              activeCOWs={kpis.activeCOWs}
-              staticCOWs={kpis.staticCOWs}
-              avgMovesPerCOW={kpis.avgMovesPerCOW}
-            />
-          </div>
+        {/* Movement Types */}
+        {activeCard === "movements" && (
+          <MovementTypesCard
+            movements={filteredMovements}
+            locations={locations}
+          />
+        )}
 
-          {/* Movement Analytics */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span className="inline-block w-1 h-6 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full"></span>
-              Movement Analytics
-            </h2>
-            <MovementAnalytics movements={filteredMovements} locations={locations} />
-          </div>
+        {/* Region Analysis */}
+        {activeCard === "regions" && (
+          <RegionAnalysisCard
+            movements={filteredMovements}
+            locations={locations}
+            regionMetrics={regionMetrics}
+          />
+        )}
 
-          {/* Warehouse Intelligence */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span className="inline-block w-1 h-6 bg-gradient-to-b from-green-500 to-green-600 rounded-full"></span>
-              Warehouse Intelligence
-            </h2>
-            <WarehouseIntelligence
-              movements={filteredMovements}
-              locations={locations}
-            />
-          </div>
+        {/* Warehouse Intelligence */}
+        {activeCard === "warehouse" && (
+          <WarehouseIntelligenceCard
+            movements={filteredMovements}
+            locations={locations}
+          />
+        )}
 
-          {/* COW Utilization */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span className="inline-block w-1 h-6 bg-gradient-to-b from-indigo-500 to-indigo-600 rounded-full"></span>
-              COW Utilization Analysis
-            </h2>
-            <CowUtilization cowMetrics={cowMetrics} />
-          </div>
+        {/* COW Utilization */}
+        {activeCard === "utilization" && (
+          <COWUtilizationCard cowMetrics={cowMetrics} />
+        )}
 
-          {/* Event & Royal Analysis */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <span className="inline-block w-1 h-6 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></span>
-              Event & Royal Analysis
-            </h2>
-            <EventRoyalAnalysis movements={filteredMovements} events={events} />
-          </div>
+        {/* Events Analysis */}
+        {activeCard === "events" && (
+          <EventsAnalysisCard
+            movements={filteredMovements}
+            events={events}
+          />
+        )}
 
-          {/* Footer Info */}
-          <div className="bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  Data Model
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Immutable fact table with enriched dimensions for COWs, locations,
-                  and events
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  Analytics Engine
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Rule-based movement classification with distance calculations and
-                  utilization metrics
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                  ML Readiness
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Engineered features for demand forecasting and optimal asset
-                  allocation
-                </p>
-              </div>
+        {/* Royal/EBU Analysis */}
+        {activeCard === "royal" && (
+          <RoyalEBUAnalysisCard movements={filteredMovements} />
+        )}
+
+        {/* Distance & Cost Proxy */}
+        {activeCard === "distance" && (
+          <DistanceCostProxyCard
+            movements={filteredMovements}
+            cows={cows}
+            locations={locations}
+          />
+        )}
+
+        {/* AI Readiness */}
+        {activeCard === "ai" && (
+          <AIReadinessCard
+            cowMetrics={cowMetrics}
+            movements={filteredMovements}
+            locations={locations}
+          />
+        )}
+
+        {/* Map Placeholder - Keep for future */}
+        {activeCard === "map" && (
+          <div className="h-full flex items-center justify-center">
+            <div className="text-center">
+              <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                Saudi Interactive Map
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Coming soon: Real-time movement visualization with animated flows
+              </p>
             </div>
           </div>
-        </div>
-      </main>
+        )}
+      </div>
     </div>
   );
 }
