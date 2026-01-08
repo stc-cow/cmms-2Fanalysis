@@ -65,7 +65,35 @@ export function SaudiMapCard({
     return () => clearInterval(interval);
   }, [isPlaying, timelineMonths.length]);
 
-  const currentMonth = timelineMonths[currentMonthIndex];
+  // Get current month or aggregate all months
+  const currentMonth = useMemo(() => {
+    if (currentMonthIndex === -1 && timelineMonths.length > 0) {
+      // Aggregate all months
+      const aggregated: TimelineMonth = {
+        month: "All",
+        year: 0,
+        movements: [],
+        totalDistance: 0,
+        movementCounts: { Full: 0, Half: 0, Zero: 0 },
+        vendorCounts: {},
+      };
+
+      timelineMonths.forEach((month) => {
+        aggregated.movements.push(...month.movements);
+        aggregated.totalDistance += month.totalDistance;
+        aggregated.movementCounts.Full += month.movementCounts.Full;
+        aggregated.movementCounts.Half += month.movementCounts.Half;
+        aggregated.movementCounts.Zero += month.movementCounts.Zero;
+        Object.entries(month.vendorCounts).forEach(([vendor, count]) => {
+          aggregated.vendorCounts[vendor] =
+            (aggregated.vendorCounts[vendor] || 0) + count;
+        });
+      });
+
+      return aggregated;
+    }
+    return timelineMonths[currentMonthIndex] || null;
+  }, [currentMonthIndex, timelineMonths]);
 
   // Calculate region metrics from movements
   const regionMetrics = useMemo(() => {
