@@ -260,18 +260,8 @@ export function SaudiMapCard({
             regionMetrics={regionMetrics}
             maxMetric={maxRegionMetric}
             title="Movements by Region"
+            totalMovements={currentMonth?.movements.length || 0}
           />
-
-          {currentMonth && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                Total Movements: {currentMonth.movements.length}
-              </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
-                {currentMonth.totalDistance.toLocaleString()} KM
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Right Panel: Vendor Chart */}
