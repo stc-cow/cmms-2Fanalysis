@@ -118,3 +118,50 @@
     white-space: pre;
   }
 }
+
+/* Modern Card Styling */
+@layer components {
+  .card-modern {
+    @apply bg-white dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-all duration-300 ease-out;
+  }
+
+  .card-modern-sm {
+    @apply bg-white dark:bg-slate-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition-all duration-300 ease-out;
+  }
+
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-gray-50 dark:from-slate-800 dark:to-slate-900 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm hover:shadow-md transition-all duration-300 ease-out;
+  }
+
+  .card-header {
+    @apply text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2;
+  }
+
+  .kpi-card {
+    @apply rounded-xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-300 ease-out backdrop-blur-sm;
+  }
+
+  .metric-badge {
+    @apply inline-flex items-center justify-center rounded-lg p-2.5 shadow-sm;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  /* Hover effects for cards */
+  .hover-lift {
+    @apply hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ease-out;
+  }
+
+  /* Modern divider */
+  .divider-modern {
+    @apply border-t border-gray-100 dark:border-gray-700;
+  }
+
+  /* Modern badge/tag styling */
+  .badge-modern {
+    @apply inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap;
+  }
+}
