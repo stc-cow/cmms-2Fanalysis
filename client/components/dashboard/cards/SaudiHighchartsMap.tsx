@@ -16,6 +16,29 @@ export function SaudiHighchartsMap({
   title = "Movements by Region",
   totalMovements = 0,
 }: SaudiHighchartsMapProps) {
+  const [saudiGeo, setSaudiGeo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Load Saudi geo data from Highcharts CDN
+  useEffect(() => {
+    const loadGeoData = async () => {
+      try {
+        const response = await fetch(
+          "https://code.highcharts.com/mapdata/countries/sa/sa-all.geo.json"
+        );
+        if (!response.ok) throw new Error("Failed to fetch geo data");
+        const data = await response.json();
+        setSaudiGeo(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to load Saudi geo data:", error);
+        setLoading(false);
+      }
+    };
+
+    loadGeoData();
+  }, []);
+
   // Transform region metrics to Highcharts data format: [["sa-ri", 320], ["sa-mk", 180], ...]
   const chartData = useMemo(() => {
     return Object.entries(regionMetrics)
