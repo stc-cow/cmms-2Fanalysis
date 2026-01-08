@@ -46,11 +46,11 @@ export function DashboardFiltersComponent({
             Year
           </label>
           <Select
-            value={filters.year?.toString() || ""}
+            value={filters.year?.toString() || "__all__"}
             onValueChange={(value) =>
               onFiltersChange({
                 ...filters,
-                year: value ? parseInt(value) : undefined,
+                year: value === "__all__" ? undefined : parseInt(value),
               })
             }
           >
@@ -58,7 +58,7 @@ export function DashboardFiltersComponent({
               <SelectValue placeholder="All Years" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Years</SelectItem>
+              <SelectItem value="__all__">All Years</SelectItem>
               {years.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
                   {year}
