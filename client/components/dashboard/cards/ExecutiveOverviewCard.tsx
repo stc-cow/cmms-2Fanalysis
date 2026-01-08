@@ -167,33 +167,33 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Asset Status</h3>
+        <div className="card-modern hover-lift">
+          <h3 className="card-header">Asset Status</h3>
           <div className="space-y-3">
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Active Utilization</span>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Active Utilization</span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                 <div
-                  className="bg-green-500 h-2 rounded-full"
+                  className="bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full shadow-sm"
                   style={{ width: `${(kpis.activeCOWs / kpis.totalCOWs) * 100}%` }}
                 />
               </div>
             </div>
             <div>
-              <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-gray-600 dark:text-gray-400">Static Assets</span>
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Static Assets</span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {((kpis.staticCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                 <div
-                  className="bg-red-500 h-2 rounded-full"
+                  className="bg-gradient-to-r from-red-400 to-red-500 h-2.5 rounded-full shadow-sm"
                   style={{ width: `${(kpis.staticCOWs / kpis.totalCOWs) * 100}%` }}
                 />
               </div>
@@ -201,8 +201,8 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Coverage Summary</h3>
+        <div className="card-modern hover-lift">
+          <h3 className="card-header">Coverage Summary</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-600 dark:text-gray-400">Total Regions Served</span>
