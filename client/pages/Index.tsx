@@ -194,19 +194,13 @@ export default function Dashboard() {
           />
         )}
 
-        {/* Map Placeholder - Keep for future */}
+        {/* Saudi Map */}
         {activeCard === "map" && (
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center">
-              <MapPin className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Saudi Interactive Map
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Coming soon: Real-time movement visualization with animated flows
-              </p>
-            </div>
-          </div>
+          <SaudiMapCard
+            movements={filteredMovements}
+            cows={cows}
+            locations={locations}
+          />
         )}
       </div>
     </div>
