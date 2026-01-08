@@ -1,7 +1,4 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
-import HighchartsMaps from "highcharts/modules/map.js";
 import { Play, Pause, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
 import {
   BarChart,
@@ -14,19 +11,14 @@ import {
   PieChart,
   Pie,
   Cell,
+  ScatterChart,
+  Scatter,
 } from "recharts";
 import { CowMovementsFact, DimCow, DimLocation } from "@shared/models";
 import {
   generateTimelineMonths,
-  getMapSeries,
-  getWarehouseMarkers,
-  getSiteMarkers,
-  MapLine,
   TimelineMonth,
 } from "@/lib/saudiMapData";
-
-// Initialize Highcharts Maps module
-HighchartsMaps(Highcharts);
 
 interface SaudiMapCardProps {
   movements: CowMovementsFact[];
@@ -39,7 +31,6 @@ export function SaudiMapCard({
   cows,
   locations,
 }: SaudiMapCardProps) {
-  const chartRef = useRef<HighchartsReact.RefObject>(null);
   const [timelineMonths, setTimelineMonths] = useState<TimelineMonth[]>([]);
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -65,13 +56,43 @@ export function SaudiMapCard({
   const currentMonth = timelineMonths[currentMonthIndex];
   const currentMovements = currentMonth?.movements || [];
 
-  // Map data for current month
-  const mapSeries = useMemo(() => {
-    const series = getMapSeries(currentMovements);
-    const warehouseMarkers = getWarehouseMarkers(locations);
-    const siteMarkers = getSiteMarkers(locations);
-    return [series[0], warehouseMarkers, siteMarkers];
-  }, [currentMovements, locations]);
+  // Prepare data for visualization
+  const warehousePoints = useMemo(() => {
+    return locations
+      .filter((l) => l.Location_Type === "Warehouse")
+      .map((l) => ({
+        lon: l.Longitude,
+        lat: l.Latitude,
+        name: l.Location_Name.split(" ")[0],
+        type: "warehouse",
+      }));
+  }, [locations]);
+
+  const sitePoints = useMemo(() => {
+    return locations
+      .filter((l) => l.Location_Type === "Site")
+      .map((l) => ({
+        lon: l.Longitude,
+        lat: l.Latitude,
+        name: l.Location_Name.split(" ")[0],
+        type: "site",
+      }));
+  }, [locations]);
+
+  // Movement flow data for scatter
+  const movementFlows = useMemo(() => {
+    return currentMovements.map((mov) => ({
+      x: mov.from[0],
+      y: mov.from[1],
+      xEnd: mov.to[0],
+      yEnd: mov.to[1],
+      cowId: mov.cowId,
+      distance: mov.distance,
+      type: mov.movementType,
+      vendor: mov.vendor,
+      date: mov.date,
+    }));
+  }, [currentMovements]);
 
   // Category chart data
   const categoryChartData = useMemo(() => {
@@ -95,40 +116,17 @@ export function SaudiMapCard({
       .slice(0, 5);
   }, [currentMonth]);
 
-  const mapOptions = {
-    chart: {
-      map: "countries/sa/sa-all",
-      borderWidth: 0,
-      backgroundColor: "#f9fafb",
-    },
-    title: {
-      text: null,
-    },
-    legend: {
-      enabled: false,
-    },
-    tooltip: {
-      enabled: true,
-      formatter: function (this: any) {
-        if (this.series.name === "Movements") {
-          const custom = this.point.custom;
-          return `<b>${custom.cowId}</b><br/>
-                    Distance: ${custom.distance.toFixed(0)} KM<br/>
-                    Type: ${custom.movementType}<br/>
-                    Vendor: ${custom.vendor}<br/>
-                    Date: ${custom.date}`;
-        }
-        return `<b>${this.point.name}</b>`;
-      },
-    },
-    series: mapSeries,
-    credits: {
-      enabled: false,
-    },
-    exporting: {
-      enabled: false,
-    },
-  };
+  // Saudi Arabia bounds for map
+  const saudiMapData = useMemo(() => {
+    const allLons = [...warehousePoints, ...sitePoints].map((p) => p.lon);
+    const allLats = [...warehousePoints, ...sitePoints].map((p) => p.lat);
+    return {
+      minLon: Math.min(...allLons) - 1,
+      maxLon: Math.max(...allLons) + 1,
+      minLat: Math.min(...allLats) - 1,
+      maxLat: Math.max(...allLats) + 1,
+    };
+  }, [warehousePoints, sitePoints]);
 
   const COLORS = ["#3b82f6", "#a855f7", "#6b7280", "#10b981", "#f59e0b"];
 
@@ -138,31 +136,94 @@ export function SaudiMapCard({
       <div className="flex-1 flex gap-0 min-h-0 overflow-hidden">
         {/* Left: Map and Category Chart */}
         <div className="flex-1 flex flex-col gap-0 overflow-hidden">
-          {/* Highcharts Map */}
-          <div className="flex-1 bg-gray-100 overflow-hidden relative">
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={mapOptions}
-              ref={chartRef}
-              containerProps={{ style: { width: "100%", height: "100%" } }}
-            />
+          {/* Interactive Map */}
+          <div className="flex-1 bg-gradient-to-br from-blue-50 to-blue-100 overflow-hidden relative border border-gray-200">
+            <svg
+              viewBox={`${saudiMapData.minLon} ${saudiMapData.minLat} ${saudiMapData.maxLon - saudiMapData.minLon} ${saudiMapData.maxLat - saudiMapData.minLat}`}
+              className="w-full h-full"
+            >
+              {/* Movement flows */}
+              {movementFlows.map((flow, idx) => (
+                <g key={`flow-${idx}`}>
+                  <line
+                    x1={flow.x}
+                    y1={flow.y}
+                    x2={flow.xEnd}
+                    y2={flow.yEnd}
+                    stroke={
+                      flow.type === "Full"
+                        ? "#3b82f6"
+                        : flow.type === "Half"
+                          ? "#a855f7"
+                          : "#6b7280"
+                    }
+                    strokeWidth="0.15"
+                    opacity="0.6"
+                    strokeLinecap="round"
+                  />
+                  {/* Arrow head */}
+                  <circle
+                    cx={flow.xEnd}
+                    cy={flow.yEnd}
+                    r="0.1"
+                    fill={
+                      flow.type === "Full"
+                        ? "#3b82f6"
+                        : flow.type === "Half"
+                          ? "#a855f7"
+                          : "#6b7280"
+                    }
+                  />
+                </g>
+              ))}
+
+              {/* Warehouse markers */}
+              {warehousePoints.map((wh, idx) => (
+                <g key={`wh-${idx}`}>
+                  <rect
+                    x={wh.lon - 0.2}
+                    y={wh.lat - 0.2}
+                    width="0.4"
+                    height="0.4"
+                    fill="#8b7355"
+                    opacity="0.8"
+                    rx="0.05"
+                  />
+                  <title>{wh.name}</title>
+                </g>
+              ))}
+
+              {/* Site markers */}
+              {sitePoints.map((site, idx) => (
+                <g key={`site-${idx}`}>
+                  <circle
+                    cx={site.lon}
+                    cy={site.lat}
+                    r="0.12"
+                    fill="#06b6d4"
+                    opacity="0.8"
+                  />
+                  <title>{site.name}</title>
+                </g>
+              ))}
+            </svg>
 
             {/* Fixed Logos Overlay */}
-            <div className="absolute top-3 left-3 flex items-center gap-2 bg-white/80 backdrop-blur px-3 py-2 rounded-lg shadow-sm z-50">
+            <div className="absolute top-3 left-3 flex items-center gap-2 bg-white/90 backdrop-blur px-3 py-2 rounded-lg shadow-sm z-50">
               <MapPin className="w-4 h-4 text-blue-600" />
               <span className="text-xs font-semibold text-gray-900">STC</span>
             </div>
-            <div className="absolute top-3 right-3 bg-white/80 backdrop-blur px-3 py-2 rounded-lg shadow-sm z-50">
+            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur px-3 py-2 rounded-lg shadow-sm z-50">
               <span className="text-xs font-semibold text-purple-600">ACES</span>
             </div>
 
             {/* Month Label Overlay */}
             {currentMonth && (
-              <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-4 py-3 rounded-lg shadow-md z-50">
+              <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur px-4 py-3 rounded-lg shadow-md z-50 border border-blue-200">
                 <p className="text-sm font-bold text-gray-900">
                   {currentMonth.month} {currentMonth.year}
                 </p>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-gray-700">
                   {currentMonth.movements.length} movements • {currentMonth.totalDistance.toLocaleString()} KM
                 </p>
               </div>
@@ -195,7 +256,7 @@ export function SaudiMapCard({
               </ResponsiveContainer>
             ) : (
               <p className="text-xs text-gray-500 h-full flex items-center">
-                No data for this month
+                No movements this month
               </p>
             )}
           </div>
@@ -206,7 +267,7 @@ export function SaudiMapCard({
           {/* Vendor Chart */}
           <div className="flex-1 border-b border-gray-200 dark:border-gray-700 p-3 overflow-hidden">
             <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-2">
-              Vendors
+              Active Vendors
             </h3>
             {vendorChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -257,7 +318,9 @@ export function SaudiMapCard({
               />
               <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
                 <span>{timelineMonths[0]?.month} {timelineMonths[0]?.year}</span>
-                <span>{currentMonth?.month} {currentMonth?.year}</span>
+                <span>
+                  {currentMonth?.month} {currentMonth?.year}
+                </span>
                 <span>
                   {timelineMonths[timelineMonths.length - 1]?.month}{" "}
                   {timelineMonths[timelineMonths.length - 1]?.year}
@@ -290,7 +353,7 @@ export function SaudiMapCard({
             </div>
 
             {/* Month Info */}
-            <div className="bg-blue-50 dark:bg-blue-950 rounded p-2 text-xs">
+            <div className="bg-blue-50 dark:bg-blue-950 rounded p-2 text-xs border border-blue-200 dark:border-blue-800">
               <p className="text-blue-900 dark:text-blue-200 font-semibold">
                 {currentMonthIndex + 1} / {timelineMonths.length}
               </p>
