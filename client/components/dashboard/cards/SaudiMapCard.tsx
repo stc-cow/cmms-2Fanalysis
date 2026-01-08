@@ -25,22 +25,6 @@ interface SaudiMapCardProps {
   locations: DimLocation[];
 }
 
-// Saudi Arabia region data with SVG paths and coordinates
-const SAUDI_REGIONS = {
-  "Al Jaof": { color: "#e9d5ff", path: "M340,40 L360,35 L375,50 L365,65 L340,55 Z" },
-  Tabuk: { color: "#d8b4fe", path: "M320,70 L345,65 L360,90 L335,105 L315,95 Z" },
-  "Ha'il": { color: "#c084fc", path: "M345,110 L380,100 L395,130 L370,145 L340,135 Z" },
-  "Al Qassim": { color: "#a855f7", path: "M380,140 L420,130 L435,165 L405,180 L375,170 Z" },
-  Medina: { color: "#9333ea", path: "M300,140 L330,135 L340,165 L310,170 Z" },
-  Riyadh: { color: "#7e22ce", path: "M410,180 L450,170 L465,210 L425,220 Z" },
-  "Eastern Province": { color: "#6b21a8", path: "M460,200 L500,190 L510,240 L470,250 Z" },
-  Makkah: { color: "#805ad5", path: "M280,180 L310,175 L315,210 L285,215 Z" },
-  Asir: { color: "#9f7aea", path: "M310,240 L350,230 L360,280 L320,290 Z" },
-  Jizan: { color: "#d6bcfa", path: "M300,290 L340,285 L345,330 L305,335 Z" },
-  Najran: { color: "#e9d5ff", path: "L350,310 L390,300 L400,350 L360,355 Z" },
-  "Ash Sharqiyah": { color: "#ddd6fe", path: "M470,260 L510,250 L515,290 L475,300 Z" },
-};
-
 export function SaudiMapCard({
   movements,
   cows,
