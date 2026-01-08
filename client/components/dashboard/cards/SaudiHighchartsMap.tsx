@@ -1,12 +1,8 @@
 import { useRef, useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import Bubble from "highcharts/modules/series-bubble";
 import { getIntensityColor } from "@/lib/saudiGeoData";
 import { regionCenters } from "@/lib/saudiGeoData";
-
-// Register bubble module with Highcharts
-Bubble(Highcharts);
 
 interface SaudiHighchartsMapProps {
   regionMetrics: Record<string, number>;
@@ -21,7 +17,7 @@ export function SaudiHighchartsMap({
 }: SaudiHighchartsMapProps) {
   const chartRef = useRef<HighchartsReact.RefObject>(null);
 
-  // Prepare data for bubble chart (geographic representation)
+  // Prepare data for scatter plot (geographic representation)
   const chartData = useMemo(() => {
     return Object.entries(regionCenters).map(([region, coords]) => {
       const metric = regionMetrics[region] || 0;
@@ -31,17 +27,21 @@ export function SaudiHighchartsMap({
         name: region,
         x: coords.lon,
         y: coords.lat,
-        z: Math.max(metric * 5, 20), // Size for visualization
         value: metric,
         intensity,
-        color: getIntensityColor(intensity),
+        marker: {
+          radius: Math.max(8, Math.sqrt(metric) * 3),
+          fillColor: getIntensityColor(intensity),
+          lineWidth: 1,
+          lineColor: "#ffffff",
+        },
       };
     });
   }, [regionMetrics, maxMetric]);
 
   const options: Highcharts.Options = {
     chart: {
-      type: "bubble",
+      type: "scatter",
       styledMode: false,
       spacingTop: 10,
       spacingBottom: 10,
@@ -79,9 +79,7 @@ export function SaudiHighchartsMap({
       borderColor: "transparent",
     },
     plotOptions: {
-      bubble: {
-        minSize: "10%",
-        maxSize: "25%",
+      scatter: {
         dataLabels: {
           enabled: true,
           format: "{point.name}",
@@ -108,7 +106,7 @@ export function SaudiHighchartsMap({
     },
     series: [
       {
-        type: "bubble",
+        type: "scatter",
         name: "Movements by Region",
         data: chartData as any,
       } as any,
