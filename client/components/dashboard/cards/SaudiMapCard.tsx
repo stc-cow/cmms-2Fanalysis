@@ -25,10 +25,8 @@ import {
   TimelineMonth,
 } from "@/lib/saudiMapData";
 
-// Initialize Highcharts Maps
-if (typeof Highcharts === "object") {
-  HighchartsMaps(Highcharts);
-}
+// Initialize Highcharts Maps module
+HighchartsMaps(Highcharts);
 
 interface SaudiMapCardProps {
   movements: CowMovementsFact[];
