@@ -7,16 +7,10 @@ import HighchartsMaps from "highcharts/modules/map";
 import HighchartsExporting from "highcharts/modules/exporting";
 import HighchartsExportingData from "highcharts/modules/export-data";
 
-// Register modules once
-if (!Highcharts.mapChart) {
-  HighchartsMaps(Highcharts);
-}
-if (!Highcharts.modules.exporting) {
-  HighchartsExporting(Highcharts);
-}
-if (!Highcharts.modules["export-data"]) {
-  HighchartsExportingData(Highcharts);
-}
+// Register modules
+HighchartsMaps(Highcharts);
+HighchartsExporting(Highcharts);
+HighchartsExportingData(Highcharts);
 
 interface SaudiHighchartsMapProps {
   regionMetrics: Record<string, number>;
