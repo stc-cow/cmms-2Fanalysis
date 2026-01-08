@@ -13,7 +13,7 @@ import { RoyalEBUAnalysisCard } from "@/components/dashboard/cards/RoyalEBUAnaly
 import { DistanceCostProxyCard } from "@/components/dashboard/cards/DistanceCostProxyCard";
 import { AIReadinessCard } from "@/components/dashboard/cards/AIReadinessCard";
 import { DashboardFilters as DashboardFiltersType } from "@shared/models";
-import { generateMockDatabase } from "@/lib/mockData";
+import { useDashboardData } from "@/hooks/useDashboardData";
 import {
   enrichMovements,
   calculateCowMetrics,
@@ -23,9 +23,34 @@ import {
 } from "@/lib/analytics";
 
 export default function Dashboard() {
-  // Load mock data
-  const { cows, locations, events, movements: rawMovements } =
-    generateMockDatabase();
+  // Load real data from Google Sheets API (with fallback to mock)
+  const { data, loading, error } = useDashboardData();
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-white font-medium">Loading dashboard data...</p>
+          <p className="text-sm text-gray-400">Fetching from Google Sheets</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
+        <div className="flex flex-col items-center gap-4">
+          <Database className="w-12 h-12 text-red-500" />
+          <p className="text-white font-medium">Failed to load data</p>
+          <p className="text-sm text-gray-400">{error || "Unknown error"}</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { cows, locations, events, movements: rawMovements } = data;
 
   // Enrich movements with classification
   const enrichedMovements = useMemo(
