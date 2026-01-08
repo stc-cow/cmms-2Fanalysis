@@ -92,6 +92,13 @@
 }
 
 @layer base {
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
   * {
     @apply border-border;
   }
