@@ -211,9 +211,19 @@ const processedDataHandler: RequestHandler = async (req, res) => {
     }
 
     if (!csvData) {
-      throw new Error(
-        `Failed to fetch from all URLs. Last error: ${lastError?.message || "Unknown"}`
-      );
+      const errorMsg = `Failed to fetch from all URLs. Last error: ${lastError?.message || "Unknown"}`;
+      console.error("\n❌ GOOGLE SHEETS CONNECTION ERROR:");
+      console.error(`   Sheet ID: ${ACTUAL_SHEET_ID}`);
+      console.error(`   GID: ${GID}`);
+      console.error(`   Error: ${lastError?.message}`);
+      console.error("\n📋 TO FIX THIS:");
+      console.error("   1. Open your Google Sheet");
+      console.error("   2. Look at the URL in the address bar");
+      console.error("   3. Copy the ID after /spreadsheets/d/");
+      console.error("   4. Set it as an environment variable: GOOGLE_SHEET_ID=YOUR_ID");
+      console.error("   5. Or update the ACTUAL_SHEET_ID in server/routes/data.ts");
+      console.error("");
+      throw new Error(errorMsg);
     }
 
     const rows = parseCSVData(csvData);
