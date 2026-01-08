@@ -29,6 +29,10 @@ export function SaudiHighchartsMap({
 
   // Load Saudi geo data from Highcharts CDN
   useEffect(() => {
+    if (!modulesReady) {
+      return; // Wait for modules to be ready
+    }
+
     const loadGeoData = async () => {
       try {
         const response = await fetch(
@@ -45,7 +49,7 @@ export function SaudiHighchartsMap({
     };
 
     loadGeoData();
-  }, []);
+  }, [modulesReady]);
 
   // Transform region metrics to Highcharts data format: [["sa-ri", 320], ["sa-mk", 180], ...]
   const chartData = useMemo(() => {
