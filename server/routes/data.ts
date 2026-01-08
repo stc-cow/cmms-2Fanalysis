@@ -13,8 +13,8 @@ const router = Router();
 // 2. Copy the Sheet ID from the URL bar
 // 3. Paste it here below
 
-// TODO: Replace with actual Sheet ID from your Google Sheet edit URL
-const ACTUAL_SHEET_ID = process.env.GOOGLE_SHEET_ID || "2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz";
+// Google Sheet ID from: https://docs.google.com/spreadsheets/d/1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM/edit
+const ACTUAL_SHEET_ID = process.env.GOOGLE_SHEET_ID || "1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM";
 const GID = process.env.GOOGLE_SHEET_GID || "1539310010";
 
 const CSV_URLS = [
