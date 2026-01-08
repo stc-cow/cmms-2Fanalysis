@@ -106,26 +106,67 @@ export default function Dashboard() {
   if (!data) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-        <div className="flex flex-col items-center gap-6 max-w-md">
+        <div className="flex flex-col items-center gap-6 max-w-2xl">
           <Database className="w-16 h-16 text-red-500" />
           <div className="text-center space-y-3">
-            <p className="text-white font-bold text-xl">
+            <p className="text-white font-bold text-2xl">
               Unable to Load Dashboard Data
             </p>
-            <p className="text-sm text-gray-300">{error || "Unknown error"}</p>
-          </div>
-          <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-left w-full">
-            <p className="text-sm font-semibold text-red-200 mb-2">
-              How to fix:
+            <p className="text-sm text-gray-300">
+              {error?.includes("404")
+                ? "Google Sheet is not accessible (404 error)"
+                : error || "Unknown error occurred"}
             </p>
-            <ol className="text-xs text-red-100 space-y-1 list-decimal list-inside">
-              <li>Open your Google Sheet</li>
-              <li>Go to File → Share → Publish to web</li>
-              <li>Select the correct sheet tab</li>
-              <li>Choose "Comma-separated values (.csv)"</li>
-              <li>Copy the published link</li>
-              <li>Update the sheet ID in the server configuration</li>
+          </div>
+
+          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-left w-full">
+            <p className="text-sm font-semibold text-blue-200 mb-3">
+              📋 Diagnostic Info:
+            </p>
+            <p className="text-xs text-blue-100 font-mono bg-slate-900 p-2 rounded mb-2 break-all">
+              Error: {error}
+            </p>
+            <p className="text-xs text-blue-100">
+              Check the server logs or visit{" "}
+              <code className="bg-slate-900 px-1 rounded">/api/data/diagnostic</code> for
+              detailed diagnostics.
+            </p>
+          </div>
+
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-left w-full">
+            <p className="text-sm font-semibold text-amber-200 mb-3">
+              ⚙️ Steps to Fix:
+            </p>
+            <ol className="text-xs text-amber-100 space-y-2 list-decimal list-inside">
+              <li className="font-semibold">Get the correct Sheet ID:</li>
+              <ol className="ml-4 space-y-1 list-disc list-inside">
+                <li>Open your Google Sheet in edit mode</li>
+                <li>Look at the URL bar</li>
+                <li>Copy the ID between /d/ and /edit</li>
+              </ol>
+              <li className="font-semibold mt-2">Update the configuration:</li>
+              <ol className="ml-4 space-y-1 list-disc list-inside">
+                <li>
+                  In <code className="bg-slate-900 px-1 rounded">server/routes/data.ts</code>
+                </li>
+                <li>
+                  Change <code className="bg-slate-900 px-1 rounded">ACTUAL_SHEET_ID</code> to your
+                  Sheet ID
+                </li>
+                <li>Or set environment variable: GOOGLE_SHEET_ID=YOUR_ID</li>
+              </ol>
+              <li className="font-semibold mt-2">Test the connection:</li>
+              <ol className="ml-4 space-y-1 list-disc list-inside">
+                <li>Visit /api/data/diagnostic in your browser</li>
+                <li>Check which URLs are working</li>
+              </ol>
             </ol>
+          </div>
+
+          <div className="bg-gray-700 rounded-lg p-3 w-full">
+            <p className="text-xs text-gray-300 text-center">
+              For detailed setup instructions, see GOOGLE_SHEET_SETUP.md in the project root
+            </p>
           </div>
         </div>
       </div>
