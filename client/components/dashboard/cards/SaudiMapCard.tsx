@@ -40,11 +40,13 @@ export function SaudiMapCard({
   // Auto-play timeline
   useEffect(() => {
     if (!isPlaying || timelineMonths.length === 0) return;
+    let currentIdx = currentMonthIndex;
     const interval = setInterval(() => {
-      setCurrentMonthIndex((prev) => (prev + 1) % timelineMonths.length);
-    }, 2000);
+      currentIdx = (currentIdx + 1) % (timelineMonths.length + 1); // +1 for "All Months"
+      setCurrentMonthIndex(currentIdx === timelineMonths.length ? -1 : currentIdx);
+    }, 1500);
     return () => clearInterval(interval);
-  }, [isPlaying, timelineMonths.length]);
+  }, [isPlaying, timelineMonths.length, currentMonthIndex]);
 
   // Get current month or aggregate all months
   const currentMonth = useMemo(() => {
