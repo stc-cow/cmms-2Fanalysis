@@ -191,8 +191,8 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="card-modern hover-lift">
-          <h3 className="card-header">Asset Status</h3>
+        <div className="card-modern hover-lift bg-gradient-to-br from-white/70 to-white/50 dark:from-slate-800/70 dark:to-slate-700/50 border border-gray-200/60 dark:border-gray-700/60 backdrop-blur-sm hover:border-green-300/50 dark:hover:border-green-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
+          <h3 className="card-header text-lg font-bold bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent mb-4">Asset Status</h3>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between items-center mb-2">
