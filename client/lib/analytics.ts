@@ -71,7 +71,11 @@ export function enrichMovements(
     const fromLoc = locMap.get(mov.From_Location_ID);
     const toLoc = locMap.get(mov.To_Location_ID);
 
-    const movementType = classifyMovement(mov, locMap);
+    // Use the original Movement_Type from Google Sheet if available
+    // Otherwise, classify based on location types
+    const movementType =
+      mov.Movement_Type || classifyMovement(mov, locMap);
+
     const distance =
       fromLoc && toLoc
         ? calculateDistance(
