@@ -236,10 +236,7 @@ export function EventRoyalAnalysis({
         {/* EBU Classification */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-600" />
-              EBU vs Non-EBU
-            </CardTitle>
+            <CardTitle>EBU vs Non-EBU</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
