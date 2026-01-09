@@ -9,6 +9,8 @@ export interface MapLine {
   vendor: string;
   month: string;
   date: string;
+  toRegion: string; // Destination region
+  toLocationId: string; // Destination location ID
 }
 
 export interface TimelineMonth {
