@@ -213,7 +213,7 @@ export default function Dashboard() {
           </div>
 
           {/* Filters Section */}
-          <div className="flex-1 mx-6">
+          <div className="flex-1 mx-4">
             <HeaderFilters
               filters={filters}
               onFiltersChange={setFilters}
@@ -226,7 +226,7 @@ export default function Dashboard() {
           <img
             src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F525a16fc442c434e8185ef0bbfd606f5?format=webp&width=800"
             alt="ACES Logo"
-            className="h-6 object-contain"
+            className="h-5 object-contain"
           />
         </div>
       </header>
