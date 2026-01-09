@@ -186,7 +186,7 @@ export function generateMockLocations(): DimLocation[] {
       Location_Name: "Buraidah City Center",
       Latitude: 26.3263,
       Longitude: 43.975,
-      Region: "NORTH",
+      Region: "CENTRAL",
       Location_Type: "Site",
       Owner: "STC",
     },
