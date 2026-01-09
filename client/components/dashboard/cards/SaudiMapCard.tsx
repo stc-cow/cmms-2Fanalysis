@@ -151,12 +151,6 @@ export function SaudiMapCard({
     <div className="h-[calc(100vh-200px)] w-full overflow-hidden flex flex-col bg-white dark:bg-slate-800">
       {/* Header with Controls */}
       <div className="flex-shrink-0 px-6 py-4 divider-modern flex items-center justify-between bg-gradient-to-r from-white to-gray-50 dark:from-slate-800 dark:to-slate-900">
-        <div className="flex items-center gap-2">
-          {/* STC Logo */}
-          <div className="w-6 h-6 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">
-            STC
-          </div>
-        </div>
 
         {/* Timeline Selector */}
         <div className="flex items-center gap-3 flex-1">
