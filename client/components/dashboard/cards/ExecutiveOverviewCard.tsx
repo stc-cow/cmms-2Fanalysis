@@ -113,12 +113,9 @@ export function ExecutiveOverviewCard({
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 flex-shrink-0">
         {summaryStats.map((stat, idx) => (
           <div key={idx} className="card-modern-sm hover-lift">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="text-blue-500">{stat.icon}</div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                {stat.label}
-              </p>
-            </div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+              {stat.label}
+            </p>
             <p className="text-2xl font-bold text-gray-900 dark:text-white">
               {stat.value}
             </p>
