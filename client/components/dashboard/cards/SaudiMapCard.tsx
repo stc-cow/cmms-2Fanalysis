@@ -155,13 +155,13 @@ export function SaudiMapCard({
   const COLORS = ["#3b82f6", "#a855f7", "#6b7280", "#10b981", "#f59e0b"];
 
   return (
-    <div className="h-[calc(100vh-200px)] w-full overflow-hidden flex flex-col bg-white dark:bg-slate-800">
-      {/* Header with Controls */}
-      <div className="flex-shrink-0 px-6 py-4 divider-modern flex items-center justify-between bg-gradient-to-r from-white to-gray-50 dark:from-slate-800 dark:to-slate-900">
+    <div className="h-[calc(100vh-200px)] w-full overflow-hidden flex flex-col bg-gradient-to-br from-white via-blue-50/20 to-white dark:from-slate-800 dark:via-slate-800/50 dark:to-slate-800">
+      {/* Header with Controls - Enhanced Design */}
+      <div className="flex-shrink-0 px-6 py-5 flex items-center justify-between bg-gradient-to-r from-white/80 via-blue-50/40 to-white/80 dark:from-slate-800/80 dark:via-slate-800/40 dark:to-slate-800/80 border-b border-gray-200/40 dark:border-gray-700/40 backdrop-blur-sm">
 
         {/* Timeline Selector */}
-        <div className="flex items-center gap-3 flex-1">
-          <label className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+        <div className="flex items-center gap-4 flex-1">
+          <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
             Timeline:
           </label>
 
@@ -175,11 +175,11 @@ export function SaudiMapCard({
               setCurrentMonthIndex(parseInt(e.target.value));
               setIsPlaying(false);
             }}
-            className="flex-1 px-3 py-1.5"
+            className="flex-1 px-3 py-2 h-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full accent-blue-600 cursor-pointer"
           />
 
           {/* Month Label */}
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[100px]">
+          <span className="text-sm font-bold text-gray-900 dark:text-gray-100 min-w-[120px] text-right">
             {currentMonthIndex === -1
               ? "All Months"
               : timelineMonths[currentMonthIndex]
@@ -190,15 +190,15 @@ export function SaudiMapCard({
           {/* Play Button */}
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="px-3 py-1.5 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:shadow-md transition-all duration-300 font-medium text-sm whitespace-nowrap"
+            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-lg hover:shadow-lg hover:shadow-purple-500/30 transition-all duration-300 font-bold text-sm whitespace-nowrap"
           >
-            {isPlaying ? "Pause" : "Play"}
+            {isPlaying ? "⏸ Pause" : "▶ Play"}
           </button>
         </div>
       </div>
 
       {/* Two-Column Layout: Map + Vendor */}
-      <div className="flex-1 flex gap-0 overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
+      <div className="flex-1 flex gap-0 overflow-hidden bg-gradient-to-b from-white/50 to-white dark:from-slate-800/50 dark:to-slate-800">
         {/* Center Panel: Highcharts Saudi Map - Expanded */}
         <div className="flex-1 border-r border-gray-200 dark:border-gray-700 p-6 overflow-auto flex flex-col">
           <SaudiHighchartsMap
