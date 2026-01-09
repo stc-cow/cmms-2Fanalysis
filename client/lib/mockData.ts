@@ -100,7 +100,7 @@ export function generateMockLocations(): DimLocation[] {
       Sub_Location: "North Central Region",
       Latitude: 27.3212,
       Longitude: 41.7269,
-      Region: "NORTH",
+      Region: "WEST",
       Location_Type: "Warehouse",
       Owner: "ACES",
     },
