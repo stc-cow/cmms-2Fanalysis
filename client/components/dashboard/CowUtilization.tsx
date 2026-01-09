@@ -133,10 +133,7 @@ export function CowUtilization({ cowMetrics }: CowUtilizationProps) {
         {/* Bottom 10 Least Moved */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingDown className="w-5 h-5 text-orange-600" />
-              Bottom 10 Least Utilized COWs
-            </CardTitle>
+            <CardTitle>Bottom 10 Least Utilized COWs</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
