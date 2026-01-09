@@ -18,7 +18,7 @@ export interface DimLocation {
   Sub_Location?: string;
   Latitude: number;
   Longitude: number;
-  Region: "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH";
+  Region: "WEST" | "EAST" | "CENTRAL" | "SOUTH";
   Location_Type: "Site" | "Warehouse";
   Owner: "STC" | "ACES";
 }
@@ -90,7 +90,7 @@ export interface WarehouseMetrics {
 
 // Analytics: Region insights
 export interface RegionMetrics {
-  Region: "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH";
+  Region: "WEST" | "EAST" | "CENTRAL" | "SOUTH";
   Total_COWs_Deployed: number;
   Active_COWs: number;
   Static_COWs: number;
