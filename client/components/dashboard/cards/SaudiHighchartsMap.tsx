@@ -91,8 +91,7 @@ export function SaudiHighchartsMap({
       .filter((item) => item !== null) as [string, number][];
   }, [regionMetrics]);
 
-  // Static options object - created once when geo data loads
-  // Does NOT include data or dynamic values - those are updated separately
+  // Options object with data included - Highcharts will detect changes and update smoothly
   const options: Highcharts.Options = useMemo(() => {
     if (!saudiGeo) return {};
 
@@ -118,7 +117,7 @@ export function SaudiHighchartsMap({
       },
       colorAxis: {
         min: 0,
-        max: 1,
+        max: maxMetric > 0 ? maxMetric : 1,
         type: "linear",
         minColor: "#efe6f6",
         maxColor: "#6a1b9a",
@@ -132,6 +131,7 @@ export function SaudiHighchartsMap({
         labels: {
           format: "{value}",
         },
+        animation: false,
       },
       legend: {
         layout: "horizontal",
@@ -142,6 +142,9 @@ export function SaudiHighchartsMap({
         symbolWidth: 12,
       },
       plotOptions: {
+        series: {
+          animation: false,
+        },
         map: {
           dataLabels: {
             enabled: true,
@@ -171,7 +174,7 @@ export function SaudiHighchartsMap({
         {
           type: "map",
           name: "Movements",
-          data: [],
+          data: chartData,
           joinBy: ["hc-key", 0],
           tooltip: {
             headerFormat: "",
@@ -207,57 +210,7 @@ export function SaudiHighchartsMap({
         enabled: false,
       },
     } as Highcharts.Options;
-  }, [saudiGeo]);
-
-  const isInitializedRef = useRef(false);
-
-  // Initialize chart with data on first load, then update smoothly
-  useEffect(() => {
-    if (!chartRef.current || !saudiGeo || chartData.length === 0) return;
-
-    const chart = chartRef.current;
-    if (!chart || !chart.series || chart.series.length === 0) return;
-
-    const series = chart.series[0];
-    if (!series) return;
-
-    // First time: set all data
-    if (!isInitializedRef.current) {
-      series.setData(chartData, false);
-      isInitializedRef.current = true;
-
-      // Update colorAxis max
-      if (chart.colorAxis && chart.colorAxis.length > 0) {
-        chart.colorAxis[0].setExtremes(0, maxMetric > 0 ? maxMetric : 1, false);
-      }
-
-      chart.redraw();
-      return;
-    }
-
-    // Subsequent updates: update individual point values only
-    const dataMap = new Map(chartData);
-
-    series.points.forEach((point: any) => {
-      const hcKey = point.hcKey;
-      const newValue = dataMap.get(hcKey);
-
-      if (newValue !== undefined && newValue !== point.value) {
-        point.update(
-          { value: newValue },
-          false // No redraw per point
-        );
-      }
-    });
-
-    // Update colorAxis range
-    if (chart.colorAxis && chart.colorAxis.length > 0) {
-      chart.colorAxis[0].setExtremes(0, maxMetric > 0 ? maxMetric : 1, false);
-    }
-
-    // Single redraw with no animation flag
-    chart.redraw();
-  }, [chartData, maxMetric, saudiGeo]);
+  }, [saudiGeo, chartData, maxMetric]);
 
   if (loading || !saudiGeo || !modulesReady) {
     return (
