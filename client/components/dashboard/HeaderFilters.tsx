@@ -167,7 +167,7 @@ export function HeaderFilters({
           onClick={handleClearFilters}
           className="h-9 text-xs"
         >
-          <X className="w-4 h-4" />
+          Clear
         </Button>
       )}
     </div>
