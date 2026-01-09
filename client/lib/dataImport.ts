@@ -236,7 +236,7 @@ function normalizeLocationId(name: string): string {
  */
 function normalizeRegion(
   region: string,
-): "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH" {
+): "WEST" | "EAST" | "CENTRAL" | "SOUTH" {
   const normalized = region?.toUpperCase().trim() || "";
 
   if (
@@ -259,8 +259,9 @@ function normalizeRegion(
   if (normalized.includes("SOUTH") || normalized.includes("ASIR")) {
     return "SOUTH";
   }
+  // Map NORTH/HAIL to WEST (Western region)
   if (normalized.includes("NORTH") || normalized.includes("HAIL")) {
-    return "NORTH";
+    return "WEST";
   }
 
   return "CENTRAL"; // Default
