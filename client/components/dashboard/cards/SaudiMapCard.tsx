@@ -188,11 +188,6 @@ export function SaudiMapCard({
             {isPlaying ? "Pause" : "Play"}
           </button>
         </div>
-
-        {/* ACES Logo */}
-        <div className="w-6 h-6 bg-gradient-to-br from-red-600 to-red-700 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">
-          ACES
-        </div>
       </div>
 
       {/* Three-Column Layout */}
