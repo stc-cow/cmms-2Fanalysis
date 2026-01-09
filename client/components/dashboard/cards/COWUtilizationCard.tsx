@@ -16,7 +16,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { COWMetrics } from "@shared/models";
-import { TrendingUp, TrendingDown } from "lucide-react";
 
 interface COWUtilizationCardProps {
   cowMetrics: COWMetrics[];
