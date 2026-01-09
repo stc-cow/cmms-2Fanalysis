@@ -71,6 +71,8 @@ export function generateTimelineMonths(
       vendor: cow.Vendor,
       month: monthKey,
       date: mov.Moved_DateTime.split("T")[0],
+      toRegion: toLoc.Region,
+      toLocationId: toLoc.Location_ID,
     };
 
     timeline.movements.push(mapLine);
