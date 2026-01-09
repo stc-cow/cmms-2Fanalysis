@@ -96,7 +96,34 @@ export function SaudiHighchartsMap({
       .filter((item) => item !== null) as [string, number][];
   }, [regionMetrics]);
 
-  // Options object with data included - Highcharts will detect changes and update smoothly
+  // Update chart data when it changes (without regenerating entire options)
+  useEffect(() => {
+    if (chartRef.current && chartRef.current.series && chartRef.current.series.length > 0) {
+      // Directly update the series data to avoid full re-render
+      const chart = chartRef.current;
+      try {
+        chart.series[0].setData(chartData, false); // false = don't redraw yet
+        chart.redraw(); // Redraw once after update
+      } catch (error) {
+        console.error("Error updating chart data:", error);
+      }
+    }
+  }, [chartData]);
+
+  // Update color axis max when maxMetric changes
+  useEffect(() => {
+    if (chartRef.current && chartRef.current.colorAxis && chartRef.current.colorAxis.length > 0) {
+      const chart = chartRef.current;
+      try {
+        chart.colorAxis[0].setExtremes(0, maxMetric > 0 ? maxMetric : 1, false);
+        chart.redraw();
+      } catch (error) {
+        console.error("Error updating color axis:", error);
+      }
+    }
+  }, [maxMetric]);
+
+  // Base options object - only regenerated when geo data changes
   const options: Highcharts.Options = useMemo(() => {
     if (!saudiGeo) return {};
 
