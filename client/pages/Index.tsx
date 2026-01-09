@@ -9,8 +9,6 @@ import { WarehouseIntelligenceCard } from "@/components/dashboard/cards/Warehous
 import { COWUtilizationCard } from "@/components/dashboard/cards/COWUtilizationCard";
 import { EventsAnalysisCard } from "@/components/dashboard/cards/EventsAnalysisCard";
 import { RoyalEBUAnalysisCard } from "@/components/dashboard/cards/RoyalEBUAnalysisCard";
-import { DistanceCostProxyCard } from "@/components/dashboard/cards/DistanceCostProxyCard";
-import { AIReadinessCard } from "@/components/dashboard/cards/AIReadinessCard";
 import { DashboardFilters as DashboardFiltersType } from "@shared/models";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import {
