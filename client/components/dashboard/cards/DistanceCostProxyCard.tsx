@@ -39,7 +39,7 @@ export function DistanceCostProxyCard({
   // Distance by region
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
   const regionDistance: Record<string, number> = {};
-  const REGIONS = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
+  const REGIONS = ["WEST", "EAST", "CENTRAL", "SOUTH"];
   REGIONS.forEach((r) => (regionDistance[r] = 0));
 
   movements.forEach((mov) => {
