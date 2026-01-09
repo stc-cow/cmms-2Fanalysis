@@ -205,7 +205,6 @@ export function SaudiMapCard({
             regionMetrics={regionMetrics}
             maxMetric={maxRegionMetric}
             title="Movements by Region"
-            totalMovements={currentMonth?.movements.length || 0}
           />
         </div>
 
