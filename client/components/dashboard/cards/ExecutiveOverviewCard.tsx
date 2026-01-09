@@ -270,7 +270,7 @@ export function ExecutiveOverviewCard({
                 Total Regions Served
               </span>
               <span className="font-bold text-gray-900 dark:text-white">
-                5/5
+                4/4
               </span>
             </div>
             <div className="flex justify-between">
