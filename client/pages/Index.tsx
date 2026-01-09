@@ -194,20 +194,20 @@ export default function Dashboard() {
     <div className="h-screen w-screen flex flex-col bg-gray-50 dark:bg-slate-950 overflow-hidden">
       {/* Fixed Header */}
       <header className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="px-4 py-4 flex items-center justify-between">
+        <div className="px-4 py-2.5 flex items-center justify-between">
           {/* Logo Section */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F9714b8edf4b54584a6f670699d58193d?format=webp&width=800"
               alt="STC Logo"
-              className="h-8 object-contain"
+              className="h-7 object-contain"
             />
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
                 COW Analytics
               </h1>
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                STC & ACES Fleet Management
+                STC COW Management
               </p>
             </div>
           </div>
