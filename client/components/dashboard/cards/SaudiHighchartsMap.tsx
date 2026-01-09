@@ -77,6 +77,11 @@ export function SaudiHighchartsMap({
     loadGeoData();
   }, [modulesReady]);
 
+  // Calculate total movements
+  const totalMovements = useMemo(() => {
+    return Object.values(regionMetrics).reduce((sum, value) => sum + value, 0);
+  }, [regionMetrics]);
+
   // Transform region metrics to Highcharts data format: [["sa-ri", 320], ["sa-mk", 180], ...]
   const chartData = useMemo(() => {
     return Object.entries(regionMetrics)
