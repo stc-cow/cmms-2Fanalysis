@@ -227,8 +227,8 @@ export function SaudiMapCard({
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Top Vendor</p>
-                <p className="font-semibold text-gray-900 dark:text-white text-sm truncate">
+                <p className="text-xs font-bold text-purple-600 dark:text-purple-400 mb-1 uppercase tracking-wide">Top Vendor</p>
+                <p className="font-bold text-gray-900 dark:text-white text-sm truncate">
                   {vendorChartData[0].name}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -238,8 +238,8 @@ export function SaudiMapCard({
             </div>
           )}
 
-          <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-3">
-            Vendor Distribution
+          <h3 className="text-xs font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wider">
+            📊 Vendor Distribution
           </h3>
           {vendorChartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={150}>
