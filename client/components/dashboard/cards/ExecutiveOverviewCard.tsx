@@ -75,22 +75,18 @@ export function ExecutiveOverviewCard({
     {
       label: "Active Warehouses",
       value: warehouses.length,
-      icon: <MapPin className="w-4 h-4" />,
     },
     {
       label: "Deployment Sites",
       value: sites.length,
-      icon: <MapPin className="w-4 h-4" />,
     },
     {
       label: "Movement Types",
       value: "Full / Half / Zero",
-      icon: <Route className="w-4 h-4" />,
     },
     {
       label: "Avg Fleet Utilization",
       value: `${((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%`,
-      icon: <Users className="w-4 h-4" />,
     },
   ];
 
