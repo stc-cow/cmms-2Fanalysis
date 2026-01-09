@@ -189,29 +189,32 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-gray-50 dark:bg-slate-950 overflow-hidden">
-      {/* Fixed Header */}
-      <header className="flex-shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="px-4 py-2.5 flex items-center justify-between">
-          {/* Logo Section */}
-          <div className="flex items-center gap-2">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F9714b8edf4b54584a6f670699d58193d?format=webp&width=800"
-              alt="STC Logo"
-              className="h-7 object-contain"
-            />
-            <div>
-              <h1 className="text-lg font-bold text-gray-900 dark:text-white leading-tight">
+    <div className="h-screen w-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
+      {/* Fixed Header with Enhanced Design */}
+      <header className="flex-shrink-0 bg-gradient-to-r from-white via-blue-50/50 to-white dark:from-slate-900 dark:via-slate-800/50 dark:to-slate-900 border-b border-gray-200/60 dark:border-gray-700/40 backdrop-blur-xl shadow-lg shadow-blue-500/5 dark:shadow-slate-900/50">
+        <div className="px-6 py-4 flex items-center justify-between">
+          {/* Logo Section with Modern Styling */}
+          <div className="flex items-center gap-3 flex-shrink-0 group cursor-pointer">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F9714b8edf4b54584a6f670699d58193d?format=webp&width=800"
+                alt="STC Logo"
+                className="h-8 object-contain relative z-10 transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+            <div className="space-y-0.5">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent leading-tight">
                 COW Analytics
               </h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 tracking-wide">
                 STC COW Management
               </p>
             </div>
           </div>
 
           {/* Filters Section */}
-          <div className="flex-1 mx-4">
+          <div className="flex-1 mx-8">
             <HeaderFilters
               filters={filters}
               onFiltersChange={setFilters}
@@ -220,12 +223,15 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* ACES Logo */}
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F525a16fc442c434e8185ef0bbfd606f5?format=webp&width=800"
-            alt="ACES Logo"
-            className="h-5 object-contain"
-          />
+          {/* ACES Logo with Enhanced Design */}
+          <div className="flex-shrink-0 group cursor-pointer">
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F525a16fc442c434e8185ef0bbfd606f5?format=webp&width=800"
+              alt="ACES Logo"
+              className="h-6 object-contain relative transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
         </div>
       </header>
 
