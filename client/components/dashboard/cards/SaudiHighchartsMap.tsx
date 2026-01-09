@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { regionToHcKey } from "@/lib/saudiRegionMapping";
@@ -9,6 +9,10 @@ interface SaudiHighchartsMapProps {
   title?: string;
 }
 
+// Cache for geo data to prevent re-fetching
+let geoDataCache: any = null;
+let geoDataPromise: Promise<any> | null = null;
+
 export function SaudiHighchartsMap({
   regionMetrics,
   maxMetric,
@@ -17,6 +21,7 @@ export function SaudiHighchartsMap({
   const [saudiGeo, setSaudiGeo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [modulesReady, setModulesReady] = useState(false);
+  const geoDataRef = useRef<any>(null);
 
   // Ensure Highcharts modules are initialized
   useEffect(() => {
@@ -25,7 +30,7 @@ export function SaudiHighchartsMap({
     });
   }, []);
 
-  // Load Saudi geo data from Highcharts CDN
+  // Load Saudi geo data from Highcharts CDN with caching to prevent flashing
   useEffect(() => {
     if (!modulesReady) {
       return; // Wait for modules to be ready
@@ -33,11 +38,33 @@ export function SaudiHighchartsMap({
 
     const loadGeoData = async () => {
       try {
-        const response = await fetch(
+        // Use cached data if available
+        if (geoDataCache) {
+          setSaudiGeo(geoDataCache);
+          setLoading(false);
+          return;
+        }
+
+        // Use existing promise if already loading
+        if (geoDataPromise) {
+          const data = await geoDataPromise;
+          setSaudiGeo(data);
+          setLoading(false);
+          return;
+        }
+
+        // Create new fetch promise
+        geoDataPromise = fetch(
           "https://code.highcharts.com/mapdata/countries/sa/sa-all.geo.json",
-        );
-        if (!response.ok) throw new Error("Failed to fetch geo data");
-        const data = await response.json();
+        ).then(async (response) => {
+          if (!response.ok) throw new Error("Failed to fetch geo data");
+          const data = await response.json();
+          geoDataCache = data;
+          return data;
+        });
+
+        const data = await geoDataPromise;
+        geoDataRef.current = data;
         setSaudiGeo(data);
         setLoading(false);
       } catch (error) {
