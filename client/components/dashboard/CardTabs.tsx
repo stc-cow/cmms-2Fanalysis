@@ -53,16 +53,6 @@ export const DASHBOARD_CARDS: CardTab[] = [
     label: "Royal / EBU",
     description: "VIP Deployments",
   },
-  {
-    id: "distance",
-    label: "Distance & Cost",
-    description: "KM & Analytics",
-  },
-  {
-    id: "ai",
-    label: "AI Readiness",
-    description: "Future Planning",
-  },
 ];
 
 export function CardTabs({ tabs, activeTab, onTabChange }: CardTabsProps) {
