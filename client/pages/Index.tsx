@@ -64,7 +64,7 @@ export default function Dashboard() {
   );
 
   const regionMetrics = useMemo(() => {
-    const regions = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
+    const regions = ["WEST", "EAST", "CENTRAL", "SOUTH"];
     return regions.map((region) =>
       calculateRegionMetrics(
         region,
