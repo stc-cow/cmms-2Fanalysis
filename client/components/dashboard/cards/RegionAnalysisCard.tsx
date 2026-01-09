@@ -83,7 +83,8 @@ export function RegionAnalysisCard({
           <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-400 dark:to-purple-300 bg-clip-text text-transparent mb-6 flex-shrink-0 uppercase tracking-wide">
             🔄 Region Transitions
           </h3>
-          <ResponsiveContainer width="100%" height="100%" className="flex-1">
+          <div className="flex-1 min-h-0">
+            <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={heatmapData}
               margin={{ top: 20, right: 30, bottom: 120, left: 60 }}
@@ -115,15 +116,17 @@ export function RegionAnalysisCard({
               />
               <Bar dataKey="count" fill="#a855f7" radius={[8, 8, 0, 0]} animationDuration={600} />
             </BarChart>
-          </ResponsiveContainer>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Right Chart: Cross-Region Movements */}
-        <div className="bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 p-8 overflow-hidden flex flex-col backdrop-blur-sm hover:border-orange-300/50 dark:hover:border-orange-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/5">
+        <div className="bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 p-8 overflow-hidden flex flex-col backdrop-blur-sm hover:border-orange-300/50 dark:hover:border-orange-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/5 min-h-0">
           <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-700 dark:from-orange-400 dark:to-orange-300 bg-clip-text text-transparent mb-6 flex-shrink-0 uppercase tracking-wide">
             🌍 Cross-Region Movements
           </h3>
-          <ResponsiveContainer width="100%" height="100%">
+          <div className="flex-1 min-h-0">
+            <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={crossRegionChartData}
               margin={{ top: 20, right: 30, bottom: 60, left: 60 }}
@@ -152,7 +155,8 @@ export function RegionAnalysisCard({
               />
               <Bar dataKey="movements" fill="#f59e0b" radius={[8, 8, 0, 0]} animationDuration={600} />
             </BarChart>
-          </ResponsiveContainer>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </div>
