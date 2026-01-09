@@ -70,7 +70,7 @@ export function RegionAnalysisCard({
 
   return (
     <div className="h-[calc(100vh-200px)] overflow-hidden flex flex-col gap-5 p-6">
-      {/* Main Chart - Full Width and Large */}
+      {/* Main Chart - Full Width and Very Large */}
       <div className="flex-1 min-h-0 bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 p-8 overflow-hidden flex flex-col backdrop-blur-sm hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/5">
         <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-400 dark:to-purple-300 bg-clip-text text-transparent mb-6 flex-shrink-0 uppercase tracking-wide">
           🔄 Top Region Transitions
@@ -78,16 +78,21 @@ export function RegionAnalysisCard({
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={heatmapData}
-            layout="vertical"
-            margin={{ top: 10, right: 40, left: 200 }}
+            margin={{ top: 20, right: 30, bottom: 120, left: 60 }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" opacity={0.3} />
-            <XAxis type="number" tick={{ fontSize: 13, fill: "#6b7280" }} />
-            <YAxis
+            <XAxis
               dataKey="route"
               type="category"
-              width={190}
+              angle={-45}
+              textAnchor="end"
+              height={100}
               tick={{ fontSize: 12, fill: "#6b7280", fontWeight: 600 }}
+            />
+            <YAxis
+              type="number"
+              tick={{ fontSize: 13, fill: "#6b7280" }}
+              label={{ value: "Movements", angle: -90, position: "insideLeft" }}
             />
             <Tooltip
               contentStyle={{
@@ -100,13 +105,13 @@ export function RegionAnalysisCard({
               cursor={{ fill: "rgba(168, 85, 247, 0.15)" }}
               formatter={(value) => [`${value} movements`, "Count"]}
             />
-            <Bar dataKey="count" fill="#a855f7" radius={[0, 8, 8, 0]} animationDuration={600} />
+            <Bar dataKey="count" fill="#a855f7" radius={[8, 8, 0, 0]} animationDuration={600} />
           </BarChart>
         </ResponsiveContainer>
       </div>
 
       {/* Bottom Section - Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-shrink-0 h-72">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-shrink-0 h-64">
         {/* Regional deployment metrics */}
         <div className="bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-gray-200/60 dark:border-gray-700/60 p-6 overflow-hidden flex flex-col backdrop-blur-sm hover:border-green-300/50 dark:hover:border-green-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
           <h3 className="text-xl font-bold bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent mb-4 flex-shrink-0 uppercase tracking-wide">
