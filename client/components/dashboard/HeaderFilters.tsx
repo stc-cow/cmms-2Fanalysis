@@ -16,7 +16,7 @@ interface HeaderFiltersProps {
   years: number[];
 }
 
-const REGIONS = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
+const REGIONS = ["WEST", "EAST", "CENTRAL", "SOUTH"];
 const MOVEMENT_TYPES = ["Full", "Half", "Zero"];
 const EVENT_TYPES = [
   "Hajj",
