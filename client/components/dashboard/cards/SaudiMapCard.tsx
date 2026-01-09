@@ -202,41 +202,59 @@ export function SaudiMapCard({
           />
         </div>
 
-        {/* Right Panel: Vendor Chart */}
-        <div className="w-1/3 p-6 overflow-auto flex flex-col">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-            <span>≡</span> Movements by Vendor
-          </h3>
-          {vendorChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={vendorChartData} margin={{ left: 60, right: 10 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fontSize: 9 }} />
-                <YAxis tick={{ fontSize: 9 }} />
-                <Tooltip />
-                <Bar dataKey="value" fill="#8b5cf6" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
-              No vendors active
+        {/* Right Panel: Vendor Chart - Compressed */}
+        <div className="w-64 border-l border-gray-200 dark:border-gray-700 p-4 overflow-auto flex flex-col">
+          {/* Top Vendor Logo */}
+          {vendorChartData.length > 0 && (
+            <div className="mb-4 p-3 bg-gradient-to-br from-gray-50 to-white dark:from-slate-700 dark:to-slate-800 rounded-lg border border-gray-200 dark:border-gray-600">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Top Vendor</p>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-md">
+                  {vendorChartData[0].name.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 dark:text-white text-sm">
+                    {vendorChartData[0].name}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {vendorChartData[0].value} movements
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
-          {currentMonth && vendorChartData.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="space-y-2 text-sm">
-                {vendorChartData.map((item) => (
-                  <div key={item.name} className="flex justify-between">
-                    <span className="text-gray-700 dark:text-gray-300 truncate">
-                      {item.name}
-                    </span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
+          <h3 className="text-xs font-semibold text-gray-900 dark:text-white mb-3">
+            Vendor Distribution
+          </h3>
+          {vendorChartData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={150}>
+              <BarChart data={vendorChartData} margin={{ left: 30, right: 5, top: 5, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="2 2" stroke="#e5e7eb" />
+                <XAxis dataKey="name" tick={{ fontSize: 8 }} />
+                <YAxis tick={{ fontSize: 8 }} />
+                <Tooltip cursor={{ fill: "rgba(139, 92, 246, 0.1)" }} />
+                <Bar dataKey="value" fill="#8b5cf6" radius={[2, 2, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex-1 flex items-center justify-center text-gray-400 text-xs">
+              No vendors
+            </div>
+          )}
+
+          {vendorChartData.length > 0 && (
+            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 text-xs space-y-1">
+              {vendorChartData.map((item) => (
+                <div key={item.name} className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400 truncate">
+                    {item.name}
+                  </span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {item.value}
+                  </span>
+                </div>
+              ))}
             </div>
           )}
         </div>
