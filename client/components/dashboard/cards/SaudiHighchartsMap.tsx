@@ -236,8 +236,8 @@ export function SaudiHighchartsMap({
         <span>≡</span> {title}
       </h3>
 
-      {/* Map Container */}
-      <div className="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-slate-700">
+      {/* Map Container with Overlays */}
+      <div className="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-slate-700 relative">
         <HighchartsReact
           key="saudi-map"
           highcharts={Highcharts}
@@ -251,6 +251,37 @@ export function SaudiHighchartsMap({
           }}
           immutable={false}
         />
+
+        {/* Bottom Left: Total Movements */}
+        <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg">
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+            Total Movements
+          </p>
+          <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+            {totalMovements}
+          </p>
+        </div>
+
+        {/* Bottom Right: Color Intensity Scale */}
+        <div className="absolute bottom-4 right-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg">
+          <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+            Intensity
+          </p>
+          <div className="flex items-center gap-1">
+            {/* Color gradient visual */}
+            <div className="flex h-5 rounded overflow-hidden border border-gray-300 dark:border-gray-600">
+              <div className="flex-1 bg-gradient-to-r from-[#efe6f6] via-[#d8b4fe] via-[#b39ddb] via-[#9c27b0] to-[#6a1b9a]"></div>
+            </div>
+          </div>
+          {/* Scale labels */}
+          <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <span>0</span>
+            <span>2</span>
+            <span>4</span>
+            <span>6</span>
+            <span>8</span>
+          </div>
+        </div>
       </div>
     </div>
   );
