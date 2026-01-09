@@ -42,7 +42,7 @@ export function generateMockCows(count: number): DimCow[] {
       Installation_Date: new Date(
         2020 + Math.floor(Math.random() * 4),
         Math.floor(Math.random() * 12),
-        Math.floor(Math.random() * 28) + 1
+        Math.floor(Math.random() * 28) + 1,
       )
         .toISOString()
         .split("T")[0],
@@ -185,7 +185,7 @@ export function generateMockLocations(): DimLocation[] {
       Location_ID: "SITE-BURAIDAH",
       Location_Name: "Buraidah City Center",
       Latitude: 26.3263,
-      Longitude: 43.9750,
+      Longitude: 43.975,
       Region: "NORTH",
       Location_Type: "Site",
       Owner: "STC",
@@ -247,7 +247,7 @@ export function generateMockMovements(
   cowIds: string[],
   locationIds: string[],
   eventIds: string[],
-  count: number
+  count: number,
 ): CowMovementsFact[] {
   const movements: CowMovementsFact[] = [];
 
@@ -262,14 +262,19 @@ export function generateMockMovements(
       Math.floor(Math.random() * 12),
       Math.floor(Math.random() * 28) + 1,
       Math.floor(Math.random() * 24),
-      Math.floor(Math.random() * 60)
+      Math.floor(Math.random() * 60),
     );
 
-    const reachedDate = new Date(movedDate.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000);
+    const reachedDate = new Date(
+      movedDate.getTime() + Math.random() * 7 * 24 * 60 * 60 * 1000,
+    );
 
     const isRoyal = Math.random() > 0.95;
     const isEBU = Math.random() > 0.7;
-    const eventId = Math.random() > 0.6 ? eventIds[Math.floor(Math.random() * eventIds.length)] : undefined;
+    const eventId =
+      Math.random() > 0.6
+        ? eventIds[Math.floor(Math.random() * eventIds.length)]
+        : undefined;
 
     movements.push({
       SN: i,
@@ -288,7 +293,7 @@ export function generateMockMovements(
   return movements.sort(
     (a, b) =>
       new Date(a.Moved_DateTime).getTime() -
-      new Date(b.Moved_DateTime).getTime()
+      new Date(b.Moved_DateTime).getTime(),
   );
 }
 
@@ -300,7 +305,7 @@ export function generateMockDatabase() {
     cows.map((c) => c.COW_ID),
     locations.map((l) => l.Location_ID),
     events.map((e) => e.Event_ID),
-    2500
+    2500,
   );
 
   return { cows, locations, events, movements };

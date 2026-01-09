@@ -14,7 +14,7 @@ import {
 // Movement Classification Rule Engine
 export function classifyMovement(
   movement: CowMovementsFact,
-  locations: Map<string, DimLocation>
+  locations: Map<string, DimLocation>,
 ): MovementType {
   const fromLoc = locations.get(movement.From_Location_ID);
   const toLoc = locations.get(movement.To_Location_ID);
@@ -28,7 +28,10 @@ export function classifyMovement(
   if (!fromIsWarehouse && !toIsWarehouse) return "Full";
 
   // Rule: From=WH AND To=Site OR reverse → Half
-  if ((fromIsWarehouse && !toIsWarehouse) || (!fromIsWarehouse && toIsWarehouse))
+  if (
+    (fromIsWarehouse && !toIsWarehouse) ||
+    (!fromIsWarehouse && toIsWarehouse)
+  )
     return "Half";
 
   // Rule: From=WH AND To=WH → Zero
@@ -42,7 +45,7 @@ export function calculateDistance(
   lat1: number,
   lon1: number,
   lat2: number,
-  lon2: number
+  lon2: number,
 ): number {
   const R = 6371; // Earth's radius in km
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -60,7 +63,7 @@ export function calculateDistance(
 // Enrich movements with classification and distance
 export function enrichMovements(
   movements: CowMovementsFact[],
-  locations: DimLocation[]
+  locations: DimLocation[],
 ): CowMovementsFact[] {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
 
@@ -75,7 +78,7 @@ export function enrichMovements(
             fromLoc.Latitude,
             fromLoc.Longitude,
             toLoc.Latitude,
-            toLoc.Longitude
+            toLoc.Longitude,
           )
         : 0;
 
@@ -91,13 +94,16 @@ export function enrichMovements(
 export function calculateCowMetrics(
   cowId: string,
   movements: CowMovementsFact[],
-  locations: DimLocation[]
+  locations: DimLocation[],
 ): COWMetrics {
   const cowMovements = movements.filter((m) => m.COW_ID === cowId);
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
 
   const totalMovements = cowMovements.length;
-  const totalDistance = cowMovements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+  const totalDistance = cowMovements.reduce(
+    (sum, m) => sum + (m.Distance_KM || 0),
+    0,
+  );
   const avgDistance = totalMovements > 0 ? totalDistance / totalMovements : 0;
 
   const movementMix = {
@@ -127,13 +133,12 @@ export function calculateCowMetrics(
     new Set(
       cowMovements
         .map((m) => locMap.get(m.To_Location_ID)?.Region)
-        .filter(Boolean)
-    )
+        .filter(Boolean),
+    ),
   ) as string[];
 
-  const topEventType = (
-    cowMovements.find((m) => m.Event_ID)?.Event_ID || undefined
-  ) as EventType | undefined;
+  const topEventType = (cowMovements.find((m) => m.Event_ID)?.Event_ID ||
+    undefined) as EventType | undefined;
 
   return {
     COW_ID: cowId,
@@ -156,7 +161,7 @@ export function calculateCowMetrics(
 export function calculateWarehouseMetrics(
   locationId: string,
   movements: CowMovementsFact[],
-  locations: DimLocation[]
+  locations: DimLocation[],
 ): WarehouseMetrics | null {
   const location = locations.find((l) => l.Location_ID === locationId);
   if (!location || location.Location_Type !== "Warehouse") return null;
@@ -165,21 +170,24 @@ export function calculateWarehouseMetrics(
   const outgoing = movements.filter((m) => m.From_Location_ID === locationId);
   const incoming = movements.filter((m) => m.To_Location_ID === locationId);
 
-  const outgoingDistance = outgoing.reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
-  const incomingDistance = incoming.reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+  const outgoingDistance = outgoing.reduce(
+    (sum, m) => sum + (m.Distance_KM || 0),
+    0,
+  );
+  const incomingDistance = incoming.reduce(
+    (sum, m) => sum + (m.Distance_KM || 0),
+    0,
+  );
 
   const topRegionsServed = Array.from(
-    outgoing.reduce(
-      (acc, m) => {
-        const toLoc = locMap.get(m.To_Location_ID);
-        if (toLoc) {
-          const region = toLoc.Region;
-          acc.set(region, (acc.get(region) || 0) + 1);
-        }
-        return acc;
-      },
-      new Map<string, number>()
-    )
+    outgoing.reduce((acc, m) => {
+      const toLoc = locMap.get(m.To_Location_ID);
+      if (toLoc) {
+        const region = toLoc.Region;
+        acc.set(region, (acc.get(region) || 0) + 1);
+      }
+      return acc;
+    }, new Map<string, number>()),
   )
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
@@ -193,7 +201,7 @@ export function calculateWarehouseMetrics(
     const outgoingMov = outgoing.find(
       (m) =>
         m.COW_ID === incomingMov.COW_ID &&
-        new Date(m.Moved_DateTime) > new Date(incomingMov.Reached_DateTime)
+        new Date(m.Moved_DateTime) > new Date(incomingMov.Reached_DateTime),
     );
 
     if (outgoingMov) {
@@ -214,11 +222,15 @@ export function calculateWarehouseMetrics(
     Location_Name: location.Location_Name,
     Outgoing_Movements: outgoing.length,
     Avg_Outgoing_Distance:
-      outgoing.length > 0 ? Math.round((outgoingDistance / outgoing.length) * 100) / 100 : 0,
+      outgoing.length > 0
+        ? Math.round((outgoingDistance / outgoing.length) * 100) / 100
+        : 0,
     Top_Regions_Served: topRegionsServed,
     Incoming_Movements: incoming.length,
     Avg_Incoming_Distance:
-      incoming.length > 0 ? Math.round((incomingDistance / incoming.length) * 100) / 100 : 0,
+      incoming.length > 0
+        ? Math.round((incomingDistance / incoming.length) * 100) / 100
+        : 0,
     Idle_Accumulation_Days: Math.round(idleAccumulation * 100) / 100,
   };
 }
@@ -229,31 +241,33 @@ export function calculateRegionMetrics(
   cows: DimCow[],
   locations: DimLocation[],
   movements: CowMovementsFact[],
-  cowMetrics: COWMetrics[]
+  cowMetrics: COWMetrics[],
 ): RegionMetrics {
   const regionLocations = locations.filter((l) => l.Region === region);
   const regionMovements = movements.filter(
     (m) =>
       regionLocations.some((l) => l.Location_ID === m.To_Location_ID) ||
-      regionLocations.some((l) => l.Location_ID === m.From_Location_ID)
+      regionLocations.some((l) => l.Location_ID === m.From_Location_ID),
   );
 
   const cowsDeployedInRegion = Array.from(
     new Set(
       regionMovements
-        .filter((m) => locations.find((l) => l.Location_ID === m.To_Location_ID)?.Region === region)
-        .map((m) => m.COW_ID)
-    )
+        .filter(
+          (m) =>
+            locations.find((l) => l.Location_ID === m.To_Location_ID)
+              ?.Region === region,
+        )
+        .map((m) => m.COW_ID),
+    ),
   );
 
   const activeCOWs = cowsDeployedInRegion.filter(
-    (cowId) =>
-      !cowMetrics.find((m) => m.COW_ID === cowId)?.Is_Static
+    (cowId) => !cowMetrics.find((m) => m.COW_ID === cowId)?.Is_Static,
   ).length;
 
   const staticCOWs = cowsDeployedInRegion.filter(
-    (cowId) =>
-      cowMetrics.find((m) => m.COW_ID === cowId)?.Is_Static
+    (cowId) => cowMetrics.find((m) => m.COW_ID === cowId)?.Is_Static,
   ).length;
 
   const crossRegionMovements = regionMovements.filter((m) => {
@@ -262,7 +276,10 @@ export function calculateRegionMetrics(
     return fromLoc?.Region !== toLoc?.Region;
   }).length;
 
-  const totalDistance = regionMovements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+  const totalDistance = regionMovements.reduce(
+    (sum, m) => sum + (m.Distance_KM || 0),
+    0,
+  );
 
   // Average deployment duration per region
   const deploymentDurations: number[] = [];
@@ -278,7 +295,8 @@ export function calculateRegionMetrics(
 
   const avgDeploymentDuration =
     deploymentDurations.length > 0
-      ? deploymentDurations.reduce((a, b) => a + b, 0) / deploymentDurations.length
+      ? deploymentDurations.reduce((a, b) => a + b, 0) /
+        deploymentDurations.length
       : 0;
 
   return {
@@ -296,7 +314,7 @@ export function calculateRegionMetrics(
 export function filterMovements(
   movements: CowMovementsFact[],
   filters: DashboardFilters,
-  locations: DimLocation[]
+  locations: DimLocation[],
 ): CowMovementsFact[] {
   return movements.filter((mov) => {
     // Filter by year
@@ -330,20 +348,19 @@ export function calculateKPIs(
   movements: CowMovementsFact[],
   cows: DimCow[],
   locations: DimLocation[],
-  cowMetrics: COWMetrics[]
+  cowMetrics: COWMetrics[],
 ) {
   const totalCOWs = cows.length;
   const totalMovements = movements.length;
-  const totalDistanceKM = Math.round(
-    movements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0) * 100
-  ) / 100;
+  const totalDistanceKM =
+    Math.round(
+      movements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0) * 100,
+    ) / 100;
 
   const activeCOWs = cowMetrics.filter((m) => !m.Is_Static).length;
   const staticCOWs = cowMetrics.filter((m) => m.Is_Static).length;
   const avgMovesPerCOW =
-    totalCOWs > 0
-      ? Math.round((totalMovements / totalCOWs) * 100) / 100
-      : 0;
+    totalCOWs > 0 ? Math.round((totalMovements / totalCOWs) * 100) / 100 : 0;
 
   return {
     totalCOWs,

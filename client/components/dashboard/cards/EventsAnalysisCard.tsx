@@ -161,9 +161,16 @@ export function EventsAnalysisCard({
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
           {Object.entries(eventCounts).map(([type, count]) => (
-            <div key={type} className="p-2 bg-gray-50 dark:bg-gray-900 rounded text-center text-xs">
-              <div className="font-medium text-gray-600 dark:text-gray-400">{type}</div>
-              <div className="text-lg font-bold text-gray-900 dark:text-white">{count}</div>
+            <div
+              key={type}
+              className="p-2 bg-gray-50 dark:bg-gray-900 rounded text-center text-xs"
+            >
+              <div className="font-medium text-gray-600 dark:text-gray-400">
+                {type}
+              </div>
+              <div className="text-lg font-bold text-gray-900 dark:text-white">
+                {count}
+              </div>
             </div>
           ))}
         </div>

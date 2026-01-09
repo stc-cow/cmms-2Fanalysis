@@ -123,13 +123,10 @@ export function EventRoyalAnalysis({
                 dataKey="value"
               >
                 {eventData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={EVENT_COLORS[entry.name]}
-                  />
+                  <Cell key={`cell-${index}`} fill={EVENT_COLORS[entry.name]} />
                 ))}
               </Pie>
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -154,8 +151,14 @@ export function EventRoyalAnalysis({
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="type" angle={-45} textAnchor="end" height={100} />
-              <YAxis label={{ value: "Distance (KM)", angle: -90, position: "insideLeft" }} />
-              <Tooltip 
+              <YAxis
+                label={{
+                  value: "Distance (KM)",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -197,7 +200,7 @@ export function EventRoyalAnalysis({
                     />
                   ))}
                 </Pie>
-                <Tooltip 
+                <Tooltip
                   contentStyle={{
                     backgroundColor: "#ffffff",
                     border: "1px solid #e5e7eb",
@@ -208,15 +211,21 @@ export function EventRoyalAnalysis({
             </ResponsiveContainer>
             <div className="mt-4 space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Royal Movements</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Royal Movements
+                </span>
                 <span className="font-semibold">{royalCount}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Non-Royal Movements</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Non-Royal Movements
+                </span>
                 <span className="font-semibold">{nonRoyalCount}</span>
               </div>
               <div className="flex justify-between pt-2 border-t">
-                <span className="text-gray-600 dark:text-gray-400">Royal %</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Royal %
+                </span>
                 <span className="font-semibold">
                   {movements.length > 0
                     ? ((royalCount / movements.length) * 100).toFixed(1)
@@ -256,7 +265,7 @@ export function EventRoyalAnalysis({
                     />
                   ))}
                 </Pie>
-                <Tooltip 
+                <Tooltip
                   contentStyle={{
                     backgroundColor: "#ffffff",
                     border: "1px solid #e5e7eb",
@@ -267,11 +276,15 @@ export function EventRoyalAnalysis({
             </ResponsiveContainer>
             <div className="mt-4 space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">EBU Movements</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  EBU Movements
+                </span>
                 <span className="font-semibold">{ebuCount}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Non-EBU Movements</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Non-EBU Movements
+                </span>
                 <span className="font-semibold">{nonEbuCount}</span>
               </div>
               <div className="flex justify-between pt-2 border-t">

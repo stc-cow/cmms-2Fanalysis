@@ -14,7 +14,8 @@ const router = Router();
 // 3. Paste it here below
 
 // Google Sheet ID from: https://docs.google.com/spreadsheets/d/1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM/edit
-const ACTUAL_SHEET_ID = process.env.GOOGLE_SHEET_ID || "1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM";
+const ACTUAL_SHEET_ID =
+  process.env.GOOGLE_SHEET_ID || "1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM";
 const GID = process.env.GOOGLE_SHEET_GID || "1539310010";
 
 const CSV_URLS = [
@@ -91,13 +92,28 @@ function parseCSVLine(line: string): string[] {
 /**
  * Helper function to normalize region
  */
-function normalizeRegion(region: string): "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH" {
+function normalizeRegion(
+  region: string,
+): "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH" {
   const normalized = region?.toUpperCase().trim() || "";
-  if (normalized.includes("WEST") || normalized.includes("MAKKAH") || normalized.includes("MEDINA")) return "WEST";
-  if (normalized.includes("EAST") || normalized.includes("EASTERN") || normalized.includes("DAMMAM")) return "EAST";
-  if (normalized.includes("CENTRAL") || normalized.includes("RIYADH")) return "CENTRAL";
-  if (normalized.includes("SOUTH") || normalized.includes("ASIR")) return "SOUTH";
-  if (normalized.includes("NORTH") || normalized.includes("HAIL")) return "NORTH";
+  if (
+    normalized.includes("WEST") ||
+    normalized.includes("MAKKAH") ||
+    normalized.includes("MEDINA")
+  )
+    return "WEST";
+  if (
+    normalized.includes("EAST") ||
+    normalized.includes("EASTERN") ||
+    normalized.includes("DAMMAM")
+  )
+    return "EAST";
+  if (normalized.includes("CENTRAL") || normalized.includes("RIYADH"))
+    return "CENTRAL";
+  if (normalized.includes("SOUTH") || normalized.includes("ASIR"))
+    return "SOUTH";
+  if (normalized.includes("NORTH") || normalized.includes("HAIL"))
+    return "NORTH";
   return "CENTRAL";
 }
 
@@ -118,9 +134,15 @@ function processData(rows: any[]) {
       COW_ID: row.cowsId,
       From_Location_ID: `LOC-${row.fromLocation.replace(/\s+/g, "-").substring(0, 20)}`,
       To_Location_ID: `LOC-${row.toLocation.replace(/\s+/g, "-").substring(0, 20)}`,
-      Moved_DateTime: new Date(row.movedDateTime).toISOString() || new Date().toISOString(),
-      Reached_DateTime: new Date(row.reachedDateTime).toISOString() || new Date().toISOString(),
-      Movement_Type: row.movementType?.includes("Full") ? "Full" : row.movementType?.includes("Half") ? "Half" : "Zero",
+      Moved_DateTime:
+        new Date(row.movedDateTime).toISOString() || new Date().toISOString(),
+      Reached_DateTime:
+        new Date(row.reachedDateTime).toISOString() || new Date().toISOString(),
+      Movement_Type: row.movementType?.includes("Full")
+        ? "Full"
+        : row.movementType?.includes("Half")
+          ? "Half"
+          : "Zero",
       Distance_KM: parseFloat(row.distance) || 0,
       Is_Royal: row.ebuRoyal?.toLowerCase().includes("royal") || false,
       Is_EBU: row.ebuRoyal?.toLowerCase().includes("ebu") || false,
@@ -130,7 +152,11 @@ function processData(rows: any[]) {
     if (!cowMap.has(row.cowsId)) {
       cowMap.set(row.cowsId, {
         COW_ID: row.cowsId,
-        Tower_Type: row.towerType?.includes("Small") ? "Small Cell" : row.towerType?.includes("Micro") ? "Micro Cell" : "Macro",
+        Tower_Type: row.towerType?.includes("Small")
+          ? "Small Cell"
+          : row.towerType?.includes("Micro")
+            ? "Micro Cell"
+            : "Macro",
         Tower_Height: parseFloat(row.towerHeight) || 0,
         Network_2G: false,
         Network_4G: true,
@@ -171,7 +197,11 @@ function processData(rows: any[]) {
   });
 
   return {
-    movements: movements.sort((a: any, b: any) => new Date(a.Moved_DateTime).getTime() - new Date(b.Moved_DateTime).getTime()),
+    movements: movements.sort(
+      (a: any, b: any) =>
+        new Date(a.Moved_DateTime).getTime() -
+        new Date(b.Moved_DateTime).getTime(),
+    ),
     cows: Array.from(cowMap.values()),
     locations: Array.from(locationMap.values()),
     events: [],
@@ -198,7 +228,9 @@ const processedDataHandler: RequestHandler = async (req, res) => {
 
         if (response.ok) {
           csvData = await response.text();
-          console.log(`✓ Successfully fetched CSV data (${csvData.length} bytes)`);
+          console.log(
+            `✓ Successfully fetched CSV data (${csvData.length} bytes)`,
+          );
           break;
         } else {
           lastError = new Error(`HTTP ${response.status}`);
@@ -220,8 +252,12 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       console.error("   1. Open your Google Sheet");
       console.error("   2. Look at the URL in the address bar");
       console.error("   3. Copy the ID after /spreadsheets/d/");
-      console.error("   4. Set it as an environment variable: GOOGLE_SHEET_ID=YOUR_ID");
-      console.error("   5. Or update the ACTUAL_SHEET_ID in server/routes/data.ts");
+      console.error(
+        "   4. Set it as an environment variable: GOOGLE_SHEET_ID=YOUR_ID",
+      );
+      console.error(
+        "   5. Or update the ACTUAL_SHEET_ID in server/routes/data.ts",
+      );
       console.error("");
       throw new Error(errorMsg);
     }
@@ -235,7 +271,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
     const processedData = processData(rows);
 
     console.log(
-      `✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`
+      `✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`,
     );
     res.json(processedData);
   } catch (error) {
@@ -279,7 +315,7 @@ const diagnosticHandler: RequestHandler = async (req, res) => {
 
       if (response.ok) {
         diagnostics.recommendations.push(
-          "✓ Found working URL! Sheet is accessible."
+          "✓ Found working URL! Sheet is accessible.",
         );
         break;
       }
@@ -294,19 +330,19 @@ const diagnosticHandler: RequestHandler = async (req, res) => {
 
   if (diagnostics.urlsAttempted.every((u) => !u.success)) {
     diagnostics.recommendations.push(
-      "✗ No accessible URLs found. Please check:"
+      "✗ No accessible URLs found. Please check:",
     );
     diagnostics.recommendations.push(
-      "1. Is this the actual Sheet ID (from /spreadsheets/d/...) or a published link ID?"
+      "1. Is this the actual Sheet ID (from /spreadsheets/d/...) or a published link ID?",
     );
     diagnostics.recommendations.push(
-      "2. Has the sheet been published to the web? (File → Share → Publish to web)"
+      "2. Has the sheet been published to the web? (File → Share → Publish to web)",
     );
     diagnostics.recommendations.push(
-      "3. Can you access the sheet in a browser with this URL:"
+      "3. Can you access the sheet in a browser with this URL:",
     );
     diagnostics.recommendations.push(
-      `   https://docs.google.com/spreadsheets/d/${ACTUAL_SHEET_ID}/edit`
+      `   https://docs.google.com/spreadsheets/d/${ACTUAL_SHEET_ID}/edit`,
     );
   }
 

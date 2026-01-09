@@ -40,10 +40,12 @@ export function COWUtilizationCard({ cowMetrics }: COWUtilizationCardProps) {
     else movementBuckets["50+"]++;
   });
 
-  const histogramData = Object.entries(movementBuckets).map(([range, count]) => ({
-    range,
-    count,
-  }));
+  const histogramData = Object.entries(movementBuckets).map(
+    ([range, count]) => ({
+      range,
+      count,
+    }),
+  );
 
   const topMostMoved = cowMetrics
     .sort((a, b) => b.Total_Movements - a.Total_Movements)
@@ -100,7 +102,8 @@ export function COWUtilizationCard({ cowMetrics }: COWUtilizationCardProps) {
                     <span className="font-bold">{cow.Total_Movements}</span>
                   </div>
                   <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    {cow.Total_Distance_KM.toLocaleString()} KM • {cow.Regions_Served.join(", ")}
+                    {cow.Total_Distance_KM.toLocaleString()} KM •{" "}
+                    {cow.Regions_Served.join(", ")}
                   </div>
                 </div>
               ))}
@@ -128,7 +131,8 @@ export function COWUtilizationCard({ cowMetrics }: COWUtilizationCardProps) {
                     <span className="font-bold">{cow.Total_Movements}</span>
                   </div>
                   <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                    {cow.Total_Distance_KM.toFixed(0)} KM • {cow.Regions_Served.join(", ")}
+                    {cow.Total_Distance_KM.toFixed(0)} KM •{" "}
+                    {cow.Regions_Served.join(", ")}
                   </div>
                 </div>
               ))}

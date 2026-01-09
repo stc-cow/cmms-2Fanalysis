@@ -1,5 +1,19 @@
-import { BarChart3, Zap, Route, TrendingUp, Lock, Activity, Users, MapPin } from "lucide-react";
-import { DimCow, DimLocation, CowMovementsFact, COWMetrics } from "@shared/models";
+import {
+  BarChart3,
+  Zap,
+  Route,
+  TrendingUp,
+  Lock,
+  Activity,
+  Users,
+  MapPin,
+} from "lucide-react";
+import {
+  DimCow,
+  DimLocation,
+  CowMovementsFact,
+  COWMetrics,
+} from "@shared/models";
 
 interface ExecutiveOverviewCardProps {
   kpis: {
@@ -25,7 +39,7 @@ export function ExecutiveOverviewCard({
 }: ExecutiveOverviewCardProps) {
   const warehouses = locations.filter((l) => l.Location_Type === "Warehouse");
   const sites = locations.filter((l) => l.Location_Type === "Site");
-  
+
   const movementsByType = {
     full: movements.filter((m) => m.Movement_Type === "Full").length,
     half: movements.filter((m) => m.Movement_Type === "Half").length,
@@ -49,7 +63,9 @@ export function ExecutiveOverviewCard({
     },
     {
       label: "Total Distance (KM)",
-      value: kpis.totalDistanceKM.toLocaleString("en-US", { maximumFractionDigits: 0 }),
+      value: kpis.totalDistanceKM.toLocaleString("en-US", {
+        maximumFractionDigits: 0,
+      }),
       icon: TrendingUp,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50 dark:bg-green-950",
@@ -78,10 +94,26 @@ export function ExecutiveOverviewCard({
   ];
 
   const summaryStats = [
-    { label: "Active Warehouses", value: warehouses.length, icon: <MapPin className="w-4 h-4" /> },
-    { label: "Deployment Sites", value: sites.length, icon: <MapPin className="w-4 h-4" /> },
-    { label: "Movement Types", value: "Full / Half / Zero", icon: <Route className="w-4 h-4" /> },
-    { label: "Avg Fleet Utilization", value: `${((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%`, icon: <Users className="w-4 h-4" /> },
+    {
+      label: "Active Warehouses",
+      value: warehouses.length,
+      icon: <MapPin className="w-4 h-4" />,
+    },
+    {
+      label: "Deployment Sites",
+      value: sites.length,
+      icon: <MapPin className="w-4 h-4" />,
+    },
+    {
+      label: "Movement Types",
+      value: "Full / Half / Zero",
+      icon: <Route className="w-4 h-4" />,
+    },
+    {
+      label: "Avg Fleet Utilization",
+      value: `${((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%`,
+      icon: <Users className="w-4 h-4" />,
+    },
   ];
 
   return (
@@ -104,7 +136,9 @@ export function ExecutiveOverviewCard({
                     {metric.value}
                   </p>
                 </div>
-                <div className={`metric-badge bg-gradient-to-br ${metric.color}`}>
+                <div
+                  className={`metric-badge bg-gradient-to-br ${metric.color}`}
+                >
                   <Icon className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -116,15 +150,16 @@ export function ExecutiveOverviewCard({
       {/* Summary Statistics Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 flex-shrink-0">
         {summaryStats.map((stat, idx) => (
-          <div
-            key={idx}
-            className="card-modern-sm hover-lift"
-          >
+          <div key={idx} className="card-modern-sm hover-lift">
             <div className="flex items-center gap-3 mb-2">
               <div className="text-blue-500">{stat.icon}</div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{stat.label}</p>
+              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                {stat.label}
+              </p>
             </div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{stat.value}</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-white">
+              {stat.value}
+            </p>
           </div>
         ))}
       </div>
@@ -135,33 +170,51 @@ export function ExecutiveOverviewCard({
           <h3 className="card-header">Movement Classification</h3>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Full Moves (Site→Site)</span>
-              <span className="font-bold text-gray-900 dark:text-white">{movementsByType.full}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Full Moves (Site→Site)
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                {movementsByType.full}
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-blue-500 h-2 rounded-full"
-                style={{ width: `${(movementsByType.full / kpis.totalMovements) * 100}%` }}
+                style={{
+                  width: `${(movementsByType.full / kpis.totalMovements) * 100}%`,
+                }}
               />
             </div>
             <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Half Moves (WH↔Site)</span>
-              <span className="font-bold text-gray-900 dark:text-white">{movementsByType.half}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Half Moves (WH↔Site)
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                {movementsByType.half}
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-purple-500 h-2 rounded-full"
-                style={{ width: `${(movementsByType.half / kpis.totalMovements) * 100}%` }}
+                style={{
+                  width: `${(movementsByType.half / kpis.totalMovements) * 100}%`,
+                }}
               />
             </div>
             <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Zero Moves (WH→WH)</span>
-              <span className="font-bold text-gray-900 dark:text-white">{movementsByType.zero}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Zero Moves (WH→WH)
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                {movementsByType.zero}
+              </span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-gray-500 h-2 rounded-full"
-                style={{ width: `${(movementsByType.zero / kpis.totalMovements) * 100}%` }}
+                style={{
+                  width: `${(movementsByType.zero / kpis.totalMovements) * 100}%`,
+                }}
               />
             </div>
           </div>
@@ -172,7 +225,9 @@ export function ExecutiveOverviewCard({
           <div className="space-y-3">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Active Utilization</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  Active Utilization
+                </span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
@@ -180,13 +235,17 @@ export function ExecutiveOverviewCard({
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                 <div
                   className="bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full shadow-sm"
-                  style={{ width: `${(kpis.activeCOWs / kpis.totalCOWs) * 100}%` }}
+                  style={{
+                    width: `${(kpis.activeCOWs / kpis.totalCOWs) * 100}%`,
+                  }}
                 />
               </div>
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">Static Assets</span>
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  Static Assets
+                </span>
                 <span className="font-bold text-gray-900 dark:text-white">
                   {((kpis.staticCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
@@ -194,7 +253,9 @@ export function ExecutiveOverviewCard({
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                 <div
                   className="bg-gradient-to-r from-red-400 to-red-500 h-2.5 rounded-full shadow-sm"
-                  style={{ width: `${(kpis.staticCOWs / kpis.totalCOWs) * 100}%` }}
+                  style={{
+                    width: `${(kpis.staticCOWs / kpis.totalCOWs) * 100}%`,
+                  }}
                 />
               </div>
             </div>
@@ -205,22 +266,36 @@ export function ExecutiveOverviewCard({
           <h3 className="card-header">Coverage Summary</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Total Regions Served</span>
-              <span className="font-bold text-gray-900 dark:text-white">5/5</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                Total Regions Served
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                5/5
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Avg Distance per Move</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                Avg Distance per Move
+              </span>
               <span className="font-bold text-gray-900 dark:text-white">
                 {(kpis.totalDistanceKM / kpis.totalMovements).toFixed(0)} KM
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Data Span</span>
-              <span className="font-bold text-gray-900 dark:text-white">5 years</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                Data Span
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                5 years
+              </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">Last Update</span>
-              <span className="font-bold text-gray-900 dark:text-white">Live</span>
+              <span className="text-gray-600 dark:text-gray-400">
+                Last Update
+              </span>
+              <span className="font-bold text-gray-900 dark:text-white">
+                Live
+              </span>
             </div>
           </div>
         </div>
@@ -229,7 +304,8 @@ export function ExecutiveOverviewCard({
       {/* Footer note */}
       <div className="flex-1 flex items-end">
         <p className="text-xs text-gray-500 dark:text-gray-400">
-          All metrics calculated from immutable fact table spanning 5 years of operational data
+          All metrics calculated from immutable fact table spanning 5 years of
+          operational data
         </p>
       </div>
     </div>

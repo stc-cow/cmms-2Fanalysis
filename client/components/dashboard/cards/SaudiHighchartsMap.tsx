@@ -36,7 +36,7 @@ export function SaudiHighchartsMap({
     const loadGeoData = async () => {
       try {
         const response = await fetch(
-          "https://code.highcharts.com/mapdata/countries/sa/sa-all.geo.json"
+          "https://code.highcharts.com/mapdata/countries/sa/sa-all.geo.json",
         );
         if (!response.ok) throw new Error("Failed to fetch geo data");
         const data = await response.json();

@@ -87,7 +87,7 @@ export function MovementAnalytics({
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="type" />
               <YAxis />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -99,9 +99,16 @@ export function MovementAnalytics({
           </ResponsiveContainer>
           <div className="mt-4 grid grid-cols-3 gap-4">
             {movementTypeData.map((item) => (
-              <div key={item.type} className="text-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{item.type}</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{item.count}</p>
+              <div
+                key={item.type}
+                className="text-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
+              >
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                  {item.type}
+                </p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {item.count}
+                </p>
               </div>
             ))}
           </div>
@@ -123,7 +130,7 @@ export function MovementAnalytics({
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis type="number" />
               <YAxis dataKey="route" type="category" width={240} />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -145,14 +152,9 @@ export function MovementAnalytics({
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={timelineData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis 
-                dataKey="month" 
-                angle={-45}
-                textAnchor="end"
-                height={80}
-              />
+              <XAxis dataKey="month" angle={-45} textAnchor="end" height={80} />
               <YAxis />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",

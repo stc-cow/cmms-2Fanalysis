@@ -14,7 +14,10 @@ export async function ensureHighchartsModules() {
 
   try {
     // Check if modules are already on the global Highcharts object
-    if ((Highcharts as any).mapChart && (Highcharts as any).Chart.prototype.getCSV) {
+    if (
+      (Highcharts as any).mapChart &&
+      (Highcharts as any).Chart.prototype.getCSV
+    ) {
       modulesInitialized = true;
       return;
     }

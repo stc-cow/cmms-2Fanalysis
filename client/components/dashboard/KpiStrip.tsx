@@ -1,4 +1,11 @@
-import { BarChart3, Zap, Route, TrendingUp, Lock, Activity } from "lucide-react";
+import {
+  BarChart3,
+  Zap,
+  Route,
+  TrendingUp,
+  Lock,
+  Activity,
+} from "lucide-react";
 
 interface KpiStripProps {
   totalCOWs: number;
@@ -34,7 +41,9 @@ export function KpiStrip({
     },
     {
       label: "Total Distance (KM)",
-      value: totalDistanceKM.toLocaleString("en-US", { maximumFractionDigits: 0 }),
+      value: totalDistanceKM.toLocaleString("en-US", {
+        maximumFractionDigits: 0,
+      }),
       icon: TrendingUp,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-50 dark:bg-green-950",

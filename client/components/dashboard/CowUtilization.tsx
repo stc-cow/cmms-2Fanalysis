@@ -43,10 +43,12 @@ export function CowUtilization({ cowMetrics }: CowUtilizationProps) {
     else movementBuckets["100+"]++;
   });
 
-  const histogramData = Object.entries(movementBuckets).map(([range, count]) => ({
-    range,
-    count,
-  }));
+  const histogramData = Object.entries(movementBuckets).map(
+    ([range, count]) => ({
+      range,
+      count,
+    }),
+  );
 
   // Top 10 most moved
   const topMostMoved = cowMetrics
@@ -72,7 +74,7 @@ export function CowUtilization({ cowMetrics }: CowUtilizationProps) {
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="range" />
               <YAxis />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -83,7 +85,8 @@ export function CowUtilization({ cowMetrics }: CowUtilizationProps) {
             </BarChart>
           </ResponsiveContainer>
           <p className="text-xs text-gray-600 dark:text-gray-400 mt-4">
-            Histogram showing the distribution of COWs by number of movements performed
+            Histogram showing the distribution of COWs by number of movements
+            performed
           </p>
         </CardContent>
       </Card>

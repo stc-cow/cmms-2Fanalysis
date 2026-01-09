@@ -18,7 +18,14 @@ interface DashboardFiltersProps {
 
 const REGIONS = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
 const MOVEMENT_TYPES = ["Full", "Half", "Zero"];
-const EVENT_TYPES = ["Hajj", "Umrah", "Royal", "National Event", "Seasonal", "Normal Coverage"];
+const EVENT_TYPES = [
+  "Hajj",
+  "Umrah",
+  "Royal",
+  "National Event",
+  "Seasonal",
+  "Normal Coverage",
+];
 
 const YEAR_PLACEHOLDER = "year_all";
 const REGION_PLACEHOLDER = "region_all";
@@ -39,16 +46,26 @@ export function DashboardFiltersComponent({
   const hasActiveFilters = Object.values(filters).some((v) => v !== undefined);
 
   const yearValue = filters.year ? `year_${filters.year}` : YEAR_PLACEHOLDER;
-  const regionValue = filters.region ? `region_${filters.region}` : REGION_PLACEHOLDER;
-  const vendorValue = filters.vendor ? `vendor_${filters.vendor}` : VENDOR_PLACEHOLDER;
-  const movementValue = filters.movementType ? `movement_${filters.movementType}` : MOVEMENT_PLACEHOLDER;
-  const eventValue = filters.eventType ? `event_${filters.eventType}` : EVENT_PLACEHOLDER;
+  const regionValue = filters.region
+    ? `region_${filters.region}`
+    : REGION_PLACEHOLDER;
+  const vendorValue = filters.vendor
+    ? `vendor_${filters.vendor}`
+    : VENDOR_PLACEHOLDER;
+  const movementValue = filters.movementType
+    ? `movement_${filters.movementType}`
+    : MOVEMENT_PLACEHOLDER;
+  const eventValue = filters.eventType
+    ? `event_${filters.eventType}`
+    : EVENT_PLACEHOLDER;
 
   return (
     <div className="bg-white dark:bg-slate-900 rounded-lg border border-gray-200 dark:border-gray-800 p-6 shadow-sm">
       <div className="flex items-center gap-3 mb-4">
         <Filter className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Filters</h2>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Filters
+        </h2>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -73,11 +90,12 @@ export function DashboardFiltersComponent({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={YEAR_PLACEHOLDER}>All Years</SelectItem>
-              {years.length > 0 && years.map((year) => (
-                <SelectItem key={`year_${year}`} value={`year_${year}`}>
-                  {year}
-                </SelectItem>
-              ))}
+              {years.length > 0 &&
+                years.map((year) => (
+                  <SelectItem key={`year_${year}`} value={`year_${year}`}>
+                    {year}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>
@@ -133,11 +151,15 @@ export function DashboardFiltersComponent({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value={VENDOR_PLACEHOLDER}>All Vendors</SelectItem>
-              {vendors.length > 0 && vendors.map((vendor) => (
-                <SelectItem key={`vendor_${vendor}`} value={`vendor_${vendor}`}>
-                  {vendor}
-                </SelectItem>
-              ))}
+              {vendors.length > 0 &&
+                vendors.map((vendor) => (
+                  <SelectItem
+                    key={`vendor_${vendor}`}
+                    value={`vendor_${vendor}`}
+                  >
+                    {vendor}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
         </div>

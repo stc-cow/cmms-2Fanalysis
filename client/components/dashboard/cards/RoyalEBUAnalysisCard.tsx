@@ -17,9 +17,7 @@ interface RoyalEBUAnalysisCardProps {
   movements: CowMovementsFact[];
 }
 
-export function RoyalEBUAnalysisCard({
-  movements,
-}: RoyalEBUAnalysisCardProps) {
+export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
   const royalCount = movements.filter((m) => m.Is_Royal).length;
   const nonRoyalCount = movements.length - royalCount;
   const ebuCount = movements.filter((m) => m.Is_EBU).length;

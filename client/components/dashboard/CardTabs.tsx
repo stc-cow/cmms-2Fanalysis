@@ -1,4 +1,15 @@
-import { MapPin, BarChart3, PieChart, Grid3x3, Warehouse, TrendingUp, Calendar, Crown, Zap, Brain } from "lucide-react";
+import {
+  MapPin,
+  BarChart3,
+  PieChart,
+  Grid3x3,
+  Warehouse,
+  TrendingUp,
+  Calendar,
+  Crown,
+  Zap,
+  Brain,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface CardTab {
@@ -89,7 +100,7 @@ export function CardTabs({ tabs, activeTab, onTabChange }: CardTabsProps) {
               "flex items-center gap-2 px-4 py-2 rounded-lg transition-all whitespace-nowrap text-sm font-medium",
               activeTab === tab.id
                 ? "bg-blue-500 text-white shadow-lg"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700",
             )}
           >
             {tab.icon}

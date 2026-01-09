@@ -1,8 +1,4 @@
-import {
-  DimCow,
-  DimLocation,
-  CowMovementsFact,
-} from "@shared/models";
+import { DimCow, DimLocation, CowMovementsFact } from "@shared/models";
 
 // Map Google Sheet column indices to our data structures
 interface GoogleSheetRow {
@@ -118,11 +114,9 @@ function parseCSVLine(line: string): string[] {
 /**
  * Convert Google Sheet rows to CowMovementsFact array
  */
-export function convertToMovements(
-  rows: GoogleSheetRow[]
-): CowMovementsFact[] {
+export function convertToMovements(rows: GoogleSheetRow[]): CowMovementsFact[] {
   const movements: CowMovementsFact[] = [];
-  
+
   rows.forEach((row, index) => {
     if (!row.cowsId || !row.fromLocation || !row.toLocation) {
       return; // Skip incomplete rows
@@ -150,7 +144,7 @@ export function convertToMovements(
   return movements.sort(
     (a, b) =>
       new Date(a.Moved_DateTime).getTime() -
-      new Date(b.Moved_DateTime).getTime()
+      new Date(b.Moved_DateTime).getTime(),
   );
 }
 
@@ -175,7 +169,8 @@ export function convertToCows(rows: GoogleSheetRow[]): DimCow[] {
       Network_5G: networkTypes.includes("5G"),
       Shelter_Type: normalizeShelterType(row.shelterOutdoor),
       Vendor: row.vendor || "Unknown",
-      Installation_Date: row.installationStatus || new Date().toISOString().split("T")[0],
+      Installation_Date:
+        row.installationStatus || new Date().toISOString().split("T")[0],
     };
 
     cowMap.set(row.cowsId, cow);
@@ -233,17 +228,14 @@ export function convertToLocations(rows: GoogleSheetRow[]): DimLocation[] {
  * Normalize location name to ID (e.g., "Riyadh Central" -> "LOC-RIYADH")
  */
 function normalizeLocationId(name: string): string {
-  return `LOC-${name
-    .toUpperCase()
-    .replace(/\s+/g, "-")
-    .substring(0, 20)}`;
+  return `LOC-${name.toUpperCase().replace(/\s+/g, "-").substring(0, 20)}`;
 }
 
 /**
  * Normalize region name to our enum values
  */
 function normalizeRegion(
-  region: string
+  region: string,
 ): "WEST" | "EAST" | "CENTRAL" | "SOUTH" | "NORTH" {
   const normalized = region?.toUpperCase().trim() || "";
 
@@ -278,7 +270,7 @@ function normalizeRegion(
  * Normalize tower type
  */
 function normalizeTowerType(
-  type: string
+  type: string,
 ): "Macro" | "Small Cell" | "Micro Cell" {
   const normalized = type?.toUpperCase() || "";
   if (normalized.includes("SMALL")) return "Small Cell";

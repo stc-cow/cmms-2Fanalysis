@@ -94,9 +94,16 @@ export function MovementTypesCard({
           </ResponsiveContainer>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {movementTypeData.map((item, idx) => (
-              <div key={item.type} className="text-center p-2 bg-gray-50 dark:bg-gray-900 rounded">
-                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">{item.type}</p>
-                <p className="text-lg font-bold text-gray-900 dark:text-white">{item.count}</p>
+              <div
+                key={item.type}
+                className="text-center p-2 bg-gray-50 dark:bg-gray-900 rounded"
+              >
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                  {item.type}
+                </p>
+                <p className="text-lg font-bold text-gray-900 dark:text-white">
+                  {item.count}
+                </p>
               </div>
             ))}
           </div>

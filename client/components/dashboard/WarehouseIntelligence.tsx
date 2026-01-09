@@ -30,7 +30,9 @@ export function WarehouseIntelligence({
 }: WarehouseIntelligenceProps) {
   const warehouses = locations.filter((l) => l.Location_Type === "Warehouse");
   const warehouseMetrics = warehouses
-    .map((wh) => calculateWarehouseMetrics(wh.Location_ID, movements, locations))
+    .map((wh) =>
+      calculateWarehouseMetrics(wh.Location_ID, movements, locations),
+    )
     .filter((m) => m !== null);
 
   // Top 10 outgoing
@@ -64,7 +66,7 @@ export function WarehouseIntelligence({
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis type="number" />
               <YAxis dataKey="name" type="category" width={190} />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -85,14 +87,20 @@ export function WarehouseIntelligence({
                   <TableRow>
                     <TableHead>Warehouse</TableHead>
                     <TableHead className="text-right">Movements</TableHead>
-                    <TableHead className="text-right">Avg Distance (KM)</TableHead>
+                    <TableHead className="text-right">
+                      Avg Distance (KM)
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {topOutgoing.map((m) => (
                     <TableRow key={m!.Location_ID}>
-                      <TableCell className="font-medium">{m!.Location_Name}</TableCell>
-                      <TableCell className="text-right">{m!.Outgoing_Movements}</TableCell>
+                      <TableCell className="font-medium">
+                        {m!.Location_Name}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {m!.Outgoing_Movements}
+                      </TableCell>
                       <TableCell className="text-right">
                         {m!.Avg_Outgoing_Distance.toFixed(1)}
                       </TableCell>
@@ -124,7 +132,7 @@ export function WarehouseIntelligence({
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis type="number" />
               <YAxis dataKey="name" type="category" width={190} />
-              <Tooltip 
+              <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
                   border: "1px solid #e5e7eb",
@@ -145,15 +153,21 @@ export function WarehouseIntelligence({
                   <TableRow>
                     <TableHead>Warehouse</TableHead>
                     <TableHead className="text-right">Movements</TableHead>
-                    <TableHead className="text-right">Avg Distance (KM)</TableHead>
+                    <TableHead className="text-right">
+                      Avg Distance (KM)
+                    </TableHead>
                     <TableHead className="text-right">Idle Days</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {topIncoming.map((m) => (
                     <TableRow key={m!.Location_ID}>
-                      <TableCell className="font-medium">{m!.Location_Name}</TableCell>
-                      <TableCell className="text-right">{m!.Incoming_Movements}</TableCell>
+                      <TableCell className="font-medium">
+                        {m!.Location_Name}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {m!.Incoming_Movements}
+                      </TableCell>
                       <TableCell className="text-right">
                         {m!.Avg_Incoming_Distance.toFixed(1)}
                       </TableCell>

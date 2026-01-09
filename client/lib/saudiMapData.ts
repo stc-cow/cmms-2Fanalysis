@@ -27,11 +27,11 @@ export interface TimelineMonth {
 export function generateTimelineMonths(
   movements: CowMovementsFact[],
   cows: DimCow[],
-  locations: DimLocation[]
+  locations: DimLocation[],
 ): TimelineMonth[] {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
   const cowMap = new Map(cows.map((c) => [c.COW_ID, c]));
-  
+
   const monthsMap = new Map<string, TimelineMonth>();
 
   movements.forEach((mov) => {
@@ -43,7 +43,10 @@ export function generateTimelineMonths(
 
     const date = new Date(mov.Moved_DateTime);
     const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-    const monthLabel = date.toLocaleString("en-US", { year: "numeric", month: "short" });
+    const monthLabel = date.toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+    });
 
     if (!monthsMap.has(monthKey)) {
       monthsMap.set(monthKey, {
@@ -70,19 +73,24 @@ export function generateTimelineMonths(
 
     timeline.movements.push(mapLine);
     timeline.totalDistance += mapLine.distance;
-    timeline.movementCounts[mapLine.movementType as keyof typeof timeline.movementCounts]++;
-    timeline.vendorCounts[cow.Vendor] = (timeline.vendorCounts[cow.Vendor] || 0) + 1;
+    timeline.movementCounts[
+      mapLine.movementType as keyof typeof timeline.movementCounts
+    ]++;
+    timeline.vendorCounts[cow.Vendor] =
+      (timeline.vendorCounts[cow.Vendor] || 0) + 1;
   });
 
   // Sort by date and convert to array
   return Array.from(monthsMap.values()).sort(
-    (a, b) => new Date(`${a.year}-${a.month}`).getTime() - new Date(`${b.year}-${b.month}`).getTime()
+    (a, b) =>
+      new Date(`${a.year}-${a.month}`).getTime() -
+      new Date(`${b.year}-${b.month}`).getTime(),
   );
 }
 
 export function getMapSeries(
   movements: MapLine[],
-  colorMap: Record<string, string> = {}
+  colorMap: Record<string, string> = {},
 ) {
   const series = [
     {

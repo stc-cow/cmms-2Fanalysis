@@ -45,14 +45,17 @@ export function DistanceCostProxyCard({
   movements.forEach((mov) => {
     const toLoc = locMap.get(mov.To_Location_ID);
     if (toLoc) {
-      regionDistance[toLoc.Region] = (regionDistance[toLoc.Region] || 0) + (mov.Distance_KM || 0);
+      regionDistance[toLoc.Region] =
+        (regionDistance[toLoc.Region] || 0) + (mov.Distance_KM || 0);
     }
   });
 
-  const regionData = Object.entries(regionDistance).map(([region, distance]) => ({
-    region,
-    distance: Math.round(distance),
-  }));
+  const regionData = Object.entries(regionDistance).map(
+    ([region, distance]) => ({
+      region,
+      distance: Math.round(distance),
+    }),
+  );
 
   // Distance by vendor
   const vendorDistance: Record<string, number> = {};
@@ -70,7 +73,10 @@ export function DistanceCostProxyCard({
       distance: Math.round(distance),
     }));
 
-  const totalDistance = movements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+  const totalDistance = movements.reduce(
+    (sum, m) => sum + (m.Distance_KM || 0),
+    0,
+  );
 
   return (
     <div className="h-[calc(100vh-200px)] overflow-hidden flex flex-col gap-4 p-4">
@@ -97,7 +103,10 @@ export function DistanceCostProxyCard({
             Cost Proxy (Est.)
           </div>
           <div className="text-2xl font-bold text-orange-600">
-            ${(totalDistance * 0.15).toLocaleString("en-US", { maximumFractionDigits: 0 })}
+            $
+            {(totalDistance * 0.15).toLocaleString("en-US", {
+              maximumFractionDigits: 0,
+            })}
           </div>
         </div>
       </div>

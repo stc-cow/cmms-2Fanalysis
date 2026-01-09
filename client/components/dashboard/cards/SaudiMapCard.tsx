@@ -13,10 +13,7 @@ import {
   Cell,
 } from "recharts";
 import { CowMovementsFact, DimCow, DimLocation } from "@shared/models";
-import {
-  generateTimelineMonths,
-  TimelineMonth,
-} from "@/lib/saudiMapData";
+import { generateTimelineMonths, TimelineMonth } from "@/lib/saudiMapData";
 import { SaudiHighchartsMap } from "./SaudiHighchartsMap";
 
 interface SaudiMapCardProps {
@@ -93,7 +90,9 @@ export function SaudiMapCard({
     };
 
     currentMonth.movements.forEach((mov) => {
-      const toLoc = locations.find((l) => l.Location_ID === mov.cowId.split("-")[0]);
+      const toLoc = locations.find(
+        (l) => l.Location_ID === mov.cowId.split("-")[0],
+      );
       if (toLoc) {
         const regionName = regionMap[toLoc.Region] || toLoc.Region;
         metrics[regionName] = (metrics[regionName] || 0) + 1;
@@ -239,7 +238,9 @@ export function SaudiMapCard({
               <div className="space-y-2 text-sm">
                 {categoryChartData.map((item) => (
                   <div key={item.name} className="flex justify-between">
-                    <span className="text-gray-700 dark:text-gray-300">{item.name}</span>
+                    <span className="text-gray-700 dark:text-gray-300">
+                      {item.name}
+                    </span>
                     <span className="font-semibold text-gray-900 dark:text-white">
                       {item.value}
                     </span>

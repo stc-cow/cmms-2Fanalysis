@@ -59,7 +59,11 @@ export function AIReadinessCard({
       id: "demand",
       title: "Event Demand Forecasting",
       description: "Predict COW demand for Hajj, Umrah, and seasonal events",
-      features: ["Historical event patterns", "Calendar alignment", "Regional demand"],
+      features: [
+        "Historical event patterns",
+        "Calendar alignment",
+        "Regional demand",
+      ],
       status: "Ready",
       impact: "High",
     },
@@ -67,7 +71,11 @@ export function AIReadinessCard({
       id: "placement",
       title: "Optimal Warehouse Placement",
       description: "Recommend warehouse locations based on movement patterns",
-      features: ["Movement heatmaps", "Distance optimization", "Regional coverage"],
+      features: [
+        "Movement heatmaps",
+        "Distance optimization",
+        "Regional coverage",
+      ],
       status: "Ready",
       impact: "High",
     },
@@ -75,7 +83,11 @@ export function AIReadinessCard({
       id: "assignment",
       title: "Smart COW Assignment",
       description: "Match COWs to deployments based on history and capability",
-      features: ["Capability matching", "Utilization balance", "Vendor diversity"],
+      features: [
+        "Capability matching",
+        "Utilization balance",
+        "Vendor diversity",
+      ],
       status: "Ready",
       impact: "Medium",
     },
@@ -91,7 +103,11 @@ export function AIReadinessCard({
       id: "distance",
       title: "Distance Minimization",
       description: "Route optimization and route planning",
-      features: ["Shortest path algorithms", "Region clustering", "Cost analysis"],
+      features: [
+        "Shortest path algorithms",
+        "Region clustering",
+        "Cost analysis",
+      ],
       status: "Ready",
       impact: "High",
     },
@@ -189,9 +205,10 @@ export function AIReadinessCard({
       {/* Footer */}
       <div className="flex-shrink-0 bg-blue-50 dark:bg-blue-950 rounded-lg border border-blue-200 dark:border-blue-800 p-4 text-sm">
         <p className="text-gray-700 dark:text-gray-300">
-          ✨ <strong>Data Ready for ML:</strong> All data is engineered and normalized. The immutable
-          fact table and dimension tables provide a solid foundation for machine learning models.
-          Features are calculated on demand and cached for performance.
+          ✨ <strong>Data Ready for ML:</strong> All data is engineered and
+          normalized. The immutable fact table and dimension tables provide a
+          solid foundation for machine learning models. Features are calculated
+          on demand and cached for performance.
         </p>
       </div>
     </div>

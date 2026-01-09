@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { DimCow, DimLocation, DimEvent, CowMovementsFact } from "@shared/models";
+import {
+  DimCow,
+  DimLocation,
+  DimEvent,
+  CowMovementsFact,
+} from "@shared/models";
 
 interface DashboardDataResponse {
   movements: CowMovementsFact[];
@@ -42,7 +47,7 @@ export function useDashboardData(): UseDashboardDataResult {
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(
-            errorData.details || `API returned ${response.status}`
+            errorData.details || `API returned ${response.status}`,
           );
         }
 
@@ -58,7 +63,7 @@ export function useDashboardData(): UseDashboardDataResult {
         }
 
         console.log(
-          `✓ Loaded real data: ${realData.movements.length} movements, ${realData.cows.length} cows, ${realData.locations.length} locations`
+          `✓ Loaded real data: ${realData.movements.length} movements, ${realData.cows.length} cows, ${realData.locations.length} locations`,
         );
         setData(realData);
       } catch (err) {

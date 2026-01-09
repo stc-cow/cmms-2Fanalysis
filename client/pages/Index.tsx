@@ -31,7 +31,12 @@ export default function Dashboard() {
   const [activeCard, setActiveCard] = useState("executive");
 
   // Initialize with empty data and update when data loads
-  const { cows, locations, events, movements: rawMovements } = data || {
+  const {
+    cows,
+    locations,
+    events,
+    movements: rawMovements,
+  } = data || {
     cows: [],
     locations: [],
     events: [],
@@ -41,36 +46,39 @@ export default function Dashboard() {
   // Enrich movements with classification
   const enrichedMovements = useMemo(
     () => enrichMovements(rawMovements, locations),
-    [rawMovements, locations]
+    [rawMovements, locations],
   );
 
   // Calculate metrics
   const filteredMovements = useMemo(
     () => filterMovements(enrichedMovements, filters, locations),
-    [enrichedMovements, filters, locations]
+    [enrichedMovements, filters, locations],
   );
 
   const cowMetrics = useMemo(
     () =>
       cows.map((cow) =>
-        calculateCowMetrics(cow.COW_ID, filteredMovements, locations)
+        calculateCowMetrics(cow.COW_ID, filteredMovements, locations),
       ),
-    [filteredMovements, cows, locations]
+    [filteredMovements, cows, locations],
   );
 
-  const regionMetrics = useMemo(
-    () => {
-      const regions = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
-      return regions.map((region) =>
-        calculateRegionMetrics(region, cows, locations, filteredMovements, cowMetrics)
-      );
-    },
-    [filteredMovements, cows, locations, cowMetrics]
-  );
+  const regionMetrics = useMemo(() => {
+    const regions = ["WEST", "EAST", "CENTRAL", "SOUTH", "NORTH"];
+    return regions.map((region) =>
+      calculateRegionMetrics(
+        region,
+        cows,
+        locations,
+        filteredMovements,
+        cowMetrics,
+      ),
+    );
+  }, [filteredMovements, cows, locations, cowMetrics]);
 
   const kpis = useMemo(
     () => calculateKPIs(filteredMovements, cows, locations, cowMetrics),
-    [filteredMovements, cows, locations, cowMetrics]
+    [filteredMovements, cows, locations, cowMetrics],
   );
 
   // Get unique years and vendors
@@ -78,15 +86,17 @@ export default function Dashboard() {
     () =>
       Array.from(
         new Set(
-          enrichedMovements.map((m) => new Date(m.Moved_DateTime).getFullYear())
-        )
+          enrichedMovements.map((m) =>
+            new Date(m.Moved_DateTime).getFullYear(),
+          ),
+        ),
       ).sort((a, b) => b - a),
-    [enrichedMovements]
+    [enrichedMovements],
   );
 
   const vendors = useMemo(
     () => Array.from(new Set(cows.map((c) => c.Vendor))).sort(),
-    [cows]
+    [cows],
   );
 
   // Show loading state
@@ -128,8 +138,10 @@ export default function Dashboard() {
             </p>
             <p className="text-xs text-blue-100">
               Check the server logs or visit{" "}
-              <code className="bg-slate-900 px-1 rounded">/api/data/diagnostic</code> for
-              detailed diagnostics.
+              <code className="bg-slate-900 px-1 rounded">
+                /api/data/diagnostic
+              </code>{" "}
+              for detailed diagnostics.
             </p>
           </div>
 
@@ -147,11 +159,17 @@ export default function Dashboard() {
               <li className="font-semibold mt-2">Update the configuration:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
                 <li>
-                  In <code className="bg-slate-900 px-1 rounded">server/routes/data.ts</code>
+                  In{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    server/routes/data.ts
+                  </code>
                 </li>
                 <li>
-                  Change <code className="bg-slate-900 px-1 rounded">ACTUAL_SHEET_ID</code> to your
-                  Sheet ID
+                  Change{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    ACTUAL_SHEET_ID
+                  </code>{" "}
+                  to your Sheet ID
                 </li>
                 <li>Or set environment variable: GOOGLE_SHEET_ID=YOUR_ID</li>
               </ol>
@@ -165,7 +183,8 @@ export default function Dashboard() {
 
           <div className="bg-gray-700 rounded-lg p-3 w-full">
             <p className="text-xs text-gray-300 text-center">
-              For detailed setup instructions, see GOOGLE_SHEET_SETUP.md in the project root
+              For detailed setup instructions, see GOOGLE_SHEET_SETUP.md in the
+              project root
             </p>
           </div>
         </div>
@@ -263,10 +282,7 @@ export default function Dashboard() {
 
         {/* Events Analysis */}
         {activeCard === "events" && (
-          <EventsAnalysisCard
-            movements={filteredMovements}
-            events={events}
-          />
+          <EventsAnalysisCard movements={filteredMovements} events={events} />
         )}
 
         {/* Royal/EBU Analysis */}

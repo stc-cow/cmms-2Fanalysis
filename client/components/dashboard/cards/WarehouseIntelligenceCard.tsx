@@ -29,7 +29,9 @@ export function WarehouseIntelligenceCard({
 }: WarehouseIntelligenceCardProps) {
   const warehouses = locations.filter((l) => l.Location_Type === "Warehouse");
   const warehouseMetrics = warehouses
-    .map((wh) => calculateWarehouseMetrics(wh.Location_ID, movements, locations))
+    .map((wh) =>
+      calculateWarehouseMetrics(wh.Location_ID, movements, locations),
+    )
     .filter((m) => m !== null);
 
   const topOutgoing = warehouseMetrics
@@ -117,9 +119,15 @@ export function WarehouseIntelligenceCard({
             <TableBody>
               {warehouseMetrics.slice(0, 10).map((m) => (
                 <TableRow key={m!.Location_ID}>
-                  <TableCell className="font-medium text-xs">{m!.Location_Name}</TableCell>
-                  <TableCell className="text-right">{m!.Outgoing_Movements}</TableCell>
-                  <TableCell className="text-right">{m!.Incoming_Movements}</TableCell>
+                  <TableCell className="font-medium text-xs">
+                    {m!.Location_Name}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {m!.Outgoing_Movements}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {m!.Incoming_Movements}
+                  </TableCell>
                   <TableCell className="text-right">
                     {m!.Avg_Outgoing_Distance.toFixed(0)}
                   </TableCell>

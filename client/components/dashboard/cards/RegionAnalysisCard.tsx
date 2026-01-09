@@ -23,7 +23,7 @@ export function RegionAnalysisCard({
   regionMetrics,
 }: RegionAnalysisCardProps) {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
-  
+
   // Region-to-Region transitions (heatmap style)
   const regionTransitions = new Map<string, number>();
   movements.forEach((mov) => {
@@ -45,7 +45,7 @@ export function RegionAnalysisCard({
 
   // Regional metrics sorted
   const sortedRegionMetrics = [...regionMetrics].sort(
-    (a, b) => b.Total_COWs_Deployed - a.Total_COWs_Deployed
+    (a, b) => b.Total_COWs_Deployed - a.Total_COWs_Deployed,
   );
 
   return (
@@ -64,7 +64,12 @@ export function RegionAnalysisCard({
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis type="number" />
-              <YAxis dataKey="route" type="category" width={190} tick={{ fontSize: 11 }} />
+              <YAxis
+                dataKey="route"
+                type="category"
+                width={190}
+                tick={{ fontSize: 11 }}
+              />
               <Tooltip
                 contentStyle={{
                   backgroundColor: "#ffffff",
@@ -85,7 +90,10 @@ export function RegionAnalysisCard({
           <div className="overflow-y-auto flex-1">
             <div className="space-y-3 pr-2">
               {sortedRegionMetrics.map((region) => (
-                <div key={region.Region} className="p-3 bg-gray-50 dark:bg-gray-900 rounded">
+                <div
+                  key={region.Region}
+                  className="p-3 bg-gray-50 dark:bg-gray-900 rounded"
+                >
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-semibold text-gray-900 dark:text-white">
                       {region.Region}
@@ -100,8 +108,12 @@ export function RegionAnalysisCard({
                       <span>Static: {region.Static_COWs}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Distance: {region.Total_Distance_KM.toLocaleString()} KM</span>
-                      <span>Avg: {region.Avg_Deployment_Duration_Days.toFixed(1)}d</span>
+                      <span>
+                        Distance: {region.Total_Distance_KM.toLocaleString()} KM
+                      </span>
+                      <span>
+                        Avg: {region.Avg_Deployment_Duration_Days.toFixed(1)}d
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -118,7 +130,10 @@ export function RegionAnalysisCard({
         </h3>
         <div className="grid grid-cols-5 gap-4 text-center text-sm">
           {sortedRegionMetrics.map((region) => (
-            <div key={region.Region} className="p-3 bg-gray-50 dark:bg-gray-900 rounded">
+            <div
+              key={region.Region}
+              className="p-3 bg-gray-50 dark:bg-gray-900 rounded"
+            >
               <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
                 {region.Region}
               </div>
