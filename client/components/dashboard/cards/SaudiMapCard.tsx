@@ -190,59 +190,10 @@ export function SaudiMapCard({
         </div>
       </div>
 
-      {/* Three-Column Layout */}
+      {/* Two-Column Layout: Map + Vendor */}
       <div className="flex-1 flex gap-0 overflow-hidden bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-800">
-        {/* Left Panel: Movement Classification */}
-        <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 p-6 overflow-auto flex flex-col">
-          <h3 className="card-header">
-            <span>≡</span> Movements by Category
-          </h3>
-          {categoryChartData.length > 0 ? (
-            <div className="flex-1 flex items-center justify-center">
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={categoryChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={45}
-                    outerRadius={90}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {categoryChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
-              No movements this month
-            </div>
-          )}
-          {currentMonth && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="space-y-2 text-sm">
-                {categoryChartData.map((item) => (
-                  <div key={item.name} className="flex justify-between">
-                    <span className="text-gray-700 dark:text-gray-300">
-                      {item.name}
-                    </span>
-                    <span className="font-semibold text-gray-900 dark:text-white">
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Center Panel: Highcharts Saudi Map */}
-        <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 p-6 overflow-auto flex flex-col">
+        {/* Center Panel: Highcharts Saudi Map - Expanded */}
+        <div className="flex-1 border-r border-gray-200 dark:border-gray-700 p-6 overflow-auto flex flex-col">
           <SaudiHighchartsMap
             regionMetrics={regionMetrics}
             maxMetric={maxRegionMetric}
