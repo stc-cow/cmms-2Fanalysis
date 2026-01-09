@@ -209,10 +209,10 @@ export function SaudiMapCard({
         </div>
 
         {/* Right Panel: Vendor Chart - Compressed */}
-        <div className="w-64 border-l border-gray-200 dark:border-gray-700 p-4 overflow-auto flex flex-col">
+        <div className="w-72 border-l border-gray-200/40 dark:border-gray-700/40 p-5 overflow-auto flex flex-col bg-gradient-to-b from-white/50 to-transparent dark:from-slate-800/50 dark:to-transparent">
           {/* Top Vendor Logo */}
           {vendorChartData.length > 0 && (
-            <div className="mb-4 p-4 bg-gradient-to-br from-gray-50 to-white dark:from-slate-700 dark:to-slate-800 rounded-lg border border-gray-200 dark:border-gray-600 flex items-center gap-3">
+            <div className="mb-4 p-4 bg-gradient-to-br from-purple-50/70 to-blue-50/70 dark:from-purple-950/30 dark:to-blue-950/30 rounded-xl border border-purple-200/50 dark:border-purple-800/30 flex items-center gap-3 hover:border-purple-300/70 dark:hover:border-purple-700/50 transition-all duration-300">
               <div className="w-16 h-16 flex-shrink-0 bg-white dark:bg-slate-600 rounded-lg flex items-center justify-center shadow-sm border border-gray-200 dark:border-gray-500 overflow-hidden">
                 {VENDOR_LOGOS[vendorChartData[0].name] ? (
                   <img
