@@ -98,31 +98,19 @@ export function ExecutiveOverviewCard({
     <div className="h-[calc(100vh-200px)] overflow-hidden flex flex-col">
       {/* KPI Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6 flex-shrink-0">
-        {metrics.map((metric) => {
-          const Icon = metric.icon;
-          return (
-            <div
-              key={metric.label}
-              className={`kpi-card hover-lift ${metric.bgColor}`}
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                    {metric.label}
-                  </p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">
-                    {metric.value}
-                  </p>
-                </div>
-                <div
-                  className={`metric-badge bg-gradient-to-br ${metric.color}`}
-                >
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {metrics.map((metric) => (
+          <div
+            key={metric.label}
+            className={`kpi-card hover-lift ${metric.bgColor}`}
+          >
+            <p className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              {metric.label}
+            </p>
+            <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">
+              {metric.value}
+            </p>
+          </div>
+        ))}
       </div>
 
       {/* Summary Statistics Grid */}
