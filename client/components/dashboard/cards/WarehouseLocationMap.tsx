@@ -13,13 +13,24 @@ let geoDataCache: any = null;
 let geoDataPromise: Promise<any> | null = null;
 
 export function WarehouseLocationMap({
-  warehouses,
+  warehouses: initialWarehouses,
   selectedRegion,
 }: WarehouseLocationMapProps) {
   const [saudiGeo, setSaudiGeo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [modulesReady, setModulesReady] = useState(false);
   const chartRef = useRef<any>(null);
+
+  // Filter to ensure only actual warehouse locations (either by type or name containing "WH")
+  const warehouses = useMemo(
+    () =>
+      initialWarehouses.filter(
+        (w) =>
+          w.Location_Type === "Warehouse" ||
+          w.Location_Name.toUpperCase().includes("WH"),
+      ),
+    [initialWarehouses],
+  );
 
   // Ensure Highcharts modules are initialized
   useEffect(() => {
