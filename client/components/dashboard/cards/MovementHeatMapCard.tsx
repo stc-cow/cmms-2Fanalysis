@@ -114,7 +114,9 @@ export function MovementHeatMapCard({
       flow.movementIds.push(mov.COW_ID);
     });
 
-    return Array.from(flowsMap.values()).sort((a, b) => b.count - a.count);
+    const flows = Array.from(flowsMap.values()).sort((a, b) => b.count - a.count);
+    console.log('FlowData flows found:', flows.length, 'out of movements:', movements.length);
+    return flows;
   }, [movements, locMap]);
 
   // Get origin and destination location points
