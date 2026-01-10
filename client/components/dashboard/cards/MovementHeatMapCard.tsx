@@ -260,12 +260,18 @@ export function MovementHeatMapCard({
           },
         },
         mappoint: {
+          marker: {
+            radius: 5,
+            lineWidth: 0,
+          },
           dataLabels: {
             enabled: false,
           },
           states: {
             hover: {
-              brightness: 0.2,
+              marker: {
+                radius: 7,
+              },
             },
           },
         },
