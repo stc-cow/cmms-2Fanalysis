@@ -84,47 +84,8 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
 
   return (
     <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 md:p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 flex-1 min-h-0">
-        {/* Royal vs Non-Royal */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
-            Royal Classification
-          </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={vipData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ displayName }) => displayName}
-                innerRadius={50}
-                outerRadius={90}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {vipData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={index === 0 ? "#8b5cf6" : "#cbd5e1"}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                }}
-                formatter={(value: number) =>
-                  `${value} movements (${((value / totalMovements) * 100).toFixed(1)}%)`
-                }
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* EBU vs Non-EBU */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4 flex-1 min-h-0">
+        {/* EBU Classification - Three Categories */}
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
             EBU Classification
@@ -132,7 +93,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={ebuData}
+                data={categoryData}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -142,12 +103,10 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {ebuData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={index === 0 ? "#fbbf24" : "#cbd5e1"}
-                  />
-                ))}
+                {categoryData.map((entry, index) => {
+                  const colors = ["#8b5cf6", "#fbbf24", "#6b7280"];
+                  return <Cell key={`cell-${index}`} fill={colors[index]} />;
+                })}
               </Pie>
               <Tooltip
                 contentStyle={{
