@@ -411,7 +411,7 @@ export function StaticCowMapCard({
       </div>
 
       <div className="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-slate-700 shadow-lg relative">
-        {cowPositions.length > 0 ? (
+        {staticCowCount > 0 ? (
           <>
             <HighchartsReact
               highcharts={Highcharts}
@@ -427,59 +427,77 @@ export function StaticCowMapCard({
             />
 
             {/* Bottom Left: COW Count Summary */}
-            <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg">
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-                COW Summary
+            <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg max-w-xs max-h-64 overflow-y-auto">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-3">
+                Static COWs Status (1 Movement Only)
               </p>
-              <div className="space-y-1">
+              <div className="space-y-2 mb-3">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   <span className="text-xs text-gray-600 dark:text-gray-400">
-                    ON-AIR: {onAirCows.length}
+                    ON-AIR: <strong>{onAirCows.length}</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   <span className="text-xs text-gray-600 dark:text-gray-400">
-                    Inactive: {inactiveCows.length}
+                    Inactive: <strong>{inactiveCows.length}</strong>
                   </span>
                 </div>
-                <div className="border-t border-gray-200 dark:border-gray-600 mt-2 pt-2">
+                <div className="border-t border-gray-200 dark:border-gray-600 pt-2">
                   <span className="text-xs text-gray-600 dark:text-gray-400">
-                    Total: <strong>{cowPositions.length}</strong>
+                    Total: <strong>{staticCowCount}</strong>
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Right: Stats */}
-            <div className="absolute bottom-4 right-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-3 shadow-lg">
-              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Movement Statistics
+            {/* Bottom Right: Top Deployment Locations */}
+            <div className="absolute bottom-4 right-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg max-w-xs max-h-64 overflow-y-auto">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-3">
+                Top Deployment Locations
               </p>
-              <div className="space-y-1 text-xs text-gray-600 dark:text-gray-400">
-                <div>
-                  Avg. Movements:{" "}
-                  <strong>
-                    {(
-                      cowPositions.reduce((sum, c) => sum + c.movementCount, 0) /
-                      cowPositions.length
-                    ).toFixed(1)}
-                  </strong>
-                </div>
-                <div>
-                  Max Movements:{" "}
-                  <strong>
-                    {Math.max(...cowPositions.map((c) => c.movementCount), 0)}
-                  </strong>
-                </div>
+              <div className="space-y-2 text-xs">
+                {distributionByLocation.length > 0 ? (
+                  distributionByLocation.map((dist, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-gray-50 dark:bg-slate-700 rounded px-2 py-1.5"
+                    >
+                      <p className="font-medium text-gray-900 dark:text-white truncate mb-1">
+                        {dist.location}
+                      </p>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                          <span className="text-gray-600 dark:text-gray-400">
+                            {dist.onAir}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                          <span className="text-gray-600 dark:text-gray-400">
+                            {dist.inactive}
+                          </span>
+                        </div>
+                        <span className="ml-auto font-semibold text-gray-900 dark:text-white">
+                          {dist.count}
+                        </span>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-500 dark:text-gray-400">
+                    No location distribution
+                  </p>
+                )}
               </div>
             </div>
           </>
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <p className="text-lg text-gray-400">
-              No COW data available with valid coordinates
+              No static COWs (COWs with exactly 1 movement) found
             </p>
           </div>
         )}
