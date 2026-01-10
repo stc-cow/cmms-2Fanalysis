@@ -229,7 +229,9 @@ function processData(rows: any[]) {
       SN: idx + 1,
       COW_ID: row.cow_id,
       From_Location_ID: `LOC-${row.from_location.replace(/\s+/g, "-").substring(0, 20)}`,
+      From_Sub_Location: row.from_sub_location || undefined,
       To_Location_ID: `LOC-${row.to_location.replace(/\s+/g, "-").substring(0, 20)}`,
+      To_Sub_Location: row.to_sub_location || undefined,
       Moved_DateTime: parseDate(row.moved_datetime),
       Reached_DateTime: parseDate(row.reached_datetime),
       Movement_Type: row.movement_type?.includes("Full")
