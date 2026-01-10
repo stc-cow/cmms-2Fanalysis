@@ -195,6 +195,25 @@ function normalizeRegion(
 }
 
 /**
+ * Parse Royal/EBU flag from column E
+ * Handles various formats: "Royal", "EBU", "Royal & EBU", etc.
+ */
+function parseRoyalEBUFlag(flag: string | undefined): {
+  isRoyal: boolean;
+  isEBU: boolean;
+} {
+  if (!flag) {
+    return { isRoyal: false, isEBU: false };
+  }
+
+  const normalized = flag.trim().toLowerCase();
+  return {
+    isRoyal: normalized.includes("royal"),
+    isEBU: normalized.includes("ebu"),
+  };
+}
+
+/**
  * Process CSV data into structured format
  * Uses the standardized column mapping: A-AE with snake_case field names
  */
