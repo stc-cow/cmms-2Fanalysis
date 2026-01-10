@@ -56,7 +56,7 @@ export function HeaderFilters({
     : MOVEMENT_PLACEHOLDER;
 
   return (
-    <div className="flex items-center gap-3 flex-wrap">
+    <div className="flex items-center gap-2 sm:gap-3 flex-wrap w-full">
       {/* Year Filter */}
       <Select
         value={yearValue}
@@ -69,7 +69,7 @@ export function HeaderFilters({
           }
         }}
       >
-        <SelectTrigger className="w-36 h-10 text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md">
+        <SelectTrigger className="w-28 sm:w-32 md:w-36 h-9 sm:h-10 text-xs sm:text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md flex-shrink-0">
           <SelectValue placeholder="Year" />
         </SelectTrigger>
         <SelectContent>
@@ -95,7 +95,7 @@ export function HeaderFilters({
           }
         }}
       >
-        <SelectTrigger className="w-36 h-10 text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md">
+        <SelectTrigger className="w-28 sm:w-32 md:w-36 h-9 sm:h-10 text-xs sm:text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md flex-shrink-0">
           <SelectValue placeholder="Region" />
         </SelectTrigger>
         <SelectContent>
@@ -120,7 +120,7 @@ export function HeaderFilters({
           }
         }}
       >
-        <SelectTrigger className="w-36 h-10 text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md">
+        <SelectTrigger className="w-28 sm:w-32 md:w-36 h-9 sm:h-10 text-xs sm:text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md flex-shrink-0">
           <SelectValue placeholder="Vendor" />
         </SelectTrigger>
         <SelectContent>
@@ -146,7 +146,7 @@ export function HeaderFilters({
           }
         }}
       >
-        <SelectTrigger className="w-36 h-10 text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md">
+        <SelectTrigger className="w-28 sm:w-32 md:w-36 h-9 sm:h-10 text-xs sm:text-sm bg-white/80 border-white/30 hover:bg-white transition-all duration-200 rounded-lg font-medium text-gray-700 backdrop-blur-sm shadow-md flex-shrink-0">
           <SelectValue placeholder="Type" />
         </SelectTrigger>
         <SelectContent>
@@ -165,9 +165,9 @@ export function HeaderFilters({
           variant="ghost"
           size="sm"
           onClick={handleClearFilters}
-          className="h-10 px-4 text-sm font-medium rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 border border-red-200 dark:border-red-800"
+          className="h-9 sm:h-10 px-3 sm:px-4 text-xs sm:text-sm font-medium rounded-lg bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 border border-red-200 dark:border-red-800 flex-shrink-0"
         >
-          Clear Filters
+          Clear
         </Button>
       )}
     </div>
