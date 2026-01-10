@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import { CowMovementsFact, DimLocation } from "@shared/models";
 import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { regionToHcKey } from "@/lib/saudiRegionMapping";
 
 interface MovementHeatMapCardProps {
   movements: CowMovementsFact[];
