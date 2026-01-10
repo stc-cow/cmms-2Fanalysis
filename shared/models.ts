@@ -9,6 +9,8 @@ export interface DimCow {
   Shelter_Type: "Shelter" | "Outdoor";
   Vendor: string;
   Installation_Date: string; // ISO date
+  Last_Deploy_Date?: string; // ISO date - Column C from Google Sheet
+  First_Deploy_Date?: string; // ISO date - Column D from Google Sheet
 }
 
 // Dimension: Location details
