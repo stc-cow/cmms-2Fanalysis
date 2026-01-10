@@ -431,8 +431,24 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       );
     }
 
+    // Calculate Royal/EBU statistics
+    const royalCount = processedData.movements.filter((m) => m.Is_Royal).length;
+    const ebuCount = processedData.movements.filter((m) => m.Is_EBU).length;
+    const royalAndEbuCount = processedData.movements.filter(
+      (m) => m.Is_Royal && m.Is_EBU,
+    ).length;
+
     console.log(
       `✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`,
+    );
+    console.log(
+      `  ├─ Royal movements: ${royalCount} (${((royalCount / processedData.movements.length) * 100).toFixed(1)}%)`,
+    );
+    console.log(
+      `  ├─ EBU movements: ${ebuCount} (${((ebuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
+    );
+    console.log(
+      `  └─ Royal & EBU movements: ${royalAndEbuCount} (${((royalAndEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
 
     if (processedData.movements.length === 0) {
