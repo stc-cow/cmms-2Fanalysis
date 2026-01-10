@@ -191,7 +191,7 @@ export default function Dashboard() {
   return (
     <div className="h-screen w-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden">
       {/* Fixed Header with Enhanced Design */}
-      <header className="flex-shrink-0 bg-gradient-to-r from-white via-blue-50/50 to-white dark:from-slate-900 dark:via-slate-800/50 dark:to-slate-900 border-b border-gray-200/60 dark:border-gray-700/40 backdrop-blur-xl shadow-lg shadow-blue-500/5 dark:shadow-slate-900/50">
+      <header className="flex-shrink-0 bg-gradient-to-r from-purple-600 via-purple-500 to-purple-600 border-b border-purple-700/40 backdrop-blur-xl shadow-lg shadow-purple-500/20">
         <div className="px-6 py-4 flex items-center justify-between">
           {/* Logo Section with Modern Styling */}
           <div className="flex items-center gap-3 flex-shrink-0 group cursor-pointer">
