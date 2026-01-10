@@ -24,6 +24,11 @@ export const DASHBOARD_CARDS: CardTab[] = [
     description: "Movement Flows",
   },
   {
+    id: "heatmap",
+    label: "Movement Heat Map",
+    description: "Origin-Destination Matrix",
+  },
+  {
     id: "movements",
     label: "Movement Types",
     description: "Full / Half / Zero",
