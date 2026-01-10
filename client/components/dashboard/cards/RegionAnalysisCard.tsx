@@ -75,7 +75,7 @@ export function RegionAnalysisCard({
   }));
 
   return (
-    <div className="h-[calc(100vh-200px)] overflow-hidden flex flex-col gap-5 p-6">
+    <div className="h-full overflow-y-auto flex flex-col gap-5 p-6">
       {/* Two-Column Layout with Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-0">
         {/* Left Chart: Top Region Transitions */}
