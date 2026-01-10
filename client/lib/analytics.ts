@@ -325,6 +325,7 @@ export function filterMovements(
   movements: CowMovementsFact[],
   filters: DashboardFilters,
   locations: DimLocation[],
+  cows?: DimCow[],
 ): CowMovementsFact[] {
   return movements.filter((mov) => {
     // Filter by year
@@ -337,6 +338,12 @@ export function filterMovements(
     if (filters.region) {
       const toLoc = locations.find((l) => l.Location_ID === mov.To_Location_ID);
       if (toLoc?.Region !== filters.region) return false;
+    }
+
+    // Filter by vendor
+    if (filters.vendor && cows) {
+      const cow = cows.find((c) => c.COW_ID === mov.COW_ID);
+      if (cow?.Vendor !== filters.vendor) return false;
     }
 
     // Filter by movement type
