@@ -308,10 +308,10 @@ export function MovementHeatMapCard({
             {/* Bottom Left: Total Movements */}
             <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg">
               <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                Total Route Movements
+                Total Movements
               </p>
               <p className="text-2xl font-bold text-red-600 dark:text-red-400">
-                {flowData.reduce((sum, f) => sum + f.count, 0)}
+                {totalMovements}
               </p>
             </div>
 
