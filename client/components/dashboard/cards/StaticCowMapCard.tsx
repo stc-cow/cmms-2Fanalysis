@@ -55,10 +55,7 @@ export function StaticCowMapCard({
   );
 
   // Create COW map for quick lookup
-  const cowMap = useMemo(
-    () => new Map(cows.map((c) => [c.COW_ID, c])),
-    [cows],
-  );
+  const cowMap = useMemo(() => new Map(cows.map((c) => [c.COW_ID, c])), [cows]);
 
   // Calculate COW positions and movement counts
   const cowPositions = useMemo(() => {
@@ -115,7 +112,8 @@ export function StaticCowMapCard({
 
       // Check if on-air from remarks field
       const remarks = cowData?.Remarks || "";
-      const isOnAir = remarks.toLowerCase().includes("on-air") ||
+      const isOnAir =
+        remarks.toLowerCase().includes("on-air") ||
         remarks.toLowerCase().includes("on air") ||
         remarks.toLowerCase().includes("onair");
 
@@ -132,7 +130,7 @@ export function StaticCowMapCard({
 
     // Filter to valid coordinates within Saudi Arabia
     const validPositions = positions.filter((p) =>
-      isWithinSaudiBounds(p.latitude, p.longitude)
+      isWithinSaudiBounds(p.latitude, p.longitude),
     );
 
     console.log(
@@ -143,54 +141,53 @@ export function StaticCowMapCard({
   }, [movements, cowMap, locMap]);
 
   // Separate COWs by status - ONLY show COWs with exactly 1 movement (static COWs)
-  const {
-    onAirCows,
-    inactiveCows,
-    staticCowCount,
-    distributionByLocation,
-  } = useMemo(() => {
-    // Filter to only COWs with exactly 1 movement (static/newly deployed)
-    const staticCows = cowPositions.filter((p) => p.movementCount === 1);
+  const { onAirCows, inactiveCows, staticCowCount, distributionByLocation } =
+    useMemo(() => {
+      // Filter to only COWs with exactly 1 movement (static/newly deployed)
+      const staticCows = cowPositions.filter((p) => p.movementCount === 1);
 
-    // Separate by status
-    const onAir = staticCows.filter((p) => p.isOnAir);
-    const inactive = staticCows.filter((p) => !p.isOnAir);
+      // Separate by status
+      const onAir = staticCows.filter((p) => p.isOnAir);
+      const inactive = staticCows.filter((p) => !p.isOnAir);
 
-    // Calculate distribution by location
-    const locDistribution = new Map<string, { count: number; onAir: number; inactive: number }>();
-    staticCows.forEach((cow) => {
-      const locKey = cow.currentLocation;
-      if (!locDistribution.has(locKey)) {
-        locDistribution.set(locKey, { count: 0, onAir: 0, inactive: 0 });
-      }
-      const loc = locDistribution.get(locKey)!;
-      loc.count++;
-      if (cow.isOnAir) {
-        loc.onAir++;
-      } else {
-        loc.inactive++;
-      }
-    });
+      // Calculate distribution by location
+      const locDistribution = new Map<
+        string,
+        { count: number; onAir: number; inactive: number }
+      >();
+      staticCows.forEach((cow) => {
+        const locKey = cow.currentLocation;
+        if (!locDistribution.has(locKey)) {
+          locDistribution.set(locKey, { count: 0, onAir: 0, inactive: 0 });
+        }
+        const loc = locDistribution.get(locKey)!;
+        loc.count++;
+        if (cow.isOnAir) {
+          loc.onAir++;
+        } else {
+          loc.inactive++;
+        }
+      });
 
-    const distribution = Array.from(locDistribution.entries())
-      .map(([location, data]) => ({
-        location,
-        ...data,
-      }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+      const distribution = Array.from(locDistribution.entries())
+        .map(([location, data]) => ({
+          location,
+          ...data,
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
 
-    console.log(
-      `Static COWs (1 movement only): ${staticCows.length} total, ${onAir.length} ON-AIR, ${inactive.length} Inactive`,
-    );
+      console.log(
+        `Static COWs (1 movement only): ${staticCows.length} total, ${onAir.length} ON-AIR, ${inactive.length} Inactive`,
+      );
 
-    return {
-      onAirCows: onAir,
-      inactiveCows: inactive,
-      staticCowCount: staticCows.length,
-      distributionByLocation: distribution,
-    };
-  }, [cowPositions]);
+      return {
+        onAirCows: onAir,
+        inactiveCows: inactive,
+        staticCowCount: staticCows.length,
+        distributionByLocation: distribution,
+      };
+    }, [cowPositions]);
 
   // Combine all static COWs for map display
   const allStaticCows = useMemo(
@@ -240,9 +237,7 @@ export function StaticCowMapCard({
             >
               <Popup className="text-sm">
                 <div className="space-y-1">
-                  <p className="font-semibold text-gray-900">
-                    {cowPos.cowId}
-                  </p>
+                  <p className="font-semibold text-gray-900">{cowPos.cowId}</p>
                   <p className="text-xs text-gray-600">
                     Status:{" "}
                     <span
@@ -256,7 +251,10 @@ export function StaticCowMapCard({
                     </span>
                   </p>
                   <p className="text-xs text-gray-600">
-                    Location: <span className="font-medium">{cowPos.currentLocation}</span>
+                    Location:{" "}
+                    <span className="font-medium">
+                      {cowPos.currentLocation}
+                    </span>
                   </p>
                   <p className="text-xs text-gray-600">
                     Coordinates: {cowPos.latitude.toFixed(4)},
@@ -267,7 +265,6 @@ export function StaticCowMapCard({
             </Marker>
           ))}
         </MapContainer>
-
       </div>
     </div>
   );

@@ -218,7 +218,10 @@ function classifyEbuRoyal(flag: string | undefined): {
     return { isRoyal: true, isEBU: false, category: "ROYAL" };
   } else if (normalized.toLowerCase() === "ebu") {
     return { isRoyal: false, isEBU: true, category: "EBU" };
-  } else if (normalized.toLowerCase() === "non ebu" || normalized.toLowerCase() === "non-ebu") {
+  } else if (
+    normalized.toLowerCase() === "non ebu" ||
+    normalized.toLowerCase() === "non-ebu"
+  ) {
     return { isRoyal: false, isEBU: false, category: "NON EBU" };
   } else {
     // Anything else defaults to NON EBU
@@ -467,7 +470,6 @@ const processedDataHandler: RequestHandler = async (req, res) => {
     console.log(
       `  └─ NON EBU movements: ${nonEbuCount} (${((nonEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
-
 
     if (processedData.movements.length === 0) {
       throw new Error(

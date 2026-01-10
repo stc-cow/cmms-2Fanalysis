@@ -70,15 +70,19 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
   const distanceData = [
     {
       type: "ROYAL",
-      distance: Math.round((royalDistance / Math.max(royalCount, 1)) * 100) / 100 || 0,
+      distance:
+        Math.round((royalDistance / Math.max(royalCount, 1)) * 100) / 100 || 0,
     },
     {
       type: "EBU",
-      distance: Math.round((ebuDistance / Math.max(ebuCount, 1)) * 100) / 100 || 0,
+      distance:
+        Math.round((ebuDistance / Math.max(ebuCount, 1)) * 100) / 100 || 0,
     },
     {
       type: "NON EBU",
-      distance: Math.round((nonEbuDistance / Math.max(nonEbuCount, 1)) * 100) / 100 || 0,
+      distance:
+        Math.round((nonEbuDistance / Math.max(nonEbuCount, 1)) * 100) / 100 ||
+        0,
     },
   ];
 
