@@ -7,9 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 import { CowMovementsFact, DimCow, DimLocation } from "@shared/models";
 import { generateTimelineMonths, TimelineMonth } from "@/lib/saudiMapData";
