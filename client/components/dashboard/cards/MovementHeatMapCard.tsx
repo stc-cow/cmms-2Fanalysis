@@ -170,11 +170,16 @@ export function MovementHeatMapCard({
             center={[24.0, 46.0]}
             zoom={5}
             style={{ width: "100%", height: "100%" }}
+            maxBounds={SAUDI_BOUNDS}
+            maxBoundsViscosity={1.0}
           >
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+
+            {/* Enforce Saudi Arabia boundary */}
+            <EnforceSaudiBoundary />
 
             {/* Draw movement flow lines */}
             {flowData.map((flow, idx) => {
