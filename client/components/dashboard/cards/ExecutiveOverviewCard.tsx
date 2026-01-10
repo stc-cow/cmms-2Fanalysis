@@ -153,7 +153,10 @@ export function ExecutiveOverviewCard({
         {metrics.map((metric) => (
           <div
             key={metric.label}
-            className={`${metric.bgColor} ${metric.borderColor} border rounded-xl p-4 hover-lift transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group`}
+            onClick={() => metric.label === "Static COWs" && setShowStaticCowsModal(true)}
+            className={`${metric.bgColor} ${metric.borderColor} border rounded-xl p-4 hover-lift transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group ${
+              metric.label === "Static COWs" ? "cursor-pointer" : ""
+            }`}
           >
             <p className={`text-xs font-semibold ${metric.accentColor} uppercase tracking-wider`}>
               {metric.label}
