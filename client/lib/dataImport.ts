@@ -38,19 +38,29 @@ interface GoogleSheetRow {
 
 /**
  * Parse CSV data from Google Sheets
- * Maps columns A-AE to standardized snake_case field names
+ * Auto-detects and handles both old and new column structures
  */
 export function parseCSVData(csvText: string): GoogleSheetRow[] {
   const lines = csvText.trim().split("\n");
   if (lines.length < 2) return [];
 
-  // Skip header row and parse data
+  // Detect column structure based on total columns
+  const firstDataLine = lines[1];
+  const firstDataCells = parseCSVLine(firstDataLine);
+  const isNewStructure = firstDataCells.length >= 31;
+
   const rows: GoogleSheetRow[] = [];
   for (let i = 1; i < lines.length; i++) {
     const cells = parseCSVLine(lines[i]);
-    // Require at least 31 cells (A-AE columns)
-    if (cells.length >= 31) {
-      rows.push({
+
+    // Skip if not enough cells
+    if (cells.length < 20) continue;
+
+    let row: GoogleSheetRow;
+
+    if (isNewStructure) {
+      // New structure (A-AE with 31 columns)
+      row = {
         cow_id: cells[0]?.trim() || "",
         site_label: cells[1]?.trim() || "",
         last_deploy_date: cells[2]?.trim() || "",
@@ -82,8 +92,45 @@ export function parseCSVData(csvText: string): GoogleSheetRow[] {
         vendor: cells[28]?.trim() || "",
         installation_status: cells[29]?.trim() || "",
         remarks: cells[30]?.trim() || "",
-      });
+      };
+    } else {
+      // Old structure (legacy backwards compatibility)
+      row = {
+        cow_id: cells[0]?.trim() || "",
+        site_label: cells[1]?.trim() || "",
+        last_deploy_date: cells[2]?.trim() || "", // Was ebu_royal in old
+        first_deploy_date: cells[3]?.trim() || "", // Was shelter_type in old
+        ebu_royal_flag: cells[2]?.trim() || "", // Map from old position
+        shelter_type: cells[3]?.trim() || "",
+        tower_type: cells[4]?.trim() || "",
+        tower_system: cells[5]?.trim() || "",
+        tower_height: cells[6]?.trim() || "",
+        network_technology: cells[7]?.trim() || "",
+        vehicle_make: cells[8]?.trim() || "",
+        vehicle_plate_number: cells[9]?.trim() || "",
+        moved_datetime: cells[10]?.trim() || "",
+        moved_month_year: cells[11]?.trim() || "",
+        reached_datetime: cells[12]?.trim() || "",
+        reached_month_year: cells[13]?.trim() || "",
+        from_location: cells[14]?.trim() || "",
+        from_sub_location: cells[15]?.trim() || "",
+        from_latitude: cells[16]?.trim() || "",
+        from_longitude: cells[17]?.trim() || "",
+        to_location: cells[18]?.trim() || "",
+        to_sub_location: cells[19]?.trim() || "",
+        to_latitude: cells[20]?.trim() || "",
+        to_longitude: cells[21]?.trim() || "",
+        distance_km: cells[22]?.trim() || "",
+        movement_type: cells[23]?.trim() || "",
+        region_from: cells[24]?.trim() || "",
+        region_to: cells[25]?.trim() || "",
+        vendor: cells[26]?.trim() || "",
+        installation_status: cells[27]?.trim() || "",
+        remarks: cells[28]?.trim() || "",
+      };
     }
+
+    rows.push(row);
   }
   return rows;
 }
