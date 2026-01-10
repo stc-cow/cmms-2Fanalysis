@@ -56,7 +56,7 @@ export function COWUtilizationCard({ cowMetrics }: COWUtilizationCardProps) {
     .slice(0, 8);
 
   return (
-    <div className="h-[calc(100vh-200px)] overflow-hidden flex flex-col gap-4 p-4">
+    <div className="h-full overflow-y-auto flex flex-col gap-4 p-4">
       {/* Histogram */}
       <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex-shrink-0">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
