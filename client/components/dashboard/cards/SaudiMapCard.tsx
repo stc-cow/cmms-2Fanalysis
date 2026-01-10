@@ -155,7 +155,7 @@ export function SaudiMapCard({
   const COLORS = ["#3b82f6", "#a855f7", "#6b7280", "#10b981", "#f59e0b"];
 
   return (
-    <div className="h-[calc(100vh-200px)] w-full overflow-hidden flex flex-col bg-gradient-to-br from-white via-blue-50/20 to-white dark:from-slate-800 dark:via-slate-800/50 dark:to-slate-800">
+    <div className="h-full w-full overflow-y-auto flex flex-col bg-gradient-to-br from-white via-blue-50/20 to-white dark:from-slate-800 dark:via-slate-800/50 dark:to-slate-800">
       {/* Header with Controls - Enhanced Design */}
       <div className="flex-shrink-0 px-6 py-5 flex items-center justify-between bg-gradient-to-r from-white/80 via-blue-50/40 to-white/80 dark:from-slate-800/80 dark:via-slate-800/40 dark:to-slate-800/80 border-b border-gray-200/40 dark:border-gray-700/40 backdrop-blur-sm">
 
