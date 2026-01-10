@@ -146,7 +146,7 @@ export function ExecutiveOverviewCard({
       {/* Summary Statistics Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6 flex-shrink-0 px-6">
         {summaryStats.map((stat, idx) => (
-          <div key={idx} className="card-modern-sm hover-lift bg-gradient-to-br from-white/60 to-white/40 dark:from-slate-800/60 dark:to-slate-700/40 border border-gray-200/60 dark:border-gray-700/60 backdrop-blur-sm hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-300">
+          <div key={idx} className="card-modern-sm hover-lift bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-slate-800/60 dark:to-slate-700/40 border border-purple-200/30 dark:border-gray-700/60 backdrop-blur-md hover:border-purple-300/50 dark:hover:border-blue-600/50 transition-all duration-300">
             <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
               {stat.label}
             </p>
