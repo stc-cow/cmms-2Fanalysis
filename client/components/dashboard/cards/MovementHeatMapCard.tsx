@@ -400,8 +400,8 @@ export function MovementHeatMapCard({
             </div>
           </>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-400">
-            <p className="text-lg">No movement data available</p>
+          <div className="w-full h-full flex items-center justify-center">
+            <p className="text-lg text-gray-400">No movement data available</p>
           </div>
         )}
       </div>
