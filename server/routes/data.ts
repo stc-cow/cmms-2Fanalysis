@@ -443,7 +443,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       );
     }
 
-    // Calculate EBU/Royal/Non-EBU statistics (three mutually exclusive categories)
+    // Calculate EBU/Royal/NON EBU statistics (three mutually exclusive categories)
     const royalCount = processedData.movements.filter(
       (m) => m.EbuRoyalCategory === "ROYAL",
     ).length;
@@ -451,7 +451,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       (m) => m.EbuRoyalCategory === "EBU",
     ).length;
     const nonEbuCount = processedData.movements.filter(
-      (m) => m.EbuRoyalCategory === "NON-EBU",
+      (m) => m.EbuRoyalCategory === "NON EBU",
     ).length;
 
     console.log(
@@ -464,7 +464,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       `  ├─ EBU movements: ${ebuCount} (${((ebuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
     console.log(
-      `  └─ NON-EBU movements: ${nonEbuCount} (${((nonEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
+      `  └─ NON EBU movements: ${nonEbuCount} (${((nonEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
 
     if (processedData.movements.length === 0) {
