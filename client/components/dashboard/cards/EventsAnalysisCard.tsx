@@ -103,10 +103,11 @@ export function EventsAnalysisCard({
 
   return (
     <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 md:p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 flex-1 min-h-0">
+      {/* Charts Section - Fixed Height */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4 h-80 sm:h-96 md:h-full md:flex-1 md:min-h-0">
         {/* Event distribution pie */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Movements by Event Type
           </h3>
           {totalEventsData.length > 0 ? (
@@ -118,8 +119,8 @@ export function EventsAnalysisCard({
                   cy="50%"
                   labelLine={false}
                   label={({ displayName }) => displayName}
-                  innerRadius={60}
-                  outerRadius={100}
+                  innerRadius={40}
+                  outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                 >
@@ -150,25 +151,25 @@ export function EventsAnalysisCard({
         </div>
 
         {/* Distance by event */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Average Distance by Event Type
           </h3>
           {distanceData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={distanceData}
-                margin={{ top: 5, right: 30, left: 0, bottom: 80 }}
+                margin={{ top: 5, right: 20, left: -20, bottom: 60 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis
                   dataKey="type"
                   angle={-45}
                   textAnchor="end"
-                  height={100}
-                  tick={{ fontSize: 12 }}
+                  height={70}
+                  tick={{ fontSize: 11 }}
                 />
-                <YAxis />
+                <YAxis width={40} tick={{ fontSize: 11 }} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#ffffff",
