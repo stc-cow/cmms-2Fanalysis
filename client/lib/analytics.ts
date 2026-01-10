@@ -168,7 +168,11 @@ export function calculateWarehouseMetrics(
   locations: DimLocation[],
 ): WarehouseMetrics | null {
   const location = locations.find((l) => l.Location_ID === locationId);
-  if (!location || location.Location_Type !== "Warehouse") return null;
+
+  // Check if it's a warehouse - either by type or if the name contains "WH"
+  const isWarehouse = location && (location.Location_Type === "Warehouse" || location.Location_Name.toUpperCase().includes("WH"));
+
+  if (!location || !isWarehouse) return null;
 
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
   const outgoing = movements.filter((m) => m.From_Location_ID === locationId);
