@@ -11,6 +11,8 @@ interface MovementHeatMapCardProps {
 interface MovementFlow {
   fromLoc: DimLocation;
   toLoc: DimLocation;
+  fromSubLocations: Set<string>;
+  toSubLocations: Set<string>;
   count: number;
   movementIds: string[];
 }
