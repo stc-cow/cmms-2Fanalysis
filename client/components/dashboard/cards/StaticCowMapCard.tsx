@@ -178,11 +178,46 @@ export function StaticCowMapCard({
     return validPositions;
   }, [movements, cowMap, locMap]);
 
-  // Separate COWs by status
-  const { onAirCows, inactiveCows } = useMemo(() => {
+  // Separate COWs by status - ONLY show COWs with exactly 1 movement (static COWs)
+  const { onAirCows, inactiveCows, staticCowCount, distributionByLocation } = useMemo(() => {
+    // Filter to only COWs with exactly 1 movement (static/newly deployed)
+    const staticCows = cowPositions.filter((p) => p.movementCount === 1);
+
+    // Separate by status
+    const onAir = staticCows.filter((p) => p.isOnAir);
+    const inactive = staticCows.filter((p) => !p.isOnAir);
+
+    // Calculate distribution by location
+    const locDistribution = new Map<string, { count: number; onAir: number; inactive: number }>();
+    staticCows.forEach((cow) => {
+      const locKey = cow.currentLocation;
+      if (!locDistribution.has(locKey)) {
+        locDistribution.set(locKey, { count: 0, onAir: 0, inactive: 0 });
+      }
+      const loc = locDistribution.get(locKey)!;
+      loc.count++;
+      if (cow.isOnAir) {
+        loc.onAir++;
+      } else {
+        loc.inactive++;
+      }
+    });
+
+    const distribution = Array.from(locDistribution.entries())
+      .map(([location, data]) => ({
+        location,
+        ...data,
+      }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+
+    console.log(`Static COWs (1 movement only): ${staticCows.length} total, ${onAir.length} ON-AIR, ${inactive.length} Inactive`);
+
     return {
-      onAirCows: cowPositions.filter((p) => p.isOnAir),
-      inactiveCows: cowPositions.filter((p) => !p.isOnAir),
+      onAirCows: onAir,
+      inactiveCows: inactive,
+      staticCowCount: staticCows.length,
+      distributionByLocation: distribution,
     };
   }, [cowPositions]);
 
