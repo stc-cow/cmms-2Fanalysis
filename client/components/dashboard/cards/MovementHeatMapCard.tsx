@@ -36,17 +36,18 @@ function FitBounds({
   useEffect(() => {
     if (locations.length === 0) return;
 
-    const bounds = L.latLngBounds(
+    // Create bounds from location coordinates
+    const locationBounds = L.latLngBounds(
       locations.map((loc) => [loc.Latitude, loc.Longitude]),
     );
 
-    // Constrain bounds to Saudi Arabia
-    const constrainedBounds = bounds.intersect(SAUDI_BOUNDS);
-
-    if (constrainedBounds && constrainedBounds.isValid()) {
-      map.fitBounds(constrainedBounds, { padding: [50, 50] });
+    // Check if location bounds are within Saudi Arabia
+    if (SAUDI_BOUNDS.contains(locationBounds.getNorthEast()) &&
+        SAUDI_BOUNDS.contains(locationBounds.getSouthWest())) {
+      // All locations are within Saudi Arabia, fit to them
+      map.fitBounds(locationBounds, { padding: [50, 50] });
     } else {
-      // If no valid intersection, fit to Saudi Arabia
+      // Fit to Saudi Arabia bounds
       map.fitBounds(SAUDI_BOUNDS, { padding: [50, 50] });
     }
   }, [map, locations]);
