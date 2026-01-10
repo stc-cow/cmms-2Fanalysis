@@ -149,15 +149,17 @@ export function MovementHeatMapCard({
       destination.count += flow.count;
     });
 
-    // Filter to valid coordinates (no filtering by Saudi bounds - let Highcharts handle it)
+    // Filter to valid coordinates (must be proper numbers, not NaN or Infinity)
     const origins = Array.from(originMap.values()).filter((p) =>
       typeof p.lat === 'number' && typeof p.lon === 'number' &&
-      !isNaN(p.lat) && !isNaN(p.lon) && p.lat !== 0 && p.lon !== 0
+      !isNaN(p.lat) && !isNaN(p.lon) &&
+      isFinite(p.lat) && isFinite(p.lon)
     );
 
     const destinations = Array.from(destinationMap.values()).filter((p) =>
       typeof p.lat === 'number' && typeof p.lon === 'number' &&
-      !isNaN(p.lat) && !isNaN(p.lon) && p.lat !== 0 && p.lon !== 0
+      !isNaN(p.lat) && !isNaN(p.lon) &&
+      isFinite(p.lat) && isFinite(p.lon)
     );
 
     return {
