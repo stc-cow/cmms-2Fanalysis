@@ -319,6 +319,64 @@ export function ExecutiveOverviewCard({
         </div>
       </div>
 
+      {/* Static COWs Modal */}
+      {showStaticCowsModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between bg-gradient-to-r from-red-500 to-red-600 p-6 flex-shrink-0">
+              <h2 className="text-xl font-bold text-white">Static COWs Details</h2>
+              <button
+                onClick={() => setShowStaticCowsModal(false)}
+                className="text-white hover:bg-red-700 rounded-lg p-1 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="overflow-x-auto overflow-y-auto p-6 flex-1">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">COW ID</TableHead>
+                    <TableHead className="text-left">Last Deploying Date</TableHead>
+                    <TableHead className="text-left">First Deploying Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {staticCowsData.length > 0 ? (
+                    staticCowsData.map((row) => (
+                      <TableRow key={row.cow_id}>
+                        <TableCell className="font-medium">{row.cow_id}</TableCell>
+                        <TableCell>{row.last_deploy_date}</TableCell>
+                        <TableCell>{row.first_deploy_date}</TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3} className="text-center text-gray-500">
+                        No static COWs found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="border-t border-gray-200 dark:border-gray-700 p-4 flex-shrink-0 flex justify-end gap-3">
+              <button
+                onClick={() => setShowStaticCowsModal(false)}
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors font-medium"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer note */}
       <div className="flex-1 flex items-end px-6 pb-6">
         <p className="text-xs text-gray-500 dark:text-gray-400">
