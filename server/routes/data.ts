@@ -468,13 +468,6 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       `  └─ NON EBU movements: ${nonEbuCount} (${((nonEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
 
-    // Debug: Sample a few rows to check Column E values and raw flag
-    console.log("\n📊 Sample Column E values for debugging:");
-    const sampleRawRows = rows.slice(0, 20);
-    sampleRawRows.forEach((row, idx) => {
-      const { isRoyal, isEBU, category } = classifyEbuRoyal(row.ebu_royal_flag);
-      console.log(`  Sample ${idx + 1}: rawValue="${row.ebu_royal_flag}" → isRoyal=${isRoyal}, isEBU=${isEBU}, category="${category}"`);
-    });
 
     if (processedData.movements.length === 0) {
       throw new Error(
