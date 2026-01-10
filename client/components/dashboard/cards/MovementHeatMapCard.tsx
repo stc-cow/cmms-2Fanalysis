@@ -22,7 +22,10 @@ interface MovementFlow {
   movementIds: string[];
 }
 
-// Custom hook to fit map bounds to all markers
+// Saudi Arabia bounding box
+const SAUDI_BOUNDS = L.latLngBounds([16.4, 34.4], [32.15, 55.67]);
+
+// Custom hook to fit map bounds to all markers within Saudi Arabia
 function FitBounds({
   locations,
 }: {
@@ -36,8 +39,52 @@ function FitBounds({
     const bounds = L.latLngBounds(
       locations.map((loc) => [loc.Latitude, loc.Longitude]),
     );
-    map.fitBounds(bounds, { padding: [50, 50] });
+
+    // Constrain bounds to Saudi Arabia
+    const constrainedBounds = bounds.intersect(SAUDI_BOUNDS);
+
+    if (constrainedBounds && constrainedBounds.isValid()) {
+      map.fitBounds(constrainedBounds, { padding: [50, 50] });
+    } else {
+      // If no valid intersection, fit to Saudi Arabia
+      map.fitBounds(SAUDI_BOUNDS, { padding: [50, 50] });
+    }
   }, [map, locations]);
+
+  return null;
+}
+
+// Custom hook to enforce Saudi Arabia boundary
+function EnforceSaudiBoundary() {
+  const map = useMap();
+
+  useEffect(() => {
+    // Set max bounds to prevent panning outside Saudi Arabia
+    map.setMaxBounds(SAUDI_BOUNDS);
+
+    // Restrict zoom levels
+    map.setMinZoom(4); // Can't zoom out too far
+    map.setMaxZoom(15); // Can't zoom in too far
+
+    // Constrain the map view to Saudi Arabia on load and pan
+    const constrainView = () => {
+      const bounds = map.getBounds();
+      if (!SAUDI_BOUNDS.contains(bounds)) {
+        map.fitBounds(SAUDI_BOUNDS, { padding: [50, 50] });
+      }
+    };
+
+    map.on("dragend", constrainView);
+    map.on("zoomend", constrainView);
+
+    // Initial constraint
+    constrainView();
+
+    return () => {
+      map.off("dragend", constrainView);
+      map.off("zoomend", constrainView);
+    };
+  }, [map]);
 
   return null;
 }
