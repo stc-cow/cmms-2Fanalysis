@@ -92,7 +92,7 @@ export function SaudiMapCard({
     return timelineMonths[currentMonthIndex] || null;
   }, [currentMonthIndex, timelineMonths]);
 
-  // Calculate region metrics from movements based on destination region
+  // Calculate region metrics from movements based on destination region coordinates
   const regionMetrics = useMemo(() => {
     if (!currentMonth) return {};
     const metrics: Record<string, number> = {};
@@ -103,10 +103,13 @@ export function SaudiMapCard({
       SOUTH: "Asir",
     };
 
-    // Aggregate movements by destination region from mapLine data
+    // Aggregate movements by destination region (using coordinates from column W, X)
+    // Each movement's destination coordinates map to a region through the to_location relationship
     currentMonth.movements.forEach((mapLine) => {
       const regionName = regionMap[mapLine.toRegion] || mapLine.toRegion;
-      metrics[regionName] = (metrics[regionName] || 0) + 1;
+      if (regionName) {
+        metrics[regionName] = (metrics[regionName] || 0) + 1;
+      }
     });
 
     return metrics;
