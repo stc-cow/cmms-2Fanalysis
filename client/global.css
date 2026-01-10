@@ -122,11 +122,11 @@
 /* Modern Card Styling */
 @layer components {
   .card-modern {
-    @apply bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-gray-100/60 dark:border-gray-700/60 p-6 shadow-sm hover:shadow-lg backdrop-blur-sm transition-all duration-300 ease-out hover:border-blue-200/50 dark:hover:border-blue-800/50;
+    @apply bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-2xl border border-blue-200/30 dark:border-gray-700/60 p-6 shadow-sm hover:shadow-lg backdrop-blur-md transition-all duration-300 ease-out hover:border-blue-300/50 dark:hover:border-blue-800/50;
   }
 
   .card-modern-sm {
-    @apply bg-gradient-to-br from-white/80 via-white/60 to-white/40 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-xl border border-gray-100/60 dark:border-gray-700/60 p-4 shadow-sm hover:shadow-md backdrop-blur-sm transition-all duration-300 ease-out hover:border-blue-200/50 dark:hover:border-blue-800/50;
+    @apply bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-blue-500/5 dark:from-slate-800/80 dark:via-slate-800/60 dark:to-slate-700/40 rounded-xl border border-blue-200/30 dark:border-gray-700/60 p-4 shadow-sm hover:shadow-md backdrop-blur-md transition-all duration-300 ease-out hover:border-blue-300/50 dark:hover:border-blue-800/50;
   }
 
   .card-gradient {
