@@ -256,6 +256,8 @@ function processData(rows: any[]) {
         Shelter_Type: row.shelter_type?.includes("Shelter") ? "Shelter" : "Outdoor",
         Vendor: row.vendor || "Unknown",
         Installation_Date: row.first_deploy_date || new Date().toISOString().split("T")[0],
+        Last_Deploy_Date: row.last_deploy_date || new Date().toISOString().split("T")[0],
+        First_Deploy_Date: row.first_deploy_date || new Date().toISOString().split("T")[0],
       });
     }
 
