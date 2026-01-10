@@ -64,7 +64,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
     .filter((m) => m.EbuRoyalCategory === "EBU")
     .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
   const nonEbuDistance = movements
-    .filter((m) => m.EbuRoyalCategory === "NON-EBU")
+    .filter((m) => m.EbuRoyalCategory === "NON EBU")
     .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
 
   const distanceData = [
@@ -77,7 +77,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
       distance: Math.round((ebuDistance / Math.max(ebuCount, 1)) * 100) / 100 || 0,
     },
     {
-      type: "NON-EBU",
+      type: "NON EBU",
       distance: Math.round((nonEbuDistance / Math.max(nonEbuCount, 1)) * 100) / 100 || 0,
     },
   ];
