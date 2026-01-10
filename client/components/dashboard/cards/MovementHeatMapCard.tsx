@@ -82,19 +82,13 @@ export function MovementHeatMapCard({
     loadGeoData();
   }, [modulesReady]);
 
-  // Filter locations to only include those within Saudi Arabia
-  const validLocations = useMemo(() => {
-    return locations.filter((loc) =>
-      isWithinSaudiBounds(loc.Latitude, loc.Longitude),
-    );
-  }, [locations]);
-
+  // Create location map from all locations
   const locMap = useMemo(
-    () => new Map(validLocations.map((l) => [l.Location_ID, l])),
-    [validLocations],
+    () => new Map(locations.map((l) => [l.Location_ID, l])),
+    [locations],
   );
 
-  // Aggregate movements by from-to location pairs (only valid locations)
+  // Aggregate movements by from-to location pairs
   const flowData = useMemo(() => {
     const flowsMap = new Map<string, MovementFlow>();
 
@@ -121,7 +115,7 @@ export function MovementHeatMapCard({
     });
 
     return Array.from(flowsMap.values()).sort((a, b) => b.count - a.count);
-  }, [movements, locMap, validLocations]);
+  }, [movements, locMap]);
 
   // Calculate heat map data by destination region
   const regionHeatData = useMemo(() => {
