@@ -198,29 +198,30 @@ function normalizeRegion(
 /**
  * Classify Royal/EBU/NON EBU from column E
  * Three mutually exclusive categories:
- * - "ROYAL": contains "Royal"
- * - "EBU": contains "EBU" but NOT "Royal"
- * - "NON EBU": contains neither "Royal" nor "EBU"
+ * - "ROYAL": exact match "Royal"
+ * - "EBU": exact match "EBU"
+ * - "NON EBU": exact match "NON EBU" or empty
  */
 function classifyEbuRoyal(flag: string | undefined): {
   isRoyal: boolean;
   isEBU: boolean;
   category: "ROYAL" | "EBU" | "NON EBU";
 } {
-  if (!flag) {
+  if (!flag || flag.trim() === "") {
     return { isRoyal: false, isEBU: false, category: "NON EBU" };
   }
 
-  const normalized = flag.trim().toLowerCase();
-  const hasRoyal = normalized.includes("royal");
-  const hasEBU = normalized.includes("ebu");
+  const normalized = flag.trim();
 
-  // Priority: Royal > EBU > NON EBU
-  if (hasRoyal) {
-    return { isRoyal: true, isEBU: hasEBU, category: "ROYAL" };
-  } else if (hasEBU) {
+  // Check for exact matches (case-insensitive)
+  if (normalized.toLowerCase() === "royal") {
+    return { isRoyal: true, isEBU: false, category: "ROYAL" };
+  } else if (normalized.toLowerCase() === "ebu") {
     return { isRoyal: false, isEBU: true, category: "EBU" };
+  } else if (normalized.toLowerCase() === "non ebu" || normalized.toLowerCase() === "non-ebu") {
+    return { isRoyal: false, isEBU: false, category: "NON EBU" };
   } else {
+    // Anything else defaults to NON EBU
     return { isRoyal: false, isEBU: false, category: "NON EBU" };
   }
 }
