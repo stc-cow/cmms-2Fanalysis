@@ -94,52 +94,46 @@ export function ExecutiveOverviewCard({
     {
       label: "Total COWs",
       value: kpis.totalCOWs,
-      bgColor:
-        "bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30",
-      accentColor: "text-blue-600 dark:text-blue-400",
-      borderColor: "border-blue-200/50 dark:border-blue-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
     {
       label: "Total Movements",
       value: kpis.totalMovements,
-      bgColor:
-        "bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/30",
-      accentColor: "text-purple-600 dark:text-purple-400",
-      borderColor: "border-purple-200/50 dark:border-purple-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
     {
       label: "Total Distance (KM)",
       value: kpis.totalDistanceKM.toLocaleString("en-US", {
         maximumFractionDigits: 0,
       }),
-      bgColor:
-        "bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/30",
-      accentColor: "text-green-600 dark:text-green-400",
-      borderColor: "border-green-200/50 dark:border-green-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
     {
       label: "Active COWs",
       value: kpis.activeCOWs,
-      bgColor:
-        "bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950/50 dark:to-orange-900/30",
-      accentColor: "text-orange-600 dark:text-orange-400",
-      borderColor: "border-orange-200/50 dark:border-orange-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
     {
       label: "Static COWs",
       value: kpis.staticCOWs,
-      bgColor:
-        "bg-gradient-to-br from-red-50 to-red-100 dark:from-red-950/50 dark:to-red-900/30",
-      accentColor: "text-red-600 dark:text-red-400",
-      borderColor: "border-red-200/50 dark:border-red-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
     {
       label: "Avg Moves/COW",
       value: kpis.avgMovesPerCOW.toFixed(1),
-      bgColor:
-        "bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-950/50 dark:to-yellow-900/30",
-      accentColor: "text-yellow-600 dark:text-yellow-400",
-      borderColor: "border-yellow-200/50 dark:border-yellow-800/50",
+      bgColor: "bg-white dark:bg-white",
+      accentColor: "text-purple-600",
+      borderColor: "border-purple-600",
     },
   ];
 
@@ -172,16 +166,19 @@ export function ExecutiveOverviewCard({
             onClick={() =>
               metric.label === "Static COWs" && setShowStaticCowsModal(true)
             }
-            className={`${metric.bgColor} ${metric.borderColor} border rounded-xl p-4 hover-lift transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10 group ${
+            className={`${metric.bgColor} ${metric.borderColor} border-2 rounded-2xl p-4 transition-all duration-300 hover:shadow-xl group shadow-lg ${
               metric.label === "Static COWs" ? "cursor-pointer" : ""
             }`}
+            style={{
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
+            }}
           >
             <p
               className={`text-xs font-semibold ${metric.accentColor} uppercase tracking-wider`}
             >
               {metric.label}
             </p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-2 group-hover:scale-105 transition-transform duration-300">
+            <p className="text-2xl font-bold text-gray-900 mt-2 group-hover:scale-105 transition-transform duration-300">
               {metric.value}
             </p>
           </div>
