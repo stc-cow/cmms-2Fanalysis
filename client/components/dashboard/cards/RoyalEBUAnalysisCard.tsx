@@ -167,7 +167,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            NON-EBU Movements
+            NON EBU Movements
           </div>
           <div className="text-2xl font-bold text-gray-600">{nonEbuCount}</div>
           <div className="text-xs text-gray-500 mt-1">
@@ -192,7 +192,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            Avg NON-EBU Distance
+            Avg NON EBU Distance
           </div>
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             {distanceData[2].distance.toFixed(0)} KM
