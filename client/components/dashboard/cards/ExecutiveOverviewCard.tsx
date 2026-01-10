@@ -376,7 +376,7 @@ export function ExecutiveOverviewCard({
                       Region
                     </TableHead>
                     <TableHead className="text-left">
-                      EBU/Royal
+                      Remarks
                     </TableHead>
                   </TableRow>
                 </TableHeader>
@@ -388,7 +388,7 @@ export function ExecutiveOverviewCard({
                           {row.cow_id}
                         </TableCell>
                         <TableCell>{row.region}</TableCell>
-                        <TableCell>{row.eb_royal}</TableCell>
+                        <TableCell>{row.remarks}</TableCell>
                       </TableRow>
                     ))
                   ) : (
