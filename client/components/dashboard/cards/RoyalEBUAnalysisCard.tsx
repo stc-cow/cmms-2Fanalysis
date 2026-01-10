@@ -145,15 +145,15 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
         </div>
       </div>
 
-      {/* Statistics summary */}
-      <div className="flex-shrink-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 px-3 sm:px-4 md:px-6">
+      {/* Statistics summary - Three categories */}
+      <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 px-3 sm:px-4 md:px-6">
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            Royal Movements
+            ROYAL Movements
           </div>
           <div className="text-2xl font-bold text-purple-600">{royalCount}</div>
           <div className="text-xs text-gray-500 mt-1">
-            {((royalCount / movements.length) * 100).toFixed(1)}% of total
+            {((royalCount / totalMovements) * 100).toFixed(1)}% of total
           </div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
@@ -162,12 +162,21 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
           </div>
           <div className="text-2xl font-bold text-yellow-600">{ebuCount}</div>
           <div className="text-xs text-gray-500 mt-1">
-            {((ebuCount / movements.length) * 100).toFixed(1)}% of total
+            {((ebuCount / totalMovements) * 100).toFixed(1)}% of total
           </div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            Avg Royal Distance
+            NON-EBU Movements
+          </div>
+          <div className="text-2xl font-bold text-gray-600">{nonEbuCount}</div>
+          <div className="text-xs text-gray-500 mt-1">
+            {((nonEbuCount / totalMovements) * 100).toFixed(1)}% of total
+          </div>
+        </div>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+          <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+            Avg ROYAL Distance
           </div>
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             {distanceData[0].distance.toFixed(0)} KM
@@ -175,10 +184,18 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-            Avg Normal Distance
+            Avg EBU Distance
           </div>
           <div className="text-2xl font-bold text-gray-900 dark:text-white">
             {distanceData[1].distance.toFixed(0)} KM
+          </div>
+        </div>
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+          <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
+            Avg NON-EBU Distance
+          </div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-white">
+            {distanceData[2].distance.toFixed(0)} KM
           </div>
         </div>
       </div>
