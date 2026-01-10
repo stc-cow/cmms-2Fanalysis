@@ -21,32 +21,57 @@ const EVENT_COLORS: Record<string, string> = {
   Hajj: "#f59e0b",
   Umrah: "#06b6d4",
   Royal: "#8b5cf6",
+  "Mega Project": "#ec4899",
   "National Event": "#10b981",
-  Seasonal: "#ec4899",
+  Seasonal: "#14b8a6",
+  Event: "#3b82f6",
   "Normal Coverage": "#6b7280",
 };
+
+// Normalize event type names
+function normalizeEventType(type: string | undefined): string {
+  if (!type) return "Normal Coverage";
+  const normalized = type.trim().toLowerCase();
+
+  // Match against known event types
+  if (normalized.includes("hajj")) return "Hajj";
+  if (normalized.includes("umrah")) return "Umrah";
+  if (normalized.includes("royal")) return "Royal";
+  if (normalized.includes("mega")) return "Mega Project";
+  if (normalized.includes("national")) return "National Event";
+  if (normalized.includes("seasonal")) return "Seasonal";
+  if (normalized.includes("event")) return "Event";
+  if (normalized.includes("normal")) return "Normal Coverage";
+
+  // Return original if it's a non-empty custom event type
+  return type;
+}
 
 export function EventsAnalysisCard({
   movements,
   events,
 }: EventsAnalysisCardProps) {
-  const eventMap = new Map(events.map((e) => [e.Event_ID, e]));
-  const eventCounts: Record<string, number> = {
-    Hajj: 0,
-    Umrah: 0,
-    Royal: 0,
-    "National Event": 0,
-    Seasonal: 0,
-    "Normal Coverage": 0,
-  };
+  // Analyze event types from From_Sub_Location and To_Sub_Location fields
+  const eventCounts: Record<string, number> = {};
+  const distanceByEvent: Record<string, { total: number; count: number }> = {};
 
   movements.forEach((mov) => {
-    if (mov.Event_ID) {
-      const event = eventMap.get(mov.Event_ID);
-      if (event && eventCounts.hasOwnProperty(event.Event_Type)) {
-        eventCounts[event.Event_Type]++;
-      }
+    // Check both From and To event types
+    const fromEvent = normalizeEventType(mov.From_Sub_Location);
+    const toEvent = normalizeEventType(mov.To_Sub_Location);
+
+    // Use From event if available, otherwise use To event
+    const eventType = mov.From_Sub_Location ? fromEvent : toEvent;
+
+    // Count event occurrences
+    eventCounts[eventType] = (eventCounts[eventType] || 0) + 1;
+
+    // Aggregate distances
+    if (!distanceByEvent[eventType]) {
+      distanceByEvent[eventType] = { total: 0, count: 0 };
     }
+    distanceByEvent[eventType].total += mov.Distance_KM || 0;
+    distanceByEvent[eventType].count++;
   });
 
   const eventData = Object.entries(eventCounts)
@@ -54,41 +79,18 @@ export function EventsAnalysisCard({
     .map(([type, count]) => ({
       name: type,
       value: count,
-    }));
-
-  // Distance by event type
-  const distanceByEvent: Record<string, { total: number; count: number }> = {
-    Hajj: { total: 0, count: 0 },
-    Umrah: { total: 0, count: 0 },
-    Royal: { total: 0, count: 0 },
-    "National Event": { total: 0, count: 0 },
-    Seasonal: { total: 0, count: 0 },
-    "Normal Coverage": { total: 0, count: 0 },
-  };
-
-  movements.forEach((mov) => {
-    if (mov.Event_ID) {
-      const event = eventMap.get(mov.Event_ID);
-      if (event && distanceByEvent.hasOwnProperty(event.Event_Type)) {
-        distanceByEvent[event.Event_Type].total += mov.Distance_KM || 0;
-        distanceByEvent[event.Event_Type].count++;
-      }
-    }
-  });
+    }))
+    .sort((a, b) => b.value - a.value);
 
   const distanceData = Object.entries(distanceByEvent)
     .filter(([_, data]) => data.count > 0)
     .map(([type, data]) => ({
       type,
       avgDistance: Math.round((data.total / data.count) * 100) / 100,
-    }));
+    }))
+    .sort((a, b) => b.avgDistance - a.avgDistance);
 
-  const normalCoverageCount =
-    movements.length - (eventData.reduce((sum, e) => sum + e.value, 0) || 0);
-  const totalEventsData =
-    eventData.length > 0
-      ? eventData
-      : [{ name: "Normal Coverage", value: normalCoverageCount }];
+  const totalEventsData = eventData.length > 0 ? eventData : [];
 
   return (
     <div className="h-full overflow-y-auto flex flex-col gap-4 p-4">
