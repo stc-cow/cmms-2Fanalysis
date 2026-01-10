@@ -61,7 +61,7 @@ export interface CowMovementsFact {
   Distance_KM?: number;
   Is_Royal?: boolean; // Derived from Column E (ebu_royal_flag) - true if contains "Royal"
   Is_EBU?: boolean; // Derived from Column E (ebu_royal_flag) - true if contains "EBU"
-  EbuRoyalCategory?: "ROYAL" | "EBU" | "NON-EBU"; // Mutually exclusive category from Column E
+  EbuRoyalCategory?: "ROYAL" | "EBU" | "NON EBU"; // Mutually exclusive category from Column E
 }
 
 // Analytics: COW aggregated metrics
