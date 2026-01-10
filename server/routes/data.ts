@@ -256,7 +256,7 @@ function processData(rows: any[]) {
     };
 
     // Parse Royal/EBU classification from column E (ebu_royal_flag)
-    const { isRoyal, isEBU } = parseRoyalEBUFlag(row.ebu_royal_flag);
+    const { isRoyal, isEBU, category } = classifyEbuRoyal(row.ebu_royal_flag);
 
     // Add movement with standard field names
     movements.push({
@@ -276,6 +276,7 @@ function processData(rows: any[]) {
       Distance_KM: parseFloat(row.distance_km) || 0,
       Is_Royal: isRoyal,
       Is_EBU: isEBU,
+      EbuRoyalCategory: category,
     });
 
     // Add cow with asset information
