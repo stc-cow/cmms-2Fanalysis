@@ -226,7 +226,7 @@ export function MovementHeatMapCard({
         enabled: false,
       },
     } as Highcharts.Options;
-  }, [saudiGeo, maplineData]);
+  }, [saudiGeo]);
 
   if (loading || !saudiGeo || !modulesReady) {
     return (
