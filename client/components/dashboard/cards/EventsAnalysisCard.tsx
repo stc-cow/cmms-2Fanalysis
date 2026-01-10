@@ -199,51 +199,51 @@ export function EventsAnalysisCard({
           Event Statistics Summary
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
-          <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-700">
-            <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+          <div className="p-3 sm:p-4 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-700 min-h-20 sm:min-h-24">
+            <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
               Total Events Tracked
             </div>
-            <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+            <div className="text-xl sm:text-2xl font-bold text-blue-900 dark:text-blue-100">
               {Object.keys(eventCounts).length}
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               Event type categories
             </div>
           </div>
           {topEventType && (
-            <div className="p-3 bg-purple-50 dark:bg-purple-950 rounded border border-purple-200 dark:border-purple-700">
-              <div className="text-xs font-medium text-purple-600 dark:text-purple-400 mb-1">
+            <div className="p-3 sm:p-4 bg-purple-50 dark:bg-purple-950 rounded border border-purple-200 dark:border-purple-700 min-h-20 sm:min-h-24">
+              <div className="text-xs font-medium text-purple-600 dark:text-purple-400 mb-2">
                 Most Common Event
               </div>
-              <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+              <div className="text-xl sm:text-2xl font-bold text-purple-900 dark:text-purple-100">
                 {topEventType.value}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
                 {topEventType.name}
               </div>
             </div>
           )}
           {topDistance && (
-            <div className="p-3 bg-green-50 dark:bg-green-950 rounded border border-green-200 dark:border-green-700">
-              <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-1">
+            <div className="p-3 sm:p-4 bg-green-50 dark:bg-green-950 rounded border border-green-200 dark:border-green-700 min-h-20 sm:min-h-24">
+              <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-2">
                 Longest Avg Distance
               </div>
-              <div className="text-2xl font-bold text-green-900 dark:text-green-100">
+              <div className="text-xl sm:text-2xl font-bold text-green-900 dark:text-green-100">
                 {topDistance.avgDistance.toFixed(0)}
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
                 {topDistance.type} (KM)
               </div>
             </div>
           )}
-          <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700">
-            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+          <div className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 min-h-20 sm:min-h-24">
+            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
               Total Movements
             </div>
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
               {totalMovements}
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               movements analyzed
             </div>
           </div>
