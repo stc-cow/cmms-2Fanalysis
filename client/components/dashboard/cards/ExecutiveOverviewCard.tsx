@@ -166,7 +166,7 @@ export function ExecutiveOverviewCard({
             onClick={() =>
               metric.label === "Static COWs" && setShowStaticCowsModal(true)
             }
-            className={`${metric.bgColor} ${metric.borderColor} border-2 rounded-2xl p-4 transition-all duration-300 hover:shadow-xl group shadow-lg ${
+            className={`${metric.bgColor} ${metric.borderColor} border-2 rounded-2xl p-4 transition-all duration-300 hover:shadow-xl group shadow-lg flex flex-col items-center justify-center text-center ${
               metric.label === "Static COWs" ? "cursor-pointer" : ""
             }`}
             style={{
@@ -190,7 +190,7 @@ export function ExecutiveOverviewCard({
         {summaryStats.map((stat, idx) => (
           <div
             key={idx}
-            className="bg-white rounded-2xl p-4 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg"
+            className="bg-white rounded-2xl p-4 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center text-center"
             style={{
               boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
             }}
