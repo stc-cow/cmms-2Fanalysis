@@ -83,8 +83,9 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, value }) => `${name}: ${value}`}
-                outerRadius={70}
+                label={({ displayName }) => displayName}
+                innerRadius={50}
+                outerRadius={90}
                 fill="#8884d8"
                 dataKey="value"
               >
@@ -101,6 +102,9 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                   border: "1px solid #e5e7eb",
                   borderRadius: "8px",
                 }}
+                formatter={(value: number) =>
+                  `${value} movements (${((value / totalMovements) * 100).toFixed(1)}%)`
+                }
               />
             </PieChart>
           </ResponsiveContainer>
