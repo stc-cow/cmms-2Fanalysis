@@ -207,13 +207,13 @@ export function ExecutiveOverviewCard({
 
       {/* Movement Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-shrink-0 mb-6 px-6">
-        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center" style={{
               boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
             }}>
-          <h3 className="text-lg font-bold text-purple-600 mb-4">
+          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
             Movement Classification
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">
                 Full Moves (Site→Site)
@@ -265,13 +265,13 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center" style={{
               boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
             }}>
-          <h3 className="text-lg font-bold text-purple-600 mb-4">
+          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
             Asset Status
           </h3>
-          <div className="space-y-3">
+          <div className="space-y-3 w-full">
             <div>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-gray-600 font-medium">
@@ -311,39 +311,39 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center" style={{
               boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
             }}>
-          <h3 className="text-lg font-bold text-purple-600 mb-4">
+          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
             Coverage Summary
           </h3>
-          <div className="space-y-2 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-600">
+          <div className="space-y-2 text-sm w-full text-center">
+            <div className="flex flex-col">
+              <span className="text-gray-600 mb-1">
                 Total Regions Served
               </span>
               <span className="font-bold text-gray-900">
                 4/4
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">
+            <div className="flex flex-col">
+              <span className="text-gray-600 mb-1">
                 Avg Distance per Move
               </span>
               <span className="font-bold text-gray-900">
                 {(kpis.totalDistanceKM / kpis.totalMovements).toFixed(0)} KM
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">
+            <div className="flex flex-col">
+              <span className="text-gray-600 mb-1">
                 Data Span
               </span>
               <span className="font-bold text-gray-900">
                 5 years
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">
+            <div className="flex flex-col">
+              <span className="text-gray-600 mb-1">
                 Last Update
               </span>
               <span className="font-bold text-gray-900">
