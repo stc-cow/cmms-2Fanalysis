@@ -102,8 +102,7 @@ export default function Dashboard() {
       <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-white font-medium">Loading dashboard data...</p>
-          <p className="text-sm text-gray-400">Fetching from Google Sheets</p>
+          <p className="text-white font-medium">Loading Dashboard data</p>
         </div>
       </div>
     );
