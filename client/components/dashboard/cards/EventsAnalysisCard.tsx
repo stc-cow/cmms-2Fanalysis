@@ -97,7 +97,8 @@ export function EventsAnalysisCard({
     }))
     .sort((a, b) => b.avgDistance - a.avgDistance);
 
-  const totalEventsData = eventDataWithPercentages.length > 0 ? eventDataWithPercentages : [];
+  const totalEventsData =
+    eventDataWithPercentages.length > 0 ? eventDataWithPercentages : [];
   const topEventType = eventData[0];
   const topDistance = distanceData[0];
 
