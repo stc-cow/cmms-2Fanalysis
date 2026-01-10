@@ -213,17 +213,6 @@ export function MovementHeatMapCard({
           showInLegend: false,
           enableMouseTracking: false,
         } as any,
-        {
-          type: "mapline",
-          name: "Movement Routes",
-          data: maplineData,
-          colorByPoint: true,
-          tooltip: {
-            headerFormat: "",
-            pointFormat:
-              "<b>{point.fromName} → {point.toName}</b><br/>Movements: <strong>{point.value}</strong>",
-          },
-        } as any,
       ],
       exporting: {
         buttons: {
