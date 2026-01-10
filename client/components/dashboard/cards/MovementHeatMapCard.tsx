@@ -206,14 +206,13 @@ export function MovementHeatMapCard({
         map: {
           dataLabels: {
             enabled: false,
-            format: "",
           },
           borderColor: "#e5e7eb",
-          borderWidth: 0,
-          nullColor: "#f3f4f6",
+          borderWidth: 1,
+          nullColor: "#f0f0f0",
           states: {
             hover: {
-              brightness: 0,
+              brightness: 0.1,
               borderColor: "#e5e7eb",
             },
           },
