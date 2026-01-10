@@ -117,35 +117,62 @@ export function MovementHeatMapCard({
     return Array.from(flowsMap.values()).sort((a, b) => b.count - a.count);
   }, [movements, locMap]);
 
-  // Calculate heat map data by destination region
-  const regionHeatData = useMemo(() => {
-    const regionCounts: Record<string, number> = {};
+  // Get origin and destination location points
+  const originDestinationData = useMemo(() => {
+    const originMap = new Map<string, { lat: number; lon: number; count: number }>();
+    const destinationMap = new Map<string, { lat: number; lon: number; count: number }>();
 
-    // Aggregate movements by destination region
     flowData.forEach((flow) => {
-      const regionName = flow.toLoc.Region;
-      regionCounts[regionName] = (regionCounts[regionName] || 0) + flow.count;
+      // Add origin
+      const originKey = flow.fromLoc.Location_ID;
+      if (!originMap.has(originKey)) {
+        originMap.set(originKey, {
+          lat: flow.fromLoc.Latitude,
+          lon: flow.fromLoc.Longitude,
+          count: 0,
+        });
+      }
+      const origin = originMap.get(originKey)!;
+      origin.count += flow.count;
+
+      // Add destination
+      const destKey = flow.toLoc.Location_ID;
+      if (!destinationMap.has(destKey)) {
+        destinationMap.set(destKey, {
+          lat: flow.toLoc.Latitude,
+          lon: flow.toLoc.Longitude,
+          count: 0,
+        });
+      }
+      const destination = destinationMap.get(destKey)!;
+      destination.count += flow.count;
     });
 
-    // Convert region names to hc-keys and create data points
-    return Object.entries(regionCounts)
-      .map(([regionName, count]) => {
-        const hcKey = regionToHcKey[regionName];
-        if (!hcKey) return null;
-        return [hcKey, count] as [string, number];
-      })
-      .filter((item) => item !== null) as [string, number][];
+    return {
+      origins: Array.from(originMap.values()).filter((p) =>
+        isWithinSaudiBounds(p.lat, p.lon),
+      ),
+      destinations: Array.from(destinationMap.values()).filter((p) =>
+        isWithinSaudiBounds(p.lat, p.lon),
+      ),
+    };
   }, [flowData]);
 
-  // Calculate max count for color scaling
+  // Calculate max count for marker sizing
   const maxCount = useMemo(() => {
-    return Math.max(...regionHeatData.map((d) => d[1]), 1);
-  }, [regionHeatData]);
+    const allCounts = [
+      ...originDestinationData.origins.map((p) => p.count),
+      ...originDestinationData.destinations.map((p) => p.count),
+    ];
+    return Math.max(...allCounts, 1);
+  }, [originDestinationData]);
 
   // Total movements
   const totalMovements = useMemo(() => {
-    return regionHeatData.reduce((sum, d) => sum + d[1], 0);
-  }, [regionHeatData]);
+    const originTotal = originDestinationData.origins.reduce((sum, p) => sum + p.count, 0);
+    const destTotal = originDestinationData.destinations.reduce((sum, p) => sum + p.count, 0);
+    return Math.max(originTotal, destTotal);
+  }, [originDestinationData]);
 
   // Highcharts options for movement heat map
   const options: Highcharts.Options = useMemo(() => {
