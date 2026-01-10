@@ -57,15 +57,15 @@ export const DASHBOARD_CARDS: CardTab[] = [
 
 export function CardTabs({ tabs, activeTab, onTabChange }: CardTabsProps) {
   return (
-    <div className="bg-gradient-to-r from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-b border-gray-200/60 dark:border-gray-700/40 backdrop-blur-lg overflow-x-auto sticky top-0 z-10">
-      <div className="flex gap-2 px-6 py-4 min-w-max">
+    <div className="bg-gradient-to-r from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 border-b border-gray-200/60 dark:border-gray-700/40 backdrop-blur-lg overflow-x-auto sticky top-0 z-10 w-full">
+      <div className="flex gap-1 sm:gap-2 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 min-w-max">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={cn(
-              "px-4 py-2.5 rounded-xl transition-all duration-300 whitespace-nowrap text-sm font-semibold",
-              "relative group overflow-hidden",
+              "px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl transition-all duration-300 whitespace-nowrap text-xs sm:text-sm font-semibold",
+              "relative group overflow-hidden flex-shrink-0",
               activeTab === tab.id
                 ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40"
                 : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100/50 dark:hover:bg-gray-800/50",
