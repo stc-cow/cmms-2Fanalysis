@@ -120,8 +120,10 @@ export function StaticCowMapCard({
     const positions: CowPosition[] = [];
 
     cowMovementMap.forEach((data, cowId) => {
-      const { movements: cowMovements, cow } = data;
+      const { movements: cowMovements } = data;
       const cowData = cowMap.get(cowId);
+
+      if (!cowMovements || cowMovements.length === 0) return;
 
       // Sort by datetime to get the last movement
       const sortedMovements = [...cowMovements].sort(
@@ -142,7 +144,9 @@ export function StaticCowMapCard({
         typeof destLoc.Latitude !== "number" ||
         typeof destLoc.Longitude !== "number" ||
         !isFinite(destLoc.Latitude) ||
-        !isFinite(destLoc.Longitude)
+        !isFinite(destLoc.Longitude) ||
+        destLoc.Latitude === 0 ||
+        destLoc.Longitude === 0
       ) {
         return;
       }
@@ -165,7 +169,13 @@ export function StaticCowMapCard({
     });
 
     // Filter to valid coordinates within Saudi Arabia
-    return positions.filter((p) => isWithinSaudiBounds(p.latitude, p.longitude));
+    const validPositions = positions.filter((p) =>
+      isWithinSaudiBounds(p.latitude, p.longitude)
+    );
+
+    console.log(`Static COWs Map: ${movements.length} movements, ${cowMovementMap.size} unique COWs, ${validPositions.length} with valid coordinates`);
+
+    return validPositions;
   }, [movements, cowMap, locMap]);
 
   // Separate COWs by status
