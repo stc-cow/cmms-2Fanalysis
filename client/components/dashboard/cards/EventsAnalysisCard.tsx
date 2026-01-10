@@ -92,91 +92,190 @@ export function EventsAnalysisCard({
 
   const totalEventsData = eventData.length > 0 ? eventData : [];
 
+  const totalMovements = movements.length;
+  const topEventType = eventData[0];
+  const topDistance = distanceData[0];
+
   return (
     <div className="h-full overflow-y-auto flex flex-col gap-4 p-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-0">
         {/* Event distribution pie */}
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
-            Event Type Distribution
+            Movements by Event Type
           </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={totalEventsData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value }) => `${name}: ${value}`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {totalEventsData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={EVENT_COLORS[entry.name] || "#6b7280"}
-                  />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
+          {totalEventsData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={totalEventsData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: ${value}`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {totalEventsData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                  }}
+                  formatter={(value: number) =>
+                    `${value} movements (${((value / totalMovements) * 100).toFixed(1)}%)`
+                  }
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">
+              No event data available
+            </div>
+          )}
         </div>
 
         {/* Distance by event */}
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
-            Avg Distance by Event Type
+            Average Distance by Event Type
           </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={distanceData}
-              margin={{ top: 5, right: 30, left: 0, bottom: 80 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="type" angle={-45} textAnchor="end" height={100} />
-              <YAxis />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "#ffffff",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "8px",
-                }}
-              />
-              <Bar dataKey="avgDistance" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          {distanceData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={distanceData}
+                margin={{ top: 5, right: 30, left: 0, bottom: 80 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis
+                  dataKey="type"
+                  angle={-45}
+                  textAnchor="end"
+                  height={100}
+                  tick={{ fontSize: 12 }}
+                />
+                <YAxis />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                  }}
+                  formatter={(value: number) => `${value.toFixed(2)} KM`}
+                />
+                <Bar
+                  dataKey="avgDistance"
+                  fill="#3b82f6"
+                  radius={[8, 8, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-400">
+              No distance data available
+            </div>
+          )}
         </div>
       </div>
 
       {/* Event statistics */}
       <div className="flex-shrink-0 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-          Event Summary
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+          Event Statistics Summary
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-          {Object.entries(eventCounts).map(([type, count]) => (
-            <div
-              key={type}
-              className="p-2 bg-gray-50 dark:bg-gray-900 rounded text-center text-xs"
-            >
-              <div className="font-medium text-gray-600 dark:text-gray-400">
-                {type}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="p-3 bg-blue-50 dark:bg-blue-950 rounded border border-blue-200 dark:border-blue-700">
+            <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+              Total Events Tracked
+            </div>
+            <div className="text-2xl font-bold text-blue-900 dark:text-blue-100">
+              {Object.keys(eventCounts).length}
+            </div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              Event type categories
+            </div>
+          </div>
+          {topEventType && (
+            <div className="p-3 bg-purple-50 dark:bg-purple-950 rounded border border-purple-200 dark:border-purple-700">
+              <div className="text-xs font-medium text-purple-600 dark:text-purple-400 mb-1">
+                Most Common Event
               </div>
-              <div className="text-lg font-bold text-gray-900 dark:text-white">
-                {count}
+              <div className="text-2xl font-bold text-purple-900 dark:text-purple-100">
+                {topEventType.value}
+              </div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                {topEventType.name}
               </div>
             </div>
-          ))}
+          )}
+          {topDistance && (
+            <div className="p-3 bg-green-50 dark:bg-green-950 rounded border border-green-200 dark:border-green-700">
+              <div className="text-xs font-medium text-green-600 dark:text-green-400 mb-1">
+                Longest Avg Distance
+              </div>
+              <div className="text-2xl font-bold text-green-900 dark:text-green-100">
+                {topDistance.avgDistance.toFixed(0)}
+              </div>
+              <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                {topDistance.type} (KM)
+              </div>
+            </div>
+          )}
+          <div className="p-3 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700">
+            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+              Total Movements
+            </div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              {totalMovements}
+            </div>
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              movements analyzed
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Detailed event breakdown */}
+      {eventData.length > 0 && (
+        <div className="flex-shrink-0 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Event Type Breakdown
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            {eventData.map(({ name, value }) => (
+              <div
+                key={name}
+                className="p-3 rounded border-2 text-center"
+                style={{
+                  backgroundColor: `${EVENT_COLORS[name] || "#6b7280"}15`,
+                  borderColor: EVENT_COLORS[name] || "#6b7280",
+                }}
+              >
+                <div
+                  className="text-sm font-bold"
+                  style={{ color: EVENT_COLORS[name] || "#6b7280" }}
+                >
+                  {value}
+                </div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">
+                  {name}
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  {((value / totalMovements) * 100).toFixed(1)}%
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
