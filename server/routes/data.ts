@@ -146,6 +146,7 @@ function normalizeRegion(
 
 /**
  * Process CSV data into structured format
+ * Uses the standardized column mapping: A-AE with snake_case field names
  */
 function processData(rows: any[]) {
   const movements = [];
@@ -153,7 +154,8 @@ function processData(rows: any[]) {
   const locationMap = new Map();
 
   rows.forEach((row, idx) => {
-    if (!row.cowsId || !row.fromLocation || !row.toLocation) return;
+    // Skip invalid rows
+    if (!row.cow_id || !row.from_location || !row.to_location) return;
 
     // Safely parse dates - use current date if invalid
     const parseDate = (dateStr: string): string => {
@@ -172,68 +174,70 @@ function processData(rows: any[]) {
       }
     };
 
-    // Add movement
+    // Add movement with standard field names
     movements.push({
       SN: idx + 1,
-      COW_ID: row.cowsId,
-      From_Location_ID: `LOC-${row.fromLocation.replace(/\s+/g, "-").substring(0, 20)}`,
-      To_Location_ID: `LOC-${row.toLocation.replace(/\s+/g, "-").substring(0, 20)}`,
-      Moved_DateTime: parseDate(row.movedDateTime),
-      Reached_DateTime: parseDate(row.reachedDateTime),
-      Movement_Type: row.movementType?.includes("Full")
+      COW_ID: row.cow_id,
+      From_Location_ID: `LOC-${row.from_location.replace(/\s+/g, "-").substring(0, 20)}`,
+      To_Location_ID: `LOC-${row.to_location.replace(/\s+/g, "-").substring(0, 20)}`,
+      Moved_DateTime: parseDate(row.moved_datetime),
+      Reached_DateTime: parseDate(row.reached_datetime),
+      Movement_Type: row.movement_type?.includes("Full")
         ? "Full"
-        : row.movementType?.includes("Half")
+        : row.movement_type?.includes("Half")
           ? "Half"
           : "Zero",
-      Distance_KM: parseFloat(row.distance) || 0,
-      Is_Royal: row.ebuRoyal?.toLowerCase().includes("royal") || false,
-      Is_EBU: row.ebuRoyal?.toLowerCase().includes("ebu") || false,
+      Distance_KM: parseFloat(row.distance_km) || 0,
+      Is_Royal: row.ebu_royal_flag?.toLowerCase().includes("royal") || false,
+      Is_EBU: row.ebu_royal_flag?.toLowerCase().includes("ebu") || false,
     });
 
-    // Add cow
-    if (!cowMap.has(row.cowsId)) {
-      cowMap.set(row.cowsId, {
-        COW_ID: row.cowsId,
-        Tower_Type: row.towerType?.includes("Small")
+    // Add cow with asset information
+    if (!cowMap.has(row.cow_id)) {
+      cowMap.set(row.cow_id, {
+        COW_ID: row.cow_id,
+        Tower_Type: row.tower_type?.includes("Small")
           ? "Small Cell"
-          : row.towerType?.includes("Micro")
+          : row.tower_type?.includes("Micro")
             ? "Micro Cell"
             : "Macro",
-        Tower_Height: parseFloat(row.towerHeight) || 0,
-        Network_2G: false,
-        Network_4G: true,
-        Network_5G: false,
-        Shelter_Type: "Outdoor",
-        Vendor: row.vendor,
-        Installation_Date: new Date().toISOString().split("T")[0],
+        Tower_Height: parseFloat(row.tower_height) || 0,
+        Network_2G: row.network_technology?.includes("2G") || false,
+        Network_4G: row.network_technology?.includes("4G") || row.network_technology?.includes("LTE") || false,
+        Network_5G: row.network_technology?.includes("5G") || false,
+        Shelter_Type: row.shelter_type?.includes("Shelter") ? "Shelter" : "Outdoor",
+        Vendor: row.vendor || "Unknown",
+        Installation_Date: row.first_deploy_date || new Date().toISOString().split("T")[0],
       });
     }
 
     // Add from location
-    const fromId = `LOC-${row.fromLocation.replace(/\s+/g, "-").substring(0, 20)}`;
+    const fromId = `LOC-${row.from_location.replace(/\s+/g, "-").substring(0, 20)}`;
     if (!locationMap.has(fromId)) {
       locationMap.set(fromId, {
         Location_ID: fromId,
-        Location_Name: row.fromLocation,
-        Latitude: parseFloat(row.fromLatitude) || 0,
-        Longitude: parseFloat(row.fromLongitude) || 0,
-        Region: normalizeRegion(row.regionFrom),
+        Location_Name: row.from_location,
+        Sub_Location: row.from_sub_location || "",
+        Latitude: parseFloat(row.from_latitude) || 0,
+        Longitude: parseFloat(row.from_longitude) || 0,
+        Region: normalizeRegion(row.region_from),
         Location_Type: "Site",
-        Owner: "STC",
+        Owner: row.vendor || "STC",
       });
     }
 
     // Add to location
-    const toId = `LOC-${row.toLocation.replace(/\s+/g, "-").substring(0, 20)}`;
+    const toId = `LOC-${row.to_location.replace(/\s+/g, "-").substring(0, 20)}`;
     if (!locationMap.has(toId)) {
       locationMap.set(toId, {
         Location_ID: toId,
-        Location_Name: row.toLocation,
-        Latitude: parseFloat(row.toLatitude) || 0,
-        Longitude: parseFloat(row.toLongitude) || 0,
-        Region: normalizeRegion(row.regionTo),
+        Location_Name: row.to_location,
+        Sub_Location: row.to_sub_location || "",
+        Latitude: parseFloat(row.to_latitude) || 0,
+        Longitude: parseFloat(row.to_longitude) || 0,
+        Region: normalizeRegion(row.region_to),
         Location_Type: "Site",
-        Owner: "STC",
+        Owner: row.vendor || "STC",
       });
     }
   });
