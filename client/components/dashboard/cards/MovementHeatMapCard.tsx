@@ -141,11 +141,23 @@ export function MovementHeatMapCard({
   const originDestinationData = useMemo(() => {
     const originMap = new Map<
       string,
-      { lat: number; lon: number; count: number }
+      {
+        lat: number;
+        lon: number;
+        count: number;
+        locationName: string;
+        subLocations: Set<string>;
+      }
     >();
     const destinationMap = new Map<
       string,
-      { lat: number; lon: number; count: number }
+      {
+        lat: number;
+        lon: number;
+        count: number;
+        locationName: string;
+        subLocations: Set<string>;
+      }
     >();
 
     flowData.forEach((flow) => {
@@ -156,10 +168,13 @@ export function MovementHeatMapCard({
           lat: flow.fromLoc.Latitude,
           lon: flow.fromLoc.Longitude,
           count: 0,
+          locationName: flow.fromLoc.Location_Name,
+          subLocations: new Set(),
         });
       }
       const origin = originMap.get(originKey)!;
       origin.count += flow.count;
+      flow.fromSubLocations.forEach((sub) => origin.subLocations.add(sub));
 
       // Add destination
       const destKey = flow.toLoc.Location_ID;
@@ -168,10 +183,13 @@ export function MovementHeatMapCard({
           lat: flow.toLoc.Latitude,
           lon: flow.toLoc.Longitude,
           count: 0,
+          locationName: flow.toLoc.Location_Name,
+          subLocations: new Set(),
         });
       }
       const destination = destinationMap.get(destKey)!;
       destination.count += flow.count;
+      flow.toSubLocations.forEach((sub) => destination.subLocations.add(sub));
     });
 
     // Filter to valid coordinates (must be proper numbers, not NaN or Infinity)
