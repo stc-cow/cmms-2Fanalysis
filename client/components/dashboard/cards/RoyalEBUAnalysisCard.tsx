@@ -181,7 +181,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
       </div>
 
       {/* Statistics summary */}
-      <div className="flex-shrink-0 grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="flex-shrink-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 px-3 sm:px-4 md:px-6">
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             Royal Movements
