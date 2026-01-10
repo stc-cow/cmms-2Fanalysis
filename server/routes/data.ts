@@ -244,6 +244,9 @@ function processData(rows: any[]) {
       }
     };
 
+    // Parse Royal/EBU classification from column E (ebu_royal_flag)
+    const { isRoyal, isEBU } = parseRoyalEBUFlag(row.ebu_royal_flag);
+
     // Add movement with standard field names
     movements.push({
       SN: idx + 1,
@@ -260,8 +263,8 @@ function processData(rows: any[]) {
           ? "Half"
           : "Zero",
       Distance_KM: parseFloat(row.distance_km) || 0,
-      Is_Royal: row.ebu_royal_flag?.toLowerCase().includes("royal") || false,
-      Is_EBU: row.ebu_royal_flag?.toLowerCase().includes("ebu") || false,
+      Is_Royal: isRoyal,
+      Is_EBU: isEBU,
     });
 
     // Add cow with asset information
