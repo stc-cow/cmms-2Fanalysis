@@ -225,7 +225,7 @@ export default function Dashboard() {
 
           {/* ACES Logo with Enhanced Design */}
           <div className="flex-shrink-0 group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-400/20 to-orange-400/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             <img
               src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F525a16fc442c434e8185ef0bbfd606f5?format=webp&width=800"
               alt="ACES Logo"
