@@ -212,7 +212,7 @@ export function ExecutiveOverviewCard({
       </div>
 
       {/* Movement Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-shrink-0 mb-6 px-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 mb-4 sm:mb-6 px-3 sm:px-4 md:px-6">
         <div
           className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center"
           style={{
