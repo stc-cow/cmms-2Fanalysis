@@ -17,19 +17,36 @@ interface RoyalEBUAnalysisCardProps {
 }
 
 export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
+  const totalMovements = movements.length;
   const royalCount = movements.filter((m) => m.Is_Royal).length;
   const nonRoyalCount = movements.length - royalCount;
   const ebuCount = movements.filter((m) => m.Is_EBU).length;
   const nonEbuCount = movements.length - ebuCount;
 
   const vipData = [
-    { name: "Royal", value: royalCount },
-    { name: "Non-Royal", value: nonRoyalCount },
+    {
+      name: "Royal",
+      value: royalCount,
+      displayName: `Royal (${((royalCount / totalMovements) * 100).toFixed(1)}%)`,
+    },
+    {
+      name: "Non-Royal",
+      value: nonRoyalCount,
+      displayName: `Non-Royal (${((nonRoyalCount / totalMovements) * 100).toFixed(1)}%)`,
+    },
   ];
 
   const ebuData = [
-    { name: "EBU", value: ebuCount },
-    { name: "Non-EBU", value: nonEbuCount },
+    {
+      name: "EBU",
+      value: ebuCount,
+      displayName: `EBU (${((ebuCount / totalMovements) * 100).toFixed(1)}%)`,
+    },
+    {
+      name: "Non-EBU",
+      value: nonEbuCount,
+      displayName: `Non-EBU (${((nonEbuCount / totalMovements) * 100).toFixed(1)}%)`,
+    },
   ];
 
   // Distance for royal vs normal
