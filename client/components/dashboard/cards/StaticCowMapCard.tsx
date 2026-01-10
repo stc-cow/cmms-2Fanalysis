@@ -225,28 +225,27 @@ export function StaticCowMapCard({
   const options: Highcharts.Options = useMemo(() => {
     if (!saudiGeo) return {};
 
-    // Convert ON-AIR points to Highcharts format
+    // Convert ON-AIR points to Highcharts format (only 1 movement)
     const onAirPoints = onAirCows.map((p) => ({
       lon: p.longitude,
       lat: p.latitude,
-      value: p.movementCount,
+      value: 1, // All static COWs have exactly 1 movement
       name: p.cowId,
       location: p.currentLocation,
       status: "On-Air",
     }));
 
-    // Convert INACTIVE points to Highcharts format
+    // Convert INACTIVE points to Highcharts format (only 1 movement)
     const inactivePoints = inactiveCows.map((p) => ({
       lon: p.longitude,
       lat: p.latitude,
-      value: p.movementCount,
+      value: 1, // All static COWs have exactly 1 movement
       name: p.cowId,
       location: p.currentLocation,
       status: "Inactive",
     }));
 
-    console.log("ON-AIR COWs:", onAirPoints.length);
-    console.log("INACTIVE COWs:", inactivePoints.length);
+    console.log("Static COWs (1 movement): ON-AIR =", onAirPoints.length, ", INACTIVE =", inactivePoints.length);
 
     return {
       chart: {
