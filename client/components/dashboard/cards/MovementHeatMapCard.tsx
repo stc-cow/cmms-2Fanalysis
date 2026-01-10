@@ -1,23 +1,46 @@
-import { useMemo, useState } from "react";
+import { useMemo, useEffect } from "react";
 import { CowMovementsFact, DimLocation } from "@shared/models";
-import Highcharts from "@/lib/highcharts";
-import HighchartsReact from "highcharts-react-official";
+import {
+  MapContainer,
+  TileLayer,
+  Polyline,
+  CircleMarker,
+  Popup,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 interface MovementHeatMapCardProps {
   movements: CowMovementsFact[];
   locations: DimLocation[];
 }
 
-interface HeatMapPoint {
-  x: number; // from_longitude (S column)
-  y: number; // from_latitude (T column)
-  z: number; // to_longitude (W column)
-  w: number; // to_latitude (X column)
-  value: number; // movement count
-  color?: string;
-  fromLocation: string;
-  toLocation: string;
-  movementCount: number;
+interface MovementFlow {
+  fromLoc: DimLocation;
+  toLoc: DimLocation;
+  count: number;
+  movementIds: string[];
+}
+
+// Custom hook to fit map bounds to all markers
+function FitBounds({
+  locations,
+}: {
+  locations: DimLocation[];
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (locations.length === 0) return;
+
+    const bounds = L.latLngBounds(
+      locations.map((loc) => [loc.Latitude, loc.Longitude]),
+    );
+    map.fitBounds(bounds, { padding: [50, 50] });
+  }, [map, locations]);
+
+  return null;
 }
 
 export function MovementHeatMapCard({
@@ -29,9 +52,9 @@ export function MovementHeatMapCard({
     [locations],
   );
 
-  // Transform movements into heat map data points
-  const heatMapData = useMemo(() => {
-    const pointsMap = new Map<string, HeatMapPoint>();
+  // Aggregate movements by from-to location pairs
+  const flowData = useMemo(() => {
+    const flowsMap = new Map<string, MovementFlow>();
 
     movements.forEach((mov) => {
       const fromLoc = locMap.get(mov.From_Location_ID);
@@ -39,170 +62,51 @@ export function MovementHeatMapCard({
 
       if (!fromLoc || !toLoc) return;
 
-      // Create unique key for origin-destination pair
-      const key = `${fromLoc.Location_ID}|${toLoc.Location_ID}`;
+      const key = `${mov.From_Location_ID}|${mov.To_Location_ID}`;
 
-      if (!pointsMap.has(key)) {
-        pointsMap.set(key, {
-          x: fromLoc.Longitude,
-          y: fromLoc.Latitude,
-          z: toLoc.Longitude,
-          w: toLoc.Latitude,
-          value: 0,
-          fromLocation: fromLoc.Location_Name,
-          toLocation: toLoc.Location_Name,
-          movementCount: 0,
+      if (!flowsMap.has(key)) {
+        flowsMap.set(key, {
+          fromLoc,
+          toLoc,
+          count: 0,
+          movementIds: [],
         });
       }
 
-      const point = pointsMap.get(key)!;
-      point.movementCount++;
-      point.value = point.movementCount;
+      const flow = flowsMap.get(key)!;
+      flow.count++;
+      flow.movementIds.push(mov.COW_ID);
     });
 
-    return Array.from(pointsMap.values());
+    return Array.from(flowsMap.values()).sort((a, b) => b.count - a.count);
   }, [movements, locMap]);
 
-  // Calculate max movement count for color scaling
-  const maxValue = useMemo(() => {
-    return Math.max(...heatMapData.map((p) => p.value), 1);
-  }, [heatMapData]);
+  // Calculate max count for color scaling
+  const maxCount = useMemo(() => {
+    return Math.max(...flowData.map((f) => f.count), 1);
+  }, [flowData]);
 
-  // Create color map based on movement intensity
-  const coloredData = useMemo(() => {
-    const colorScale = [
-      "#efe6f6", // light purple
-      "#e8d5f2",
-      "#d8b4fe",
-      "#c7a3f9",
-      "#b39ddb",
-      "#a186d4",
-      "#9c27b0",
-      "#8b1fa6",
-      "#7b1b99",
-      "#6a1b9a", // dark purple
-    ];
+  // Generate color based on movement intensity (0-255 range for purple gradient)
+  const getColorForIntensity = (count: number, max: number): string => {
+    const intensity = Math.min(count / max, 1);
+    // Purple gradient: light to dark
+    // RGB values for purple gradient
+    const hue = 270; // Purple hue
+    const lightness = 85 - intensity * 40; // 85% (light) to 45% (dark)
+    const saturation = 50 + intensity * 30; // 50% to 80%
 
-    return heatMapData.map((point) => {
-      const intensity = Math.min(point.value / maxValue, 1);
-      const colorIndex = Math.floor(intensity * (colorScale.length - 1));
-      return {
-        ...point,
-        color: colorScale[colorIndex],
-      };
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  };
+
+  // Get unique locations for markers
+  const uniqueLocations = useMemo(() => {
+    const locSet = new Set<string>();
+    flowData.forEach((flow) => {
+      locSet.add(flow.fromLoc.Location_ID);
+      locSet.add(flow.toLoc.Location_ID);
     });
-  }, [heatMapData, maxValue]);
-
-  // Highcharts options for bubble/scatter heat map
-  const options: Highcharts.Options = useMemo(() => {
-    return {
-      chart: {
-        type: "bubble",
-        backgroundColor: "transparent",
-        spacingTop: 20,
-        spacingBottom: 20,
-        spacingLeft: 40,
-        spacingRight: 40,
-      },
-      title: {
-        text: null,
-      },
-      subtitle: {
-        text: null,
-      },
-      xAxis: {
-        title: {
-          text: "From Longitude (Column S)",
-          style: {
-            fontSize: "12px",
-            fontWeight: "600",
-            color: "#374151",
-          },
-        },
-        labels: {
-          format: "{value:.2f}",
-          style: {
-            fontSize: "10px",
-            color: "#6b7280",
-          },
-        },
-        gridLineWidth: 1,
-        gridLineColor: "#e5e7eb",
-      },
-      yAxis: {
-        title: {
-          text: "From Latitude (Column T)",
-          style: {
-            fontSize: "12px",
-            fontWeight: "600",
-            color: "#374151",
-          },
-        },
-        labels: {
-          format: "{value:.2f}",
-          style: {
-            fontSize: "10px",
-            color: "#6b7280",
-          },
-        },
-        gridLineWidth: 1,
-        gridLineColor: "#e5e7eb",
-      },
-      legend: {
-        enabled: true,
-        align: "bottom",
-        verticalAlign: "bottom",
-        layout: "horizontal",
-        margin: 10,
-      },
-      plotOptions: {
-        bubble: {
-          minSize: "8%",
-          maxSize: "20%",
-          zMin: 0,
-          colorByPoint: false,
-          states: {
-            hover: {
-              brightness: 0.1,
-              borderColor: "#ffffff",
-              borderWidth: 2,
-              shadow: true,
-            },
-          },
-          dataLabels: {
-            enabled: false,
-          },
-        },
-      },
-      tooltip: {
-        headerFormat: "",
-        pointFormat: "<b>{point.fromLocation} → {point.toLocation}</b><br/>Movements: <strong>{point.movementCount}</strong><br/>From: ({point.x:.3f}°, {point.y:.3f}°)<br/>To: ({point.z:.3f}°, {point.w:.3f}°)",
-        style: {
-          fontSize: "12px",
-        },
-      },
-      series: [
-        {
-          type: "bubble",
-          name: "Movements",
-          data: coloredData.map((point) => ({
-            x: point.x,
-            y: point.y,
-            z: Math.sqrt(point.value) * 10, // Size based on movement count
-            value: point.value,
-            color: point.color,
-            fromLocation: point.fromLocation,
-            toLocation: point.toLocation,
-            movementCount: point.movementCount,
-          })) as any,
-          colorByPoint: true,
-        } as any,
-      ],
-      credits: {
-        enabled: false,
-      },
-    };
-  }, [coloredData]);
+    return Array.from(locSet).map((id) => locMap.get(id)!);
+  }, [flowData, locMap]);
 
   return (
     <div className="h-full w-full overflow-y-auto flex flex-col bg-gradient-to-br from-white via-blue-50/20 to-white dark:from-slate-800 dark:via-slate-800/50 dark:to-slate-800 p-6">
@@ -211,20 +115,138 @@ export function MovementHeatMapCard({
           Movement Heat Map
         </h2>
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Origin coordinates (S, T) vs Destination coordinates (W, X) - Bubble size indicates movement frequency
+          Origin coordinates (S, T) to Destination coordinates (W, X) - Line thickness and color indicate movement frequency
         </p>
       </div>
 
       <div className="flex-1 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-slate-700 shadow-lg">
-        {coloredData.length > 0 ? (
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={options}
-            containerProps={{
-              style: { width: "100%", height: "100%" },
-            }}
-            immutable={false}
-          />
+        {flowData.length > 0 ? (
+          <MapContainer
+            center={[24.0, 46.0]}
+            zoom={5}
+            style={{ width: "100%", height: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {/* Draw movement flow lines */}
+            {flowData.map((flow, idx) => {
+              const color = getColorForIntensity(flow.count, maxCount);
+              const weight = Math.max(1, (flow.count / maxCount) * 8); // 1 to 8px
+              const opacity = 0.6 + (flow.count / maxCount) * 0.4; // 0.6 to 1.0
+
+              return (
+                <Polyline
+                  key={`flow-${idx}`}
+                  positions={[
+                    [flow.fromLoc.Latitude, flow.fromLoc.Longitude],
+                    [flow.toLoc.Latitude, flow.toLoc.Longitude],
+                  ]}
+                  color={color}
+                  weight={weight}
+                  opacity={opacity}
+                  dashArray={flow.count < maxCount * 0.2 ? "5, 5" : ""}
+                >
+                  <Popup>
+                    <div className="text-sm">
+                      <p className="font-bold text-gray-900 mb-2">
+                        {flow.fromLoc.Location_Name} → {flow.toLoc.Location_Name}
+                      </p>
+                      <div className="space-y-1 text-gray-700">
+                        <p>
+                          <strong>Movements:</strong> {flow.count}
+                        </p>
+                        <p>
+                          <strong>From:</strong> {flow.fromLoc.Latitude.toFixed(3)}°,{" "}
+                          {flow.fromLoc.Longitude.toFixed(3)}°
+                        </p>
+                        <p>
+                          <strong>To:</strong> {flow.toLoc.Latitude.toFixed(3)}°,{" "}
+                          {flow.toLoc.Longitude.toFixed(3)}°
+                        </p>
+                        <p>
+                          <strong>Distance:</strong>{" "}
+                          {(
+                            Math.sqrt(
+                              Math.pow(
+                                flow.toLoc.Latitude - flow.fromLoc.Latitude,
+                                2,
+                              ) +
+                                Math.pow(
+                                  flow.toLoc.Longitude - flow.fromLoc.Longitude,
+                                  2,
+                                ),
+                            ) * 111
+                          ).toFixed(1)}{" "}
+                          km
+                        </p>
+                      </div>
+                    </div>
+                  </Popup>
+                </Polyline>
+              );
+            })}
+
+            {/* Draw location markers */}
+            {uniqueLocations.map((loc) => {
+              // Count outgoing and incoming flows
+              const outgoing = flowData.filter(
+                (f) => f.fromLoc.Location_ID === loc.Location_ID,
+              ).length;
+              const incoming = flowData.filter(
+                (f) => f.toLoc.Location_ID === loc.Location_ID,
+              ).length;
+              const total = outgoing + incoming;
+
+              const markerColor =
+                loc.Location_Type === "Warehouse" ? "#8b7355" : "#06b6d4";
+              const markerRadius = Math.max(5, Math.min(15, 5 + total * 1.5));
+
+              return (
+                <CircleMarker
+                  key={`marker-${loc.Location_ID}`}
+                  center={[loc.Latitude, loc.Longitude]}
+                  radius={markerRadius}
+                  fill={true}
+                  fillColor={markerColor}
+                  fillOpacity={0.8}
+                  color="#ffffff"
+                  weight={2}
+                  opacity={1}
+                >
+                  <Popup>
+                    <div className="text-sm">
+                      <p className="font-bold text-gray-900 mb-2">
+                        {loc.Location_Name}
+                      </p>
+                      <div className="space-y-1 text-gray-700">
+                        <p>
+                          <strong>Type:</strong> {loc.Location_Type}
+                        </p>
+                        <p>
+                          <strong>Region:</strong> {loc.Region}
+                        </p>
+                        <p>
+                          <strong>Coordinates:</strong> {loc.Latitude.toFixed(3)}°,{" "}
+                          {loc.Longitude.toFixed(3)}°
+                        </p>
+                        <p>
+                          <strong>Outgoing:</strong> {outgoing}
+                        </p>
+                        <p>
+                          <strong>Incoming:</strong> {incoming}
+                        </p>
+                      </div>
+                    </div>
+                  </Popup>
+                </CircleMarker>
+              );
+            })}
+
+            <FitBounds locations={uniqueLocations} />
+          </MapContainer>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-400">
             <p className="text-lg">No movement data available</p>
@@ -232,41 +254,79 @@ export function MovementHeatMapCard({
         )}
       </div>
 
-      {/* Legend */}
+      {/* Legend and Info */}
       <div className="flex-shrink-0 mt-6 p-4 bg-white dark:bg-slate-700 rounded-lg border border-gray-200 dark:border-gray-700">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <p className="font-semibold text-gray-900 dark:text-white mb-2">
-              Data Mapping:
+            <p className="font-semibold text-gray-900 dark:text-white mb-3">
+              Color Gradient:
             </p>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-6 h-3 rounded"
+                  style={{ backgroundColor: getColorForIntensity(1, 10) }}
+                />
+                <span className="text-gray-600 dark:text-gray-400">
+                  Low Activity
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-6 h-3 rounded"
+                  style={{ backgroundColor: getColorForIntensity(5, 10) }}
+                />
+                <span className="text-gray-600 dark:text-gray-400">
+                  Medium Activity
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-6 h-3 rounded"
+                  style={{ backgroundColor: getColorForIntensity(10, 10) }}
+                />
+                <span className="text-gray-600 dark:text-gray-400">
+                  High Activity
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="font-semibold text-gray-900 dark:text-white mb-3">
+              Line Indicators:
+            </p>
+            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
               <li>
-                <strong>X-Axis:</strong> From Longitude (Column S)
+                <strong>Thickness:</strong> Number of movements
               </li>
               <li>
-                <strong>Y-Axis:</strong> From Latitude (Column T)
+                <strong>Color:</strong> Movement frequency
               </li>
               <li>
-                <strong>Bubble Size:</strong> Number of movements
+                <strong>Dashed:</strong> Lower activity routes
               </li>
               <li>
-                <strong>Bubble Color:</strong> Heat intensity
+                <strong>Solid:</strong> Higher activity routes
               </li>
             </ul>
           </div>
+
           <div>
-            <p className="font-semibold text-gray-900 dark:text-white mb-2">
-              Destination Info (Tooltip):
+            <p className="font-semibold text-gray-900 dark:text-white mb-3">
+              Markers:
             </p>
-            <ul className="space-y-1 text-gray-600 dark:text-gray-400">
-              <li>
-                <strong>To Longitude:</strong> Column W
+            <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+              <li className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#8b7355" }} />
+                <span>Warehouse</span>
               </li>
-              <li>
-                <strong>To Latitude:</strong> Column X
+              <li className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: "#06b6d4" }} />
+                <span>Site/Location</span>
               </li>
-              <li>
-                <strong>Movement Count:</strong> Total movements for pair
+              <li className="text-xs">
+                Marker size increases with activity
               </li>
             </ul>
           </div>
