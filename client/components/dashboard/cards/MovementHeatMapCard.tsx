@@ -253,62 +253,6 @@ export function MovementHeatMapCard({
               );
             })}
 
-            {/* Draw location markers */}
-            {uniqueLocations.map((loc) => {
-              // Count outgoing and incoming flows
-              const outgoing = flowData.filter(
-                (f) => f.fromLoc.Location_ID === loc.Location_ID,
-              ).length;
-              const incoming = flowData.filter(
-                (f) => f.toLoc.Location_ID === loc.Location_ID,
-              ).length;
-              const total = outgoing + incoming;
-
-              const markerColor =
-                loc.Location_Type === "Warehouse" ? "#8b7355" : "#06b6d4";
-              const markerRadius = Math.max(5, Math.min(15, 5 + total * 1.5));
-
-              return (
-                <CircleMarker
-                  key={`marker-${loc.Location_ID}`}
-                  center={[loc.Latitude, loc.Longitude]}
-                  radius={markerRadius}
-                  fill={true}
-                  fillColor={markerColor}
-                  fillOpacity={0.8}
-                  color="#ffffff"
-                  weight={2}
-                  opacity={1}
-                >
-                  <Popup>
-                    <div className="text-sm">
-                      <p className="font-bold text-gray-900 mb-2">
-                        {loc.Location_Name}
-                      </p>
-                      <div className="space-y-1 text-gray-700">
-                        <p>
-                          <strong>Type:</strong> {loc.Location_Type}
-                        </p>
-                        <p>
-                          <strong>Region:</strong> {loc.Region}
-                        </p>
-                        <p>
-                          <strong>Coordinates:</strong> {loc.Latitude.toFixed(3)}°,{" "}
-                          {loc.Longitude.toFixed(3)}°
-                        </p>
-                        <p>
-                          <strong>Outgoing:</strong> {outgoing}
-                        </p>
-                        <p>
-                          <strong>Incoming:</strong> {incoming}
-                        </p>
-                      </div>
-                    </div>
-                  </Popup>
-                </CircleMarker>
-              );
-            })}
-
             <FitBounds locations={uniqueLocations} />
           </MapContainer>
         ) : (
