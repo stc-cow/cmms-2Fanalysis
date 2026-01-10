@@ -217,15 +217,6 @@ export function MovementHeatMapCard({
             },
           },
         },
-        mapline: {
-          lineWidth: 2,
-          states: {
-            hover: {
-              brightness: 0.1,
-              lineWidth: 3,
-            },
-          },
-        },
       },
       series: [
         {
