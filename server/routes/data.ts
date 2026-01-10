@@ -129,16 +129,31 @@ function processData(rows: any[]) {
   rows.forEach((row, idx) => {
     if (!row.cowsId || !row.fromLocation || !row.toLocation) return;
 
+    // Safely parse dates - use current date if invalid
+    const parseDate = (dateStr: string): string => {
+      if (!dateStr || dateStr.trim() === "") {
+        return new Date().toISOString();
+      }
+      try {
+        const date = new Date(dateStr);
+        // Check if date is valid
+        if (isNaN(date.getTime())) {
+          return new Date().toISOString();
+        }
+        return date.toISOString();
+      } catch (e) {
+        return new Date().toISOString();
+      }
+    };
+
     // Add movement
     movements.push({
       SN: idx + 1,
       COW_ID: row.cowsId,
       From_Location_ID: `LOC-${row.fromLocation.replace(/\s+/g, "-").substring(0, 20)}`,
       To_Location_ID: `LOC-${row.toLocation.replace(/\s+/g, "-").substring(0, 20)}`,
-      Moved_DateTime:
-        new Date(row.movedDateTime).toISOString() || new Date().toISOString(),
-      Reached_DateTime:
-        new Date(row.reachedDateTime).toISOString() || new Date().toISOString(),
+      Moved_DateTime: parseDate(row.movedDateTime),
+      Reached_DateTime: parseDate(row.reachedDateTime),
       Movement_Type: row.movementType?.includes("Full")
         ? "Full"
         : row.movementType?.includes("Half")
