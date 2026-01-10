@@ -467,6 +467,14 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       `  └─ NON EBU movements: ${nonEbuCount} (${((nonEbuCount / processedData.movements.length) * 100).toFixed(1)}%)`,
     );
 
+    // Debug: Sample a few rows to check Column E values
+    console.log("\n📊 Sample Column E values for debugging:");
+    const sampleSize = 10;
+    const samples = processedData.movements.slice(0, sampleSize);
+    samples.forEach((mov, idx) => {
+      console.log(`  Sample ${idx + 1}: EbuRoyalCategory="${mov.EbuRoyalCategory}"`);
+    });
+
     if (processedData.movements.length === 0) {
       throw new Error(
         "No movement data found in Google Sheet - column mapping may be incorrect",
