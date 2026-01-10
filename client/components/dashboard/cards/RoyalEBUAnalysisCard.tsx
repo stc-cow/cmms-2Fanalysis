@@ -56,22 +56,29 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
     },
   ];
 
-  // Distance for royal vs normal
+  // Distance by category
   const royalDistance = movements
-    .filter((m) => m.Is_Royal)
+    .filter((m) => m.EbuRoyalCategory === "ROYAL")
     .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
-  const normalDistance = movements
-    .filter((m) => !m.Is_Royal)
+  const ebuDistance = movements
+    .filter((m) => m.EbuRoyalCategory === "EBU")
+    .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+  const nonEbuDistance = movements
+    .filter((m) => m.EbuRoyalCategory === "NON-EBU")
     .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
 
   const distanceData = [
     {
-      type: "Royal",
-      distance: Math.round((royalDistance / royalCount) * 100) / 100 || 0,
+      type: "ROYAL",
+      distance: Math.round((royalDistance / Math.max(royalCount, 1)) * 100) / 100 || 0,
     },
     {
-      type: "Non-Royal",
-      distance: Math.round((normalDistance / nonRoyalCount) * 100) / 100 || 0,
+      type: "EBU",
+      distance: Math.round((ebuDistance / Math.max(ebuCount, 1)) * 100) / 100 || 0,
+    },
+    {
+      type: "NON-EBU",
+      distance: Math.round((nonEbuDistance / Math.max(nonEbuCount, 1)) * 100) / 100 || 0,
     },
   ];
 
