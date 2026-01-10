@@ -190,12 +190,15 @@ export function ExecutiveOverviewCard({
         {summaryStats.map((stat, idx) => (
           <div
             key={idx}
-            className="card-modern-sm hover-lift bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-slate-800/60 dark:to-slate-700/40 border border-purple-200/30 dark:border-gray-700/60 backdrop-blur-md hover:border-purple-300/50 dark:hover:border-blue-600/50 transition-all duration-300"
+            className="bg-white rounded-2xl p-4 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg"
+            style={{
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
+            }}
           >
-            <p className="text-sm font-semibold text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm font-semibold text-gray-600 mb-2">
               {stat.label}
             </p>
-            <p className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-100 bg-clip-text text-transparent">
+            <p className="text-2xl font-bold text-gray-900">
               {stat.value}
             </p>
           </div>
@@ -204,20 +207,22 @@ export function ExecutiveOverviewCard({
 
       {/* Movement Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-shrink-0 mb-6 px-6">
-        <div className="card-modern hover-lift bg-gradient-to-br from-blue-500/10 to-purple-500/10 dark:from-slate-800/70 dark:to-slate-700/50 border border-blue-200/30 dark:border-gray-700/60 backdrop-blur-md hover:border-blue-300/50 dark:hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/5">
-          <h3 className="card-header text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-700 dark:from-blue-400 dark:to-blue-300 bg-clip-text text-transparent mb-4">
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
+            }}>
+          <h3 className="text-lg font-bold text-purple-600 mb-4">
             Movement Classification
           </h3>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-gray-600">
                 Full Moves (Site→Site)
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 {movementsByType.full}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-blue-500 h-2 rounded-full"
                 style={{
@@ -226,14 +231,14 @@ export function ExecutiveOverviewCard({
               />
             </div>
             <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-gray-600">
                 Half Moves (WH↔Site)
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 {movementsByType.half}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-purple-500 h-2 rounded-full"
                 style={{
@@ -242,14 +247,14 @@ export function ExecutiveOverviewCard({
               />
             </div>
             <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-gray-600">
                 Zero Moves (WH→WH)
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 {movementsByType.zero}
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div
                 className="bg-gray-500 h-2 rounded-full"
                 style={{
@@ -260,21 +265,23 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="card-modern hover-lift bg-gradient-to-br from-green-500/10 to-blue-500/10 dark:from-slate-800/70 dark:to-slate-700/50 border border-green-200/30 dark:border-gray-700/60 backdrop-blur-md hover:border-green-300/50 dark:hover:border-green-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/5">
-          <h3 className="card-header text-lg font-bold bg-gradient-to-r from-green-600 to-green-700 dark:from-green-400 dark:to-green-300 bg-clip-text text-transparent mb-4">
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
+            }}>
+          <h3 className="text-lg font-bold text-purple-600 mb-4">
             Asset Status
           </h3>
           <div className="space-y-3">
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                <span className="text-sm text-gray-600 font-medium">
                   Active Utilization
                 </span>
-                <span className="font-bold text-gray-900 dark:text-white">
+                <span className="font-bold text-gray-900">
                   {((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+              <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                 <div
                   className="bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full shadow-sm"
                   style={{
@@ -285,14 +292,14 @@ export function ExecutiveOverviewCard({
             </div>
             <div>
               <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                <span className="text-sm text-gray-600 font-medium">
                   Static Assets
                 </span>
-                <span className="font-bold text-gray-900 dark:text-white">
+                <span className="font-bold text-gray-900">
                   {((kpis.staticCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
                 </span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
+              <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
                 <div
                   className="bg-gradient-to-r from-red-400 to-red-500 h-2.5 rounded-full shadow-sm"
                   style={{
@@ -304,40 +311,42 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
 
-        <div className="card-modern hover-lift bg-gradient-to-br from-purple-500/10 to-pink-500/10 dark:from-slate-800/70 dark:to-slate-700/50 border border-purple-200/30 dark:border-gray-700/60 backdrop-blur-md hover:border-purple-300/50 dark:hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5">
-          <h3 className="card-header text-lg font-bold bg-gradient-to-r from-purple-600 to-purple-700 dark:from-purple-400 dark:to-purple-300 bg-clip-text text-transparent mb-4">
+        <div className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg" style={{
+              boxShadow: "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)"
+            }}>
+          <h3 className="text-lg font-bold text-purple-600 mb-4">
             Coverage Summary
           </h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600">
                 Total Regions Served
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 4/4
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600">
                 Avg Distance per Move
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 {(kpis.totalDistanceKM / kpis.totalMovements).toFixed(0)} KM
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600">
                 Data Span
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 5 years
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600 dark:text-gray-400">
+              <span className="text-gray-600">
                 Last Update
               </span>
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-gray-900">
                 Real-time
               </span>
             </div>
