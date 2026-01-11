@@ -197,20 +197,34 @@ export function ExecutiveOverviewCard({
     },
   ];
 
-  // Donut chart data for COW Status
-  const cowStatusChartData = [
+  // Calculate EBU Classification data
+  const totalCurrentMovements = currentMonth.movements.length;
+  const royalCount = currentMonth.movements.filter(
+    (m) => m.EbuRoyalCategory === "ROYAL",
+  ).length;
+  const ebuCount = currentMonth.movements.filter(
+    (m) => m.EbuRoyalCategory === "EBU",
+  ).length;
+  const nonEbuCount = currentMonth.movements.filter(
+    (m) => m.EbuRoyalCategory === "NON EBU",
+  ).length;
+
+  // Donut chart data for EBU Classification
+  const ebuChartData = [
     {
-      name: "Active",
-      value: monthlyKpis.activeCOWs,
-      color: "#10B981",
+      name: "ROYAL",
+      value: royalCount,
+      color: "#8b5cf6",
     },
     {
-      name: "Static",
-      value:
-        monthlyKpis.totalCOWs - monthlyKpis.activeCOWs > 0
-          ? monthlyKpis.totalCOWs - monthlyKpis.activeCOWs
-          : 0,
-      color: "#EF4444",
+      name: "EBU",
+      value: ebuCount,
+      color: "#fbbf24",
+    },
+    {
+      name: "NON EBU",
+      value: nonEbuCount,
+      color: "#6b7280",
     },
   ];
 
