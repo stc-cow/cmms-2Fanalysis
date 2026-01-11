@@ -686,12 +686,15 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
 
     // Check if it's a timeout error
-    const isTimeout = errorMsg.includes("abort") ||
-                     errorMsg.includes("timeout") ||
-                     errorMsg.includes("timed out");
+    const isTimeout =
+      errorMsg.includes("abort") ||
+      errorMsg.includes("timeout") ||
+      errorMsg.includes("timed out");
 
     if (isTimeout) {
-      console.warn(`⏱️  Timeout fetching Never Moved COW data (${FETCH_TIMEOUT}ms)`);
+      console.warn(
+        `⏱️  Timeout fetching Never Moved COW data (${FETCH_TIMEOUT}ms)`,
+      );
     } else {
       console.error("Error fetching Never Moved COW data:", errorMsg);
     }
