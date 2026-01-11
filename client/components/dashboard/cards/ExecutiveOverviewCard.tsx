@@ -390,7 +390,7 @@ export function ExecutiveOverviewCard({
           </div>
 
           {/* Charts: Movement Classification, EBU Classification, and Movements by Event Type - WHITE BACKGROUND */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-1">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 flex-1 min-h-0">
             {/* Movement Classification Donut Chart */}
             <div
               className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
