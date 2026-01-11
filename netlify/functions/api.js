@@ -1,81 +1,63 @@
-// Netlify Function API Handler
-// Uses serverless-http to wrap our Express server
-
+// Simplified API handler - no serverless-http
 require('dotenv').config();
 
-// Use dynamic import for ESM module
-let handler;
-let serverlessHttp;
+console.log('[API] Handler loaded, environment variables:', {
+  GOOGLE_SHEET_ID: process.env.GOOGLE_SHEET_ID ? 'SET' : 'MISSING',
+  GOOGLE_SHEET_GID: process.env.GOOGLE_SHEET_GID ? 'SET' : 'MISSING',
+  NODE_ENV: process.env.NODE_ENV,
+});
 
-const initializeHandler = async () => {
-  if (handler) return handler;
-
+exports.handler = async (event, context) => {
   try {
-    // Import serverless-http
-    serverlessHttp = require('serverless-http');
+    const { path: eventPath, httpMethod, body } = event;
+    
+    console.log(`[API] ${httpMethod} ${eventPath}`);
 
-    // Try to load the built Express server
-    try {
-      const serverModule = require('../../server');
-      const app = serverModule.createServer();
+    // Simple ping endpoint
+    if (eventPath === '/api/ping' || eventPath === '/.netlify/functions/api/ping') {
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: 'pong',
+          timestamp: new Date().toISOString(),
+          path: eventPath,
+        }),
+      };
+    }
 
-      handler = serverlessHttp(app, {
-        basePath: '/.netlify/functions/api',
-      });
-
-      console.log('[API] Successfully loaded Express server');
-    } catch (serverError) {
-      console.warn('[API] Could not load server module, creating minimal Express app:', serverError.message);
-
-      // Fallback: create a minimal Express app
-      const express = require('express');
-      const cors = require('cors');
-
-      const app = express();
-      app.use(cors());
-      app.use(express.json());
-
-      // Health check
-      app.get('/api/ping', (req, res) => {
-        res.json({ message: 'pong', timestamp: new Date().toISOString() });
-      });
-
-      // Stub data endpoint
-      app.use('/api/data', (req, res) => {
-        res.json({
+    // Data routes - temporary stub
+    if (eventPath.includes('/api/data/')) {
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           movements: [],
           cows: [],
           locations: [],
           events: [],
-          note: 'Data endpoint using fallback server',
-        });
-      });
-
-      handler = serverlessHttp(app, {
-        basePath: '/.netlify/functions/api',
-      });
+          source: 'api.js handler',
+        }),
+      };
     }
 
-    return handler;
-  } catch (error) {
-    console.error('[API] Failed to initialize handler:', error);
-    throw error;
-  }
-};
-
-exports.handler = async (event, context) => {
-  try {
-    const handlerFunc = await initializeHandler();
-    return handlerFunc(event, context);
-  } catch (error) {
-    console.error('[API] Handler execution error:', error);
+    // Catch all
     return {
-      statusCode: 502,
+      statusCode: 404,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        error: 'Failed to initialize API',
+        error: 'Not found',
+        path: eventPath,
+      }),
+    };
+  } catch (error) {
+    console.error('[API] Error:', error);
+    return {
+      statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        error: 'Internal server error',
         message: String(error),
-        timestamp: new Date().toISOString(),
       }),
     };
   }
