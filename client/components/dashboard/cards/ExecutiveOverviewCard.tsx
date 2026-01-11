@@ -61,7 +61,7 @@ export function ExecutiveOverviewCard({
         playIndexRef.current = 0;
       }
       setCurrentMonthIndex(playIndexRef.current);
-    }, 800);
+    }, 1200);
 
     return () => clearInterval(interval);
   }, [isPlaying, timelineMonths.length]);
