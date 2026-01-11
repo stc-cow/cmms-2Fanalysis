@@ -377,24 +377,15 @@ function processData(rows: any[]) {
   }
 
   rows.forEach((row, idx) => {
-    // Skip invalid rows - but log why
+    // Skip only if we have no cow_id - that's the absolute minimum
     const hasCowId = row.cow_id && row.cow_id.toString().trim().length > 0;
     const hasFromLocation = row.from_location && row.from_location.toString().trim().length > 0;
     const hasToLocation = row.to_location && row.to_location.toString().trim().length > 0;
 
-    if (!hasCowId || !hasFromLocation || !hasToLocation) {
+    // Require cow_id but be lenient about locations - they might be in different columns
+    if (!hasCowId) {
       if (idx < 5) {
-        // Log first 5 skipped rows for debugging
-        const reason = [];
-        if (!hasCowId) reason.push("no cow_id");
-        if (!hasFromLocation) reason.push("no from_location");
-        if (!hasToLocation) reason.push("no to_location");
-
-        console.warn(`⚠️  Row ${idx} skipped (${reason.join(", ")}):`, {
-          cow_id: `"${row.cow_id}"`,
-          from_location: `"${row.from_location}"`,
-          to_location: `"${row.to_location}"`,
-        });
+        console.warn(`⚠️  Row ${idx} skipped: no cow_id`);
       }
       skippedCount++;
       return;
