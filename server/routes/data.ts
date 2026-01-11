@@ -610,9 +610,9 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     res.status(500).json({
       error: "Failed to fetch Never Moved COW data",
       details: errorMsg,
-      hint: "Ensure the Google Apps Script is deployed with 'Who has access: Anyone' and check that it returns valid JSON",
-      scriptUrl: process.env.NEVER_MOVED_COW_SCRIPT_URL ||
-        "https://script.google.com/macros/s/AKfycbyP4BAqz11yoZpz2NA1OUCfYlw5mPcyk8rROrPoaBkWiv3M1dWN-6icFlp32bOu6apf/exec",
+      hint: "Ensure the Dashboard sheet is published to web and accessible via the CSV URL",
+      csvUrl: process.env.NEVER_MOVED_COW_CSV_URL ||
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1539310010&single=true&output=csv",
     });
   }
 };
