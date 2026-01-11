@@ -464,7 +464,7 @@ export function ExecutiveOverviewCard({
                     <ResponsiveContainer width="100%" height={100}>
                       <BarChart
                         data={vendorData}
-                        margin={{ top: 5, right: 10, left: 10, bottom: 20 }}
+                        margin={{ top: 2, right: 5, left: 5, bottom: 15 }}
                       >
                         <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                         <XAxis
