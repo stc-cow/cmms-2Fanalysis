@@ -489,22 +489,29 @@ const processedDataHandler: RequestHandler = async (req, res) => {
 };
 
 /**
- * Handler to fetch "Never Moved COW" data from Google Apps Script
- * The script endpoint serves data with columns:
- * A: COW_ID, D: Region, E: District, F: City, H: Location
- * I: Latitude, J: Longitude, K: Status, L: Last_Deploy_Date, M: First_Deploy_Date
+ * Handler to fetch "Never Moved COW" data from published Dashboard sheet CSV
+ * Data source: Google Sheet "Dashboard" sheet (published to web as CSV)
+ * Column mapping (from screenshot):
+ * A: COW ID
+ * B: Region
+ * C: District
+ * D: City
+ * E: Location
+ * F: Latitude
+ * G: Longitude
+ * H: Status
+ * I: Last Deploying Date
+ * J: First Deploying Date
  */
 const neverMovedCowHandler: RequestHandler = async (req, res) => {
   try {
-    // Google Apps Script endpoint for Never Moved COWs
-    // Deployment ID: AKfycbyP4BAqz11yoZpz2NA1OUCfYlw5mPcyk8rROrPoaBkWiv3M1dWN-6icFlp32bOu6apf
-    const SCRIPT_URL = process.env.NEVER_MOVED_COW_SCRIPT_URL ||
-      "https://script.google.com/macros/s/AKfycbyP4BAqz11yoZpz2NA1OUCfYlw5mPcyk8rROrPoaBkWiv3M1dWN-6icFlp32bOu6apf/exec";
+    // Published CSV URL for Dashboard sheet
+    const CSV_URL = process.env.NEVER_MOVED_COW_CSV_URL ||
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1539310010&single=true&output=csv";
 
-    console.log(`📡 Fetching Never Moved COWs from Google Apps Script...`);
-    console.log(`   URL: ${SCRIPT_URL}`);
+    console.log(`📡 Fetching Never Moved COWs from Dashboard sheet CSV...`);
 
-    const response = await fetch(SCRIPT_URL, {
+    const response = await fetch(CSV_URL, {
       method: "GET",
       headers: {
         "User-Agent": "Mozilla/5.0",
@@ -513,93 +520,78 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
 
     if (!response.ok) {
       throw new Error(
-        `HTTP ${response.status}: Failed to fetch from Google Apps Script`,
+        `HTTP ${response.status}: Failed to fetch Dashboard CSV`,
       );
     }
 
-    const contentType = response.headers.get("content-type");
-    const text = await response.text();
+    const csvText = await response.text();
+    const lines = csvText.trim().split("\n");
 
-    // Check if response is HTML (error page) instead of JSON
-    if (text.startsWith("<")) {
-      console.error("\n❌ GOOGLE APPS SCRIPT ERROR:");
-      console.error("   The endpoint returned HTML instead of JSON.");
-      console.error("   This usually means:");
-      console.error("   1. The script is not properly deployed");
-      console.error("   2. Access permissions are not set to 'Anyone'");
-      console.error("   3. The script needs to be redeployed");
-      console.error("\n📋 TO FIX:");
-      console.error("   1. Open the Google Apps Script project");
-      console.error("   2. Click 'Deploy' > 'New Deployment'");
-      console.error("   3. Select 'Web app' type");
-      console.error("   4. Set 'Execute as' to your account");
-      console.error("   5. Set 'Who has access' to 'Anyone'");
-      console.error("   6. Deploy and copy the new endpoint URL");
-      throw new Error(
-        "Google Apps Script returned HTML. Script may not be deployed or access is restricted.",
-      );
+    if (lines.length < 2) {
+      throw new Error("No data found in Dashboard CSV");
     }
 
-    let jsonData;
-    try {
-      jsonData = JSON.parse(text);
-    } catch (e) {
-      console.error("Failed to parse response as JSON:", text.substring(0, 200));
-      throw new Error("Response is not valid JSON");
-    }
+    const neverMovedCows: any[] = [];
 
-    // The script should return data in one of these formats:
-    // 1. { data: [...] } - array of cow objects
-    // 2. { cows: [...] } - array of cow objects
-    // 3. Direct array of cow objects
+    // Parse CSV (skip header row)
+    for (let i = 1; i < lines.length; i++) {
+      const cells = parseCSVLine(lines[i]);
 
-    let neverMovedCows = [];
+      // Skip empty rows
+      if (!cells[0]?.trim()) continue;
 
-    if (Array.isArray(jsonData)) {
-      neverMovedCows = jsonData;
-    } else if (Array.isArray(jsonData.data)) {
-      neverMovedCows = jsonData.data;
-    } else if (Array.isArray(jsonData.cows)) {
-      neverMovedCows = jsonData.cows;
-    } else {
-      throw new Error("Unexpected response format from Google Apps Script");
-    }
+      // Column mapping from Dashboard sheet:
+      const cowId = cells[0]?.trim() || ""; // A: COW ID
+      const region = cells[1]?.trim() || ""; // B: Region
+      const district = cells[2]?.trim() || ""; // C: District
+      const city = cells[3]?.trim() || ""; // D: City
+      const location = cells[4]?.trim() || ""; // E: Location
+      const latitude = parseFloat(cells[5]?.trim() || "0"); // F: Latitude
+      const longitude = parseFloat(cells[6]?.trim() || "0"); // G: Longitude
+      const status = (cells[7]?.trim() || "OFF-AIR").toUpperCase(); // H: Status
+      const lastDeployDate = cells[8]?.trim() || ""; // I: Last Deploying Date
+      const firstDeployDate = cells[9]?.trim() || ""; // J: First Deploying Date
 
-    // Transform and normalize the data if needed
-    const normalizedCows = neverMovedCows.map((cow: any) => {
-      // Calculate days on air if not provided
-      let daysOnAir = cow.Days_On_Air || 0;
-      if (!daysOnAir && cow.First_Deploy_Date) {
-        const deployDate = new Date(cow.First_Deploy_Date);
-        const today = new Date();
-        daysOnAir = Math.floor(
-          (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
+      // Skip rows with missing critical fields
+      if (!cowId || latitude === 0 || longitude === 0) continue;
+
+      // Calculate days on air (from initial deployment date)
+      let daysOnAir = 0;
+      if (firstDeployDate) {
+        try {
+          const deployDate = new Date(firstDeployDate);
+          const today = new Date();
+          daysOnAir = Math.floor(
+            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
+          );
+        } catch (e) {
+          daysOnAir = 0;
+        }
       }
 
-      return {
-        COW_ID: cow.COW_ID || cow.cow_id || "",
-        Region: cow.Region || cow.region || "",
-        District: cow.District || cow.district || "",
-        City: cow.City || cow.city || "",
-        Location: cow.Location || cow.location || "",
-        Latitude: parseFloat(cow.Latitude || cow.latitude || "0"),
-        Longitude: parseFloat(cow.Longitude || cow.longitude || "0"),
-        Status: (cow.Status || cow.status || "OFF-AIR").toUpperCase() === "ON-AIR" ? "ON-AIR" : "OFF-AIR",
-        First_Deploy_Date: cow.First_Deploy_Date || cow.first_deploy_date || "",
-        Last_Deploy_Date: cow.Last_Deploy_Date || cow.last_deploy_date || "",
+      neverMovedCows.push({
+        COW_ID: cowId,
+        Region: region,
+        District: district,
+        City: city,
+        Location: location,
+        Latitude: latitude,
+        Longitude: longitude,
+        Status: status === "ON-AIR" ? "ON-AIR" : "OFF-AIR",
+        Last_Deploy_Date: lastDeployDate,
+        First_Deploy_Date: firstDeployDate,
         Days_On_Air: daysOnAir,
-      };
-    });
+      });
+    }
 
     console.log(
-      `✓ Fetched ${normalizedCows.length} Never Moved COWs from Google Apps Script`,
+      `✓ Fetched ${neverMovedCows.length} Never Moved COWs from Dashboard sheet`,
     );
 
     const stats = {
-      total: normalizedCows.length,
-      onAir: normalizedCows.filter((c) => c.Status === "ON-AIR").length,
-      offAir: normalizedCows.filter((c) => c.Status === "OFF-AIR").length,
+      total: neverMovedCows.length,
+      onAir: neverMovedCows.filter((c) => c.Status === "ON-AIR").length,
+      offAir: neverMovedCows.filter((c) => c.Status === "OFF-AIR").length,
     };
 
     console.log(
@@ -607,9 +599,9 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     );
 
     res.json({
-      cows: normalizedCows,
+      cows: neverMovedCows,
       stats,
-      source: "Google Apps Script",
+      source: "Dashboard Sheet (CSV)",
     });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
