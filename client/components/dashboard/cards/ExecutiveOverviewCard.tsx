@@ -393,44 +393,46 @@ export function ExecutiveOverviewCard({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 flex-1 min-h-0">
             {/* Movement Classification Donut Chart */}
             <div
-              className="bg-white rounded-lg p-2 flex flex-col items-center justify-center shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden"
             >
-              <h3 className="text-gray-900 text-xs font-bold mb-1 text-center">
+              <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
                 Movement Classification
               </h3>
-              <ResponsiveContainer width="100%" height={160}>
-                <PieChart>
-                  <Pie
-                    data={movementChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {movementChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                      color: "#000",
-                    }}
-                  />
-                  <Legend
-                    wrapperStyle={{ paddingTop: "10px" }}
-                    formatter={(value, entry: any) => (
-                      <span style={{ color: "#374151", fontSize: "11px" }}>
-                        {entry.payload.name}
-                      </span>
-                    )}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={movementChartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={2}
+                      dataKey="value"
+                    >
+                      {movementChartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.95)",
+                        border: "1px solid #e5e7eb",
+                        borderRadius: "8px",
+                        color: "#000",
+                      }}
+                    />
+                    <Legend
+                      wrapperStyle={{ paddingTop: "10px" }}
+                      formatter={(value, entry: any) => (
+                        <span style={{ color: "#374151", fontSize: "11px" }}>
+                          {entry.payload.name}
+                        </span>
+                      )}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
 
             {/* Top Vendor Chart */}
