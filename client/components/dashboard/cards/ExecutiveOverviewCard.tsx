@@ -343,7 +343,7 @@ export function ExecutiveOverviewCard({
       </div>
 
       {/* Main Split Layout: Map (40%) + Overview (60%) */}
-      <div className="flex flex-col lg:flex-row flex-1 gap-4 p-4 overflow-hidden">
+      <div className="flex flex-col lg:flex-row flex-1 gap-2 p-3 overflow-hidden">
         {/* Left Side: Saudi Map (40%) */}
         <div className="w-full lg:w-2/5 flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
           <SaudiHighchartsMap
@@ -354,7 +354,7 @@ export function ExecutiveOverviewCard({
         </div>
 
         {/* Right Side: Executive Overview (60%) */}
-        <div className="w-full lg:w-3/5 flex flex-col overflow-y-auto gap-4">
+        <div className="w-full lg:w-3/5 flex flex-col overflow-y-auto gap-2">
           {/* KPI Cards - White Background */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
             {metrics.map((metric) => (
