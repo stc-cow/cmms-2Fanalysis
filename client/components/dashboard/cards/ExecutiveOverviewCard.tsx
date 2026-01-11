@@ -414,17 +414,17 @@ export function ExecutiveOverviewCard({
               </ResponsiveContainer>
             </div>
 
-            {/* COW Status Donut Chart */}
+            {/* EBU Classification Donut Chart */}
             <div
               className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
             >
               <h3 className="text-gray-900 text-sm font-bold mb-3 text-center">
-                COW Status
+                EBU Classification
               </h3>
               <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie
-                    data={cowStatusChartData}
+                    data={ebuChartData}
                     cx="50%"
                     cy="50%"
                     innerRadius={50}
@@ -432,7 +432,7 @@ export function ExecutiveOverviewCard({
                     paddingAngle={2}
                     dataKey="value"
                   >
-                    {cowStatusChartData.map((entry, index) => (
+                    {ebuChartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
@@ -443,6 +443,9 @@ export function ExecutiveOverviewCard({
                       borderRadius: "8px",
                       color: "#000",
                     }}
+                    formatter={(value: number) =>
+                      `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
+                    }
                   />
                   <Legend
                     wrapperStyle={{ paddingTop: "10px" }}
