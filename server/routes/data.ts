@@ -937,8 +937,103 @@ const diagnosticHandler: RequestHandler = async (req, res) => {
   res.json(diagnostics);
 };
 
+/**
+ * Raw CSV Viewer - For debugging what the Google Sheet actually returns
+ */
+const csvViewerHandler: RequestHandler = async (req, res) => {
+  try {
+    console.log(`\n🔍 RAW CSV VIEWER ENDPOINT`);
+    console.log(`   MOVEMENT_DATA_CSV_URL: ${MOVEMENT_DATA_CSV_URL}`);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
+    const response = await fetch(MOVEMENT_DATA_CSV_URL, {
+      headers: {
+        "User-Agent": "Mozilla/5.0",
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    const csvText = await response.text();
+
+    // Check response status
+    if (!response.ok) {
+      console.error(`❌ HTTP ${response.status}: ${response.statusText}`);
+      return res.status(response.status).json({
+        error: `Failed to fetch CSV`,
+        httpStatus: response.status,
+        statusText: response.statusText,
+      });
+    }
+
+    console.log(`✓ CSV fetched successfully (${csvText.length} bytes)`);
+
+    // Analyze the CSV
+    const lines = csvText.split("\n");
+    const isHTML = csvText.includes("<html") || csvText.includes("<!DOCTYPE");
+    const isEmpty = csvText.trim().length === 0;
+
+    const analysis = {
+      httpStatus: response.status,
+      csvSize: csvText.length,
+      byteCount: Buffer.byteLength(csvText),
+      lineCount: lines.length,
+      isEmpty,
+      isHTML,
+      firstLine: lines[0] || "",
+      secondLine: lines[1] || "",
+      thirdLine: lines[2] || "",
+      first200Chars: csvText.substring(0, 200),
+      last200Chars: csvText.substring(Math.max(0, csvText.length - 200)),
+    };
+
+    if (isHTML) {
+      analysis.warning = "⚠️  Response contains HTML, not CSV!";
+      console.error("   ❌ Response is HTML, not CSV!");
+    }
+
+    if (isEmpty) {
+      analysis.error = "❌ CSV is completely empty";
+      console.error("   ❌ CSV is empty!");
+    }
+
+    if (lines.length < 2) {
+      analysis.warning = "⚠️  CSV has fewer than 2 lines (header + data)";
+      console.warn(`   ⚠️  Only ${lines.length} line(s)`);
+    }
+
+    if (lines.length >= 2) {
+      analysis.headerCount = lines[0].split(",").length;
+      analysis.firstDataRowCellCount = lines[1].split(",").length;
+      console.log(`   Header: ${analysis.headerCount} cells`);
+      console.log(`   Row 1: ${analysis.firstDataRowCellCount} cells`);
+    }
+
+    console.log(`\n📊 CSV Analysis Summary:`);
+    console.log(`   Size: ${csvText.length} bytes`);
+    console.log(`   Lines: ${lines.length}`);
+    console.log(`   Is HTML: ${isHTML}`);
+    console.log(`   Is Empty: ${isEmpty}`);
+
+    res.json(analysis);
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
+    console.error(`❌ Error: ${errorMsg}`);
+
+    res.status(500).json({
+      error: "Failed to fetch and analyze CSV",
+      details: errorMsg,
+      csvUrl: MOVEMENT_DATA_CSV_URL,
+    });
+  }
+};
+
 router.get("/processed-data", processedDataHandler);
 router.get("/never-moved-cows", neverMovedCowHandler);
 router.get("/diagnostic", diagnosticHandler);
+router.get("/csv-viewer", csvViewerHandler);
 
 export default router;
