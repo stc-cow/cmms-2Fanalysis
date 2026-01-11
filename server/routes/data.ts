@@ -156,46 +156,46 @@ function parseCSVData(csvText: string) {
   for (let i = 1; i < lines.length; i++) {
     const cells = parseCSVLine(lines[i]);
 
-    if (cells.length === 0 || !cells[0]?.trim()) {
-      const reason = "empty_row";
+    // Skip completely empty rows
+    if (cells.length === 0) {
+      skippedCount++;
+      continue;
+    }
+
+    // Skip if first column (COW ID) is empty
+    if (!cells[0]?.trim()) {
+      const reason = "empty_first_column";
       skipReasons.set(reason, (skipReasons.get(reason) ?? 0) + 1);
       skippedCount++;
       continue;
     }
 
-    if (cells.length < 5) {
-      const reason = `too_few_cells_${cells.length}`;
-      skipReasons.set(reason, (skipReasons.get(reason) ?? 0) + 1);
-      if (i <= 3) console.log(`   Row ${i}: SKIPPED (only ${cells.length} cells)`);
-      skippedCount++;
-      continue;
-    }
-
-    // Extract critical fields
+    // Extract critical fields using detected or standard indices
     const cow_id = cells[cowIdIdx]?.trim() || "";
     const from_location = cells[fromLocationIdx]?.trim() || "";
     const to_location = cells[toLocationIdx]?.trim() || "";
 
-    // Log first 3 rows
-    if (i <= 3) {
+    // Log first 5 rows for debugging
+    if (i <= 5) {
       console.log(`   Row ${i}:`);
-      console.log(`      cells[${cowIdIdx}] = "${cow_id}"`);
-      console.log(`      cells[${fromLocationIdx}] = "${from_location}"`);
-      console.log(`      cells[${toLocationIdx}] = "${to_location}"`);
+      console.log(`      cells[${cowIdIdx}] (cow) = "${cow_id}"`);
+      console.log(`      cells[${fromLocationIdx}] (from) = "${from_location}"`);
+      console.log(`      cells[${toLocationIdx}] (to) = "${to_location}"`);
     }
 
-    // Check for empty critical fields
-    if (!cow_id || !from_location || !to_location) {
-      const reasons: string[] = [];
-      if (!cow_id) reasons.push("empty_cow_id");
-      if (!from_location) reasons.push("empty_from_location");
-      if (!to_location) reasons.push("empty_to_location");
-      const reason = reasons.join("+");
+    // Be lenient: only require cow_id, accept empty locations as they might be warehouses
+    // The key is we have a COW ID to work with
+    if (!cow_id) {
+      const reason = "no_cow_id";
       skipReasons.set(reason, (skipReasons.get(reason) ?? 0) + 1);
-      if (i <= 5) console.log(`      SKIPPED: ${reason}`);
+      if (i <= 5) console.log(`      SKIPPED: no cow_id`);
       skippedCount++;
       continue;
     }
+
+    // If we have at least cow_id, try to use it even if from/to are empty
+    // They might be filled in later or the data structure is different
+    successCount++;
 
     successCount++;
 
