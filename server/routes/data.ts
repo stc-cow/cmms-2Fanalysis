@@ -249,10 +249,18 @@ function processData(rows: any[]) {
   const movements = [];
   const cowMap = new Map();
   const locationMap = new Map();
+  let skippedCount = 0;
 
   rows.forEach((row, idx) => {
-    // Skip invalid rows
-    if (!row.cow_id || !row.from_location || !row.to_location) return;
+    // Skip invalid rows - but log why
+    if (!row.cow_id || !row.from_location || !row.to_location) {
+      if (idx < 3) {
+        // Log first 3 skipped rows for debugging
+        console.warn(`⚠️  Skipping row ${idx}: cow_id="${row.cow_id}", from_location="${row.from_location}", to_location="${row.to_location}"`);
+      }
+      skippedCount++;
+      return;
+    }
 
     // Safely parse dates - use current date if invalid
     const parseDate = (dateStr: string): string => {
