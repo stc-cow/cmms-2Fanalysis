@@ -418,14 +418,10 @@ export function ExecutiveOverviewCard({
                     className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold"
                     style={{
                       backgroundColor:
-                        VENDOR_COLORS[topVendor.name]?.bgColor ||
-                        "#f0f0f0",
+                        VENDOR_COLORS[topVendor.name]?.bgColor || "#f0f0f0",
                       borderColor:
-                        VENDOR_COLORS[topVendor.name]?.color ||
-                        "#999",
-                      color:
-                        VENDOR_COLORS[topVendor.name]?.color ||
-                        "#666",
+                        VENDOR_COLORS[topVendor.name]?.color || "#999",
+                      color: VENDOR_COLORS[topVendor.name]?.color || "#666",
                     }}
                   >
                     {topVendor.name.substring(0, 1)}
@@ -482,10 +478,7 @@ export function ExecutiveOverviewCard({
                     {vendorData.map((vendor, idx) => (
                       <Cell
                         key={`vendor-${idx}`}
-                        fill={
-                          VENDOR_COLORS[vendor.name]?.color ||
-                          "#a855f7"
-                        }
+                        fill={VENDOR_COLORS[vendor.name]?.color || "#a855f7"}
                       />
                     ))}
                   </Bar>
@@ -501,22 +494,15 @@ export function ExecutiveOverviewCard({
             {vendorData.length > 0 && (
               <div className="flex justify-center gap-3 mt-2 flex-wrap text-xs">
                 {vendorData.map((vendor) => (
-                  <div
-                    key={vendor.name}
-                    className="flex items-center gap-1"
-                  >
+                  <div key={vendor.name} className="flex items-center gap-1">
                     <div
                       className="w-5 h-5 rounded-full border flex items-center justify-center text-xs font-bold"
                       style={{
                         backgroundColor:
-                          VENDOR_COLORS[vendor.name]?.bgColor ||
-                          "#f0f0f0",
+                          VENDOR_COLORS[vendor.name]?.bgColor || "#f0f0f0",
                         borderColor:
-                          VENDOR_COLORS[vendor.name]?.color ||
-                          "#999",
-                        color:
-                          VENDOR_COLORS[vendor.name]?.color ||
-                          "#666",
+                          VENDOR_COLORS[vendor.name]?.color || "#999",
+                        color: VENDOR_COLORS[vendor.name]?.color || "#666",
                       }}
                     >
                       {vendor.name.substring(0, 1)}
@@ -590,7 +576,9 @@ export function ExecutiveOverviewCard({
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Legend wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }} />
+                    <Legend
+                      wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
@@ -621,7 +609,9 @@ export function ExecutiveOverviewCard({
                           />
                         ))}
                       </Pie>
-                      <Legend wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }} />
+                      <Legend
+                        wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
