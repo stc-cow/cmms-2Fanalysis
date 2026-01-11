@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CardTabs, DASHBOARD_CARDS } from "@/components/dashboard/CardTabs";
 import { HeaderFilters } from "@/components/dashboard/HeaderFilters";
 import { ExecutiveOverviewCard } from "@/components/dashboard/cards/ExecutiveOverviewCard";
