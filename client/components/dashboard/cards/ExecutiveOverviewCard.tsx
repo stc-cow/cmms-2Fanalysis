@@ -210,11 +210,12 @@ export function ExecutiveOverviewCard({
   const totalCurrentMovements = currentMonth.movements.length;
 
   // Calculate vendor counts for current month (from Column AC - Vendor)
+  // Note: vendor field is lowercase in MapLine objects
   const vendorCounts: Record<string, number> = {};
   currentMonth.movements.forEach((mov: any) => {
-    // Debug: Check if Vendor field exists
-    if (mov.Vendor && typeof mov.Vendor === "string" && mov.Vendor.trim()) {
-      const vendor = mov.Vendor.trim();
+    const vendorName = mov.vendor || mov.Vendor; // Check both lowercase and uppercase
+    if (vendorName && typeof vendorName === "string" && vendorName.trim()) {
+      const vendor = vendorName.trim();
       vendorCounts[vendor] = (vendorCounts[vendor] || 0) + 1;
     }
   });
@@ -229,14 +230,6 @@ export function ExecutiveOverviewCard({
     .slice(0, 3); // Top 3 vendors (Ericsson, Nokia, Huawei)
 
   const topVendor = vendorData.length > 0 ? vendorData[0] : null;
-
-  // Debug logging
-  if (vendorData.length === 0 && currentMonth.movements.length > 0) {
-    console.warn(
-      "No vendor data found. Sample movement keys:",
-      Object.keys(currentMonth.movements[0] || {})
-    );
-  }
 
   const metrics = [
     {
