@@ -553,18 +553,13 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       return res.json(cachedData);
     }
 
-    // Published CSV URL for Dashboard sheet (GID: 1464106304)
-    const CSV_URL =
-      process.env.NEVER_MOVED_COW_CSV_URL ||
-      "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv";
-
     console.log(`📡 Fetching Never Moved COWs from Dashboard sheet CSV...`);
 
     // Create abort controller for timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
 
-    const response = await fetch(CSV_URL, {
+    const response = await fetch(NEVER_MOVED_COW_CSV_URL, {
       method: "GET",
       headers: {
         "User-Agent": "Mozilla/5.0",
