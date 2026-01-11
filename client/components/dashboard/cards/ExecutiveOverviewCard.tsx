@@ -281,6 +281,15 @@ export function ExecutiveOverviewCard({
     "Normal Coverage": "#6b7280",
   };
 
+  // Vendor branding colors
+  const VENDOR_COLORS: Record<string, { color: string; bgColor: string }> = {
+    Nokia: { color: "#124191", bgColor: "#E8F0FF" },
+    Ericsson: { color: "#002E5C", bgColor: "#E8F2FF" },
+    Huawei: { color: "#FF0000", bgColor: "#FFE8E8" },
+    Samsung: { color: "#1428A0", bgColor: "#E8ECFF" },
+    ZTE: { color: "#00A500", bgColor: "#E8F5E8" },
+  };
+
   function normalizeEventType(type: string | undefined): string {
     if (!type) return "Normal Coverage";
     const normalized = type.trim().toLowerCase();
