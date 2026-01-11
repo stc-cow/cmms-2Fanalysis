@@ -356,183 +356,167 @@ export function ExecutiveOverviewCard({
         </div>
       </div>
 
-      {/* Main Split Layout: Map (40%) + Overview (60%) */}
-      <div className="flex flex-col lg:flex-row flex-1 gap-2 p-3 overflow-hidden">
-        {/* Left Side: Saudi Map (40%) */}
-        <div className="w-full lg:w-2/5 flex flex-col bg-white rounded-lg shadow-lg overflow-hidden">
-          <SaudiHighchartsMap
-            regionMetrics={regionMetrics || {}}
-            maxMetric={maxMetric}
-            title="Movement Distribution by Region"
-          />
+      {/* Main Split Layout: Map + Vendor (60%) | KPIs + Charts (40%) */}
+      <div className="flex flex-col lg:flex-row flex-1 gap-3 p-3 overflow-hidden">
+        {/* LEFT PANEL (60%): Map + Vendor Chart */}
+        <div className="w-full lg:w-3/5 flex flex-col gap-3 min-h-0">
+          {/* Movement Distribution Map (65% of left panel) */}
+          <div className="flex-1 min-h-0 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+            <SaudiHighchartsMap
+              regionMetrics={regionMetrics || {}}
+              maxMetric={maxMetric}
+              title="Movement Distribution by Region"
+            />
+          </div>
+
+          {/* Top Vendor Chart (35% of left panel) */}
+          <div className="h-48 bg-white rounded-lg p-3 border border-gray-200 shadow-sm overflow-hidden">
+            <h3 className="text-gray-900 text-sm font-bold mb-2">Top Vendor</h3>
+            {topVendor ? (
+              <div className="h-full flex flex-col items-center justify-between">
+                {/* Vendor Logo Section */}
+                <div className="flex flex-col items-center gap-1">
+                  <div className="w-14 h-14 bg-gray-100 rounded border border-purple-600 flex items-center justify-center">
+                    <div className="text-xs font-bold text-purple-600 text-center px-1">
+                      {topVendor.name}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-xs font-semibold text-gray-900">
+                      {topVendor.name}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {topVendor.value} movements
+                    </div>
+                  </div>
+                </div>
+
+                {/* Column Chart */}
+                {vendorData.length > 0 && (
+                  <ResponsiveContainer width="100%" height={90}>
+                    <BarChart
+                      data={vendorData}
+                      margin={{ top: 2, right: 5, left: 5, bottom: 15 }}
+                    >
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                        stroke="#e5e7eb"
+                        vertical={false}
+                      />
+                      <XAxis
+                        dataKey="name"
+                        angle={-45}
+                        textAnchor="end"
+                        height={35}
+                        tick={{ fontSize: 8 }}
+                      />
+                      <YAxis fontSize={8} width={25} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(255, 255, 255, 0.95)",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                        }}
+                        formatter={(value: number) => `${value} movements`}
+                      />
+                      <Bar
+                        dataKey="value"
+                        fill="#a855f7"
+                        radius={[8, 8, 0, 0]}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center text-gray-400 text-sm">
+                No vendor data available
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Right Side: Executive Overview (60%) */}
-        <div className="w-full lg:w-3/5 flex flex-col overflow-y-auto gap-2">
-          {/* KPI Cards - White Background */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
+        {/* RIGHT PANEL (40%): KPIs + Charts */}
+        <div className="w-full lg:w-2/5 flex flex-col gap-3 overflow-y-auto min-h-0">
+          {/* KPI Cards - 2×3 Grid */}
+          <div className="grid grid-cols-2 gap-2 flex-shrink-0">
             {metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm hover:shadow-md transition-all"
+                className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm"
               >
                 <p className="text-gray-700 text-xs font-semibold uppercase tracking-wider">
                   {metric.label}
                 </p>
-                <p className="text-gray-900 text-xl font-bold mt-1">
+                <p className="text-gray-900 text-lg font-bold mt-1">
                   {metric.value}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Summary Stats */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+          {/* Summary Stats - Active Warehouses & Deployment Sites */}
+          <div className="grid grid-cols-2 gap-2 flex-shrink-0">
             {summaryStats.map((stat, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm hover:shadow-md transition-all"
+                className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm"
               >
                 <p className="text-gray-600 text-xs font-semibold">
                   {stat.label}
                 </p>
-                <p className="text-gray-900 text-lg font-bold mt-1">
+                <p className="text-gray-900 text-base font-bold mt-1">
                   {stat.value}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Charts: Movement Classification, EBU Classification, and Movements by Event Type - WHITE BACKGROUND */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 flex-1 min-h-0">
-            {/* Movement Classification Donut Chart */}
-            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
-              <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
+          {/* Donut Charts - Side by Side */}
+          <div className="grid grid-cols-2 gap-2 flex-1 min-h-0">
+            {/* Movement Classification Donut */}
+            <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
+              <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
                 Movement Classification
               </h3>
-              <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+              <div className="flex-1 min-h-0 flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={movementChartData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={50}
-                      outerRadius={80}
-                      paddingAngle={2}
+                      innerRadius={35}
+                      outerRadius={55}
+                      paddingAngle={1}
                       dataKey="value"
                     >
                       {movementChartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.95)",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "8px",
-                        color: "#000",
-                      }}
-                    />
-                    <Legend
-                      wrapperStyle={{ paddingTop: "10px" }}
-                      formatter={(value, entry: any) => (
-                        <span style={{ color: "#374151", fontSize: "11px" }}>
-                          {entry.payload.name}
-                        </span>
-                      )}
-                    />
+                    <Legend wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }} />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Top Vendor Chart */}
-            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
-              <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
-                Top Vendor
-              </h3>
-              {topVendor ? (
-                <div className="w-full flex-1 min-h-0 flex flex-col items-center justify-center gap-1">
-                  {/* Vendor Logo Section */}
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="w-12 h-12 bg-gray-100 rounded border border-purple-600 flex items-center justify-center">
-                      <div className="text-xs font-bold text-purple-600 text-center px-1">
-                        {topVendor.name}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-xs font-semibold text-gray-900">
-                        {topVendor.name}
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {topVendor.value} movements
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Column Chart */}
-                  {vendorData.length > 0 && (
-                    <ResponsiveContainer width="100%" height={100}>
-                      <BarChart
-                        data={vendorData}
-                        margin={{ top: 2, right: 5, left: 5, bottom: 15 }}
-                      >
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          stroke="#e5e7eb"
-                          vertical={false}
-                        />
-                        <XAxis
-                          dataKey="name"
-                          angle={-45}
-                          textAnchor="end"
-                          height={40}
-                          tick={{ fontSize: 8 }}
-                        />
-                        <YAxis fontSize={8} width={25} />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: "rgba(255, 255, 255, 0.95)",
-                            border: "1px solid #e5e7eb",
-                            borderRadius: "8px",
-                          }}
-                          formatter={(value: number) => `${value} movements`}
-                        />
-                        <Bar
-                          dataKey="value"
-                          fill="#a855f7"
-                          radius={[8, 8, 0, 0]}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
-                </div>
-              ) : (
-                <div className="flex items-center justify-center flex-1 text-gray-400 text-xs">
-                  No vendor data
-                </div>
-              )}
-            </div>
-
-            {/* Movement Category by Event Type Donut Chart */}
-            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
-              <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
+            {/* Movement Category (Event) Donut */}
+            <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
+              <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
                 Movement Category (Event)
               </h3>
               {eventDataWithPercentages.length > 0 ? (
-                <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+                <div className="flex-1 min-h-0 flex items-center justify-center">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
                         data={eventDataWithPercentages}
                         cx="50%"
                         cy="50%"
-                        labelLine={false}
-                        label={({ displayName }) => displayName}
                         innerRadius={35}
                         outerRadius={55}
-                        fill="#8884d8"
+                        paddingAngle={1}
                         dataKey="value"
                       >
                         {eventDataWithPercentages.map((entry, index) => (
@@ -542,22 +526,12 @@ export function ExecutiveOverviewCard({
                           />
                         ))}
                       </Pie>
-                      <Tooltip
-                        contentStyle={{
-                          backgroundColor: "rgba(255, 255, 255, 0.95)",
-                          border: "1px solid #e5e7eb",
-                          borderRadius: "8px",
-                          color: "#000",
-                        }}
-                        formatter={(value: number) =>
-                          `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
-                        }
-                      />
+                      <Legend wrapperStyle={{ fontSize: "10px", paddingTop: "4px" }} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
-                <div className="flex items-center justify-center flex-1 text-gray-400 text-xs">
+                <div className="flex-1 flex items-center justify-center text-gray-400 text-xs">
                   No event data
                 </div>
               )}
