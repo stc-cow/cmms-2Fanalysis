@@ -1,5 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { NeverMovedCow } from "@shared/models";
@@ -10,23 +16,30 @@ interface NeverMovedCowCardProps {
 }
 
 export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
-  const [selectedStatus, setSelectedStatus] = useState<"ALL" | "ON-AIR" | "OFF-AIR">("ALL");
+  const [selectedStatus, setSelectedStatus] = useState<
+    "ALL" | "ON-AIR" | "OFF-AIR"
+  >("ALL");
 
   const stats = useMemo(() => {
     const onAir = neverMovedCows.filter((c) => c.Status === "ON-AIR");
     const offAir = neverMovedCows.filter((c) => c.Status === "OFF-AIR");
-    const avgDaysOnAir = onAir.length > 0
-      ? Math.round(onAir.reduce((sum, c) => sum + (c.Days_On_Air || 0), 0) / onAir.length)
-      : 0;
+    const avgDaysOnAir =
+      onAir.length > 0
+        ? Math.round(
+            onAir.reduce((sum, c) => sum + (c.Days_On_Air || 0), 0) /
+              onAir.length,
+          )
+        : 0;
 
     return {
       total: neverMovedCows.length,
       onAir: onAir.length,
       offAir: offAir.length,
       avgDaysOnAir,
-      onAirPercentage: neverMovedCows.length > 0
-        ? Math.round((onAir.length / neverMovedCows.length) * 100)
-        : 0,
+      onAirPercentage:
+        neverMovedCows.length > 0
+          ? Math.round((onAir.length / neverMovedCows.length) * 100)
+          : 0,
     };
   }, [neverMovedCows]);
 
@@ -73,23 +86,39 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
               </div>
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-600">ON-AIR %</p>
-                <p className="text-3xl font-bold text-green-600">{stats.onAirPercentage}%</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {stats.onAirPercentage}%
+                </p>
               </div>
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">ON-AIR Count</p>
-                <p className="text-3xl font-bold text-green-600">{stats.onAir}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  ON-AIR Count
+                </p>
+                <p className="text-3xl font-bold text-green-600">
+                  {stats.onAir}
+                </p>
               </div>
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">OFF-AIR Count</p>
-                <p className="text-3xl font-bold text-red-600">{stats.offAir}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  OFF-AIR Count
+                </p>
+                <p className="text-3xl font-bold text-red-600">
+                  {stats.offAir}
+                </p>
               </div>
             </div>
 
             {/* Average Days On Air */}
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4">
-              <p className="text-sm font-medium text-gray-700">Avg Days On-Air (Active COWs)</p>
-              <p className="text-4xl font-bold text-blue-600 mt-2">{stats.avgDaysOnAir}</p>
-              <p className="text-xs text-gray-600 mt-1">days since last deployment</p>
+              <p className="text-sm font-medium text-gray-700">
+                Avg Days On-Air (Active COWs)
+              </p>
+              <p className="text-4xl font-bold text-blue-600 mt-2">
+                {stats.avgDaysOnAir}
+              </p>
+              <p className="text-xs text-gray-600 mt-1">
+                days since last deployment
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -100,7 +129,12 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
             <CardTitle className="text-lg">COWs by Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <Tabs value={selectedStatus} onValueChange={(val) => setSelectedStatus(val as "ALL" | "ON-AIR" | "OFF-AIR")}>
+            <Tabs
+              value={selectedStatus}
+              onValueChange={(val) =>
+                setSelectedStatus(val as "ALL" | "ON-AIR" | "OFF-AIR")
+              }
+            >
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="ALL">All ({stats.total})</TabsTrigger>
                 <TabsTrigger value="ON-AIR" className="text-green-600">
@@ -140,18 +174,27 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
             <div className="space-y-3">
               {recentlyDeployed.length > 0 ? (
                 recentlyDeployed.map((cow) => (
-                  <div key={cow.COW_ID} className="border rounded-lg p-3 hover:bg-gray-50 transition">
+                  <div
+                    key={cow.COW_ID}
+                    className="border rounded-lg p-3 hover:bg-gray-50 transition"
+                  >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900">{cow.COW_ID}</p>
-                        <p className="text-xs text-gray-600 truncate">{cow.Location}</p>
+                        <p className="font-semibold text-gray-900">
+                          {cow.COW_ID}
+                        </p>
+                        <p className="text-xs text-gray-600 truncate">
+                          {cow.Location}
+                        </p>
                         <p className="text-xs text-gray-500 mt-1">
                           {cow.Region}, {cow.District}, {cow.City}
                         </p>
                       </div>
                       <div className="flex-shrink-0 text-right">
                         <Badge
-                          variant={cow.Status === "ON-AIR" ? "default" : "secondary"}
+                          variant={
+                            cow.Status === "ON-AIR" ? "default" : "secondary"
+                          }
                           className={
                             cow.Status === "ON-AIR"
                               ? "bg-green-600 hover:bg-green-700"
@@ -168,7 +211,9 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-gray-500 text-center py-8">No recently deployed COWs</p>
+                <p className="text-sm text-gray-500 text-center py-8">
+                  No recently deployed COWs
+                </p>
               )}
             </div>
           </CardContent>
@@ -179,7 +224,9 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
       <div className="flex flex-col rounded-lg overflow-hidden border bg-white">
         <div className="p-4 border-b bg-gray-50">
           <h3 className="font-semibold text-gray-900">Location Map</h3>
-          <p className="text-xs text-gray-600 mt-1">Never Moved COW deployment locations</p>
+          <p className="text-xs text-gray-600 mt-1">
+            Never Moved COW deployment locations
+          </p>
         </div>
         <NeverMovedCowMap cows={filteredCows} />
       </div>

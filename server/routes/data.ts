@@ -507,7 +507,8 @@ const processedDataHandler: RequestHandler = async (req, res) => {
 const neverMovedCowHandler: RequestHandler = async (req, res) => {
   try {
     // Published CSV URL for Dashboard sheet (GID: 1464106304)
-    const CSV_URL = process.env.NEVER_MOVED_COW_CSV_URL ||
+    const CSV_URL =
+      process.env.NEVER_MOVED_COW_CSV_URL ||
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv";
 
     console.log(`📡 Fetching Never Moved COWs from Dashboard sheet CSV...`);
@@ -520,9 +521,7 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     });
 
     if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}: Failed to fetch Dashboard CSV`,
-      );
+      throw new Error(`HTTP ${response.status}: Failed to fetch Dashboard CSV`);
     }
 
     const csvText = await response.text();
@@ -595,9 +594,7 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       offAir: neverMovedCows.filter((c) => c.Status === "OFF-AIR").length,
     };
 
-    console.log(
-      `  ├─ ON-AIR: ${stats.onAir}, OFF-AIR: ${stats.offAir}`,
-    );
+    console.log(`  ├─ ON-AIR: ${stats.onAir}, OFF-AIR: ${stats.offAir}`);
 
     res.json({
       cows: neverMovedCows,
@@ -612,7 +609,8 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       error: "Failed to fetch Never Moved COW data",
       details: errorMsg,
       hint: "Ensure the Dashboard sheet is published to web and accessible via the CSV URL",
-      csvUrl: process.env.NEVER_MOVED_COW_CSV_URL ||
+      csvUrl:
+        process.env.NEVER_MOVED_COW_CSV_URL ||
         "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1539310010&single=true&output=csv",
     });
   }

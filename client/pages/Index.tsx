@@ -11,7 +11,10 @@ import { WarehouseIntelligenceCard } from "@/components/dashboard/cards/Warehous
 import { COWUtilizationCard } from "@/components/dashboard/cards/COWUtilizationCard";
 import { EventsAnalysisCard } from "@/components/dashboard/cards/EventsAnalysisCard";
 import { RoyalEBUAnalysisCard } from "@/components/dashboard/cards/RoyalEBUAnalysisCard";
-import { DashboardFilters as DashboardFiltersType, NeverMovedCow } from "@shared/models";
+import {
+  DashboardFilters as DashboardFiltersType,
+  NeverMovedCow,
+} from "@shared/models";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import {
   enrichMovements,
