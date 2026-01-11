@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   DimCow,
   DimLocation,
@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
 
 interface ExecutiveOverviewCardProps {
   kpis: {
@@ -37,6 +38,70 @@ export function ExecutiveOverviewCard({
   cowMetrics,
 }: ExecutiveOverviewCardProps) {
   const [showStaticCowsModal, setShowStaticCowsModal] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(0);
+
+  // Get all unique months from movement data
+  const allMonths = useMemo(() => {
+    const monthSet = new Set<string>();
+    movements.forEach((m) => {
+      const date = new Date(m.Moved_DateTime);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      monthSet.add(`${year}-${month}`);
+    });
+    return Array.from(monthSet).sort();
+  }, [movements]);
+
+  // Auto-play monthly progression
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentMonth((prev) => {
+        if (prev + 1 >= allMonths.length) {
+          setIsPlaying(false);
+          return 0;
+        }
+        return prev + 1;
+      });
+    }, 2000); // Change month every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isPlaying, allMonths.length]);
+
+  // Filter movements by current month
+  const monthlyMovements = useMemo(() => {
+    if (allMonths.length === 0) return movements;
+    const targetMonth = allMonths[currentMonth];
+    return movements.filter((m) => {
+      const date = new Date(m.Moved_DateTime);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      return `${year}-${month}` === targetMonth;
+    });
+  }, [movements, allMonths, currentMonth]);
+
+  // Calculate KPIs for current month
+  const monthlyKpis = useMemo(() => {
+    const monthlyMovements = monthlyMovements;
+    const uniqueCows = new Set(monthlyMovements.map((m) => m.COW_ID));
+    
+    return {
+      totalCOWs: Math.max(kpis.totalCOWs, uniqueCows.size || kpis.totalCOWs),
+      totalMovements: monthlyMovements.length,
+      totalDistanceKM: monthlyMovements.reduce(
+        (sum, m) => sum + (m.Distance_KM || 0),
+        0
+      ),
+      activeCOWs: uniqueCows.size,
+      staticCOWs: kpis.staticCOWs,
+      avgMovesPerCOW:
+        uniqueCows.size > 0
+          ? monthlyMovements.length / uniqueCows.size
+          : 0,
+    };
+  }, [monthlyMovements, kpis]);
 
   // Get static COWs data
   const staticCowsData = cowMetrics
@@ -55,59 +120,77 @@ export function ExecutiveOverviewCard({
         remarks: remarks,
       };
     });
-  // Filter to include both warehouse types and locations with "WH" in their name
+
   const sites = locations.filter((l) => l.Location_Type === "Site");
 
   const movementsByType = {
-    full: movements.filter((m) => m.Movement_Type === "Full").length,
-    half: movements.filter((m) => m.Movement_Type === "Half").length,
-    zero: movements.filter((m) => m.Movement_Type === "Zero").length,
+    full: monthlyMovements.filter((m) => m.Movement_Type === "Full").length,
+    half: monthlyMovements.filter((m) => m.Movement_Type === "Half").length,
+    zero: monthlyMovements.filter((m) => m.Movement_Type === "Zero").length,
   };
+
+  // Donut chart data for Movement Classification
+  const movementChartData = [
+    {
+      name: "Full (Site→Site)",
+      value: movementsByType.full,
+      color: "#3B82F6",
+    },
+    {
+      name: "Half (WH↔Site)",
+      value: movementsByType.half,
+      color: "#A855F7",
+    },
+    {
+      name: "Zero (WH→WH)",
+      value: movementsByType.zero,
+      color: "#6B7280",
+    },
+  ];
+
+  // Donut chart data for COW Status
+  const cowStatusChartData = [
+    {
+      name: "Active",
+      value: monthlyKpis.activeCOWs,
+      color: "#10B981",
+    },
+    {
+      name: "Static",
+      value:
+        monthlyKpis.totalCOWs - monthlyKpis.activeCOWs > 0
+          ? monthlyKpis.totalCOWs - monthlyKpis.activeCOWs
+          : 0,
+      color: "#EF4444",
+    },
+  ];
 
   const metrics = [
     {
       label: "Total COWs",
-      value: kpis.totalCOWs,
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
+      value: monthlyKpis.totalCOWs,
     },
     {
       label: "Total Movements",
-      value: kpis.totalMovements,
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
+      value: monthlyKpis.totalMovements,
     },
     {
       label: "Total Distance (KM)",
-      value: kpis.totalDistanceKM.toLocaleString("en-US", {
+      value: monthlyKpis.totalDistanceKM.toLocaleString("en-US", {
         maximumFractionDigits: 0,
       }),
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
     },
     {
       label: "High Moved COWs",
-      value: kpis.activeCOWs,
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
+      value: monthlyKpis.activeCOWs,
     },
     {
       label: "One Time Moved COWs",
-      value: kpis.staticCOWs,
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
+      value: monthlyKpis.staticCOWs,
     },
     {
       label: "Avg Moves/COW",
-      value: kpis.avgMovesPerCOW.toFixed(1),
-      bgColor: "bg-white dark:bg-white",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-600",
+      value: monthlyKpis.avgMovesPerCOW.toFixed(1),
     },
   ];
 
@@ -126,195 +209,199 @@ export function ExecutiveOverviewCard({
     },
     {
       label: "Avg COW Utilization",
-      value: `${((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%`,
+      value: `${((monthlyKpis.activeCOWs / monthlyKpis.totalCOWs) * 100).toFixed(1)}%`,
     },
   ];
 
   return (
-    <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col">
-      {/* KPI Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-4 sm:mb-6 flex-shrink-0 px-3 sm:px-4 md:px-6 pt-4 sm:pt-6">
-        {metrics.map((metric) => (
-          <div
-            key={metric.label}
-            onClick={() =>
-              metric.label === "Static COWs" && setShowStaticCowsModal(true)
-            }
-            className={`${metric.bgColor} ${metric.borderColor} border-2 rounded-2xl p-4 transition-all duration-300 hover:shadow-xl group shadow-lg flex flex-col items-center justify-center text-center ${
-              metric.label === "Static COWs" ? "cursor-pointer" : ""
-            }`}
-            style={{
-              boxShadow:
-                "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)",
-            }}
-          >
-            <p
-              className={`text-xs font-bold ${metric.accentColor} uppercase tracking-wider`}
+    <div className="h-full overflow-x-hidden flex flex-col">
+      {/* Main Split Layout: 40% Map + 60% Overview */}
+      <div className="flex flex-col lg:flex-row flex-1 gap-4 p-4 overflow-hidden">
+        {/* Left Side: Movement Map (40%) */}
+        <div className="w-full lg:w-2/5 flex flex-col">
+          <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-3xl p-6 flex-1 flex flex-col items-center justify-center shadow-2xl border-2 border-purple-800">
+            <div className="text-center">
+              <p className="text-white text-sm font-bold mb-2">MOVEMENT MAP</p>
+              <p className="text-white/80 text-xs">
+                {allMonths.length > 0 && currentMonth < allMonths.length
+                  ? `Month: ${allMonths[currentMonth]}`
+                  : "Select a month to view"}
+              </p>
+              <div className="mt-4 text-white/60 text-xs">
+                Map visualization area
+              </div>
+            </div>
+
+            {/* Play All Button */}
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="mt-6 px-6 py-2 bg-white text-purple-600 font-bold rounded-lg hover:bg-purple-50 transition-all"
             >
-              {metric.label}
-            </p>
-            <p className="text-2xl font-bold text-gray-900 mt-2 group-hover:scale-105 transition-transform duration-300">
-              {metric.value}
-            </p>
-          </div>
-        ))}
-      </div>
+              {isPlaying ? "⏸ Pause" : "▶ Play All"}
+            </button>
 
-      {/* Summary Statistics Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 flex-shrink-0 px-3 sm:px-4 md:px-6">
-        {summaryStats.map((stat, idx) => (
-          <div
-            key={idx}
-            className="bg-white rounded-2xl p-4 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center text-center"
-            style={{
-              boxShadow:
-                "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)",
-            }}
-          >
-            <p className="text-sm font-bold text-purple-600 mb-2">
-              {stat.label}
-            </p>
-            <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Movement Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 flex-shrink-0 mb-4 sm:mb-6 px-3 sm:px-4 md:px-6">
-        <div
-          className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center"
-          style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
-            Movement Classification
-          </h3>
-          <div className="space-y-2 w-full">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-600">
-                Full Moves (Site→Site)
-              </span>
-              <span className="font-bold text-gray-900">
-                {movementsByType.full}
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-blue-500 h-2 rounded-full"
-                style={{
-                  width: `${(movementsByType.full / kpis.totalMovements) * 100}%`,
-                }}
-              />
-            </div>
-            <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600">
-                Half Moves (WH↔Site)
-              </span>
-              <span className="font-bold text-gray-900">
-                {movementsByType.half}
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-purple-500 h-2 rounded-full"
-                style={{
-                  width: `${(movementsByType.half / kpis.totalMovements) * 100}%`,
-                }}
-              />
-            </div>
-            <div className="flex justify-between items-center pt-2">
-              <span className="text-sm text-gray-600">Zero Moves (WH→WH)</span>
-              <span className="font-bold text-gray-900">
-                {movementsByType.zero}
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-gray-500 h-2 rounded-full"
-                style={{
-                  width: `${(movementsByType.zero / kpis.totalMovements) * 100}%`,
-                }}
-              />
-            </div>
+            {/* Month Selector */}
+            {allMonths.length > 0 && (
+              <div className="mt-4 w-full max-w-xs">
+                <input
+                  type="range"
+                  min="0"
+                  max={allMonths.length - 1}
+                  value={currentMonth}
+                  onChange={(e) => {
+                    setCurrentMonth(parseInt(e.target.value));
+                    setIsPlaying(false);
+                  }}
+                  className="w-full"
+                />
+                <p className="text-white text-xs text-center mt-2">
+                  {currentMonth + 1} of {allMonths.length}
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
-        <div
-          className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center"
-          style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
-            COW Status
-          </h3>
-          <div className="space-y-3 w-full">
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 font-medium">
-                  Active Utilization
-                </span>
-                <span className="font-bold text-gray-900">
-                  {((kpis.activeCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
-                </span>
+        {/* Right Side: Executive Overview (60%) */}
+        <div className="w-full lg:w-3/5 flex flex-col overflow-y-auto gap-4">
+          {/* KPI Cards - 3D Style with Purple Background */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+            {metrics.map((metric) => (
+              <div
+                key={metric.label}
+                className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-4 transform transition-all hover:scale-105 hover:shadow-2xl"
+                style={{
+                  boxShadow:
+                    "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1)",
+                  border: "2px solid rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <p className="text-white text-xs font-bold uppercase tracking-wider">
+                  {metric.label}
+                </p>
+                <p className="text-white text-2xl font-bold mt-2">
+                  {metric.value}
+                </p>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-green-400 to-green-500 h-2.5 rounded-full shadow-sm"
-                  style={{
-                    width: `${(kpis.activeCOWs / kpis.totalCOWs) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-gray-600 font-medium">
-                  Static Assets
-                </span>
-                <span className="font-bold text-gray-900">
-                  {((kpis.staticCOWs / kpis.totalCOWs) * 100).toFixed(1)}%
-                </span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-red-400 to-red-500 h-2.5 rounded-full shadow-sm"
-                  style={{
-                    width: `${(kpis.staticCOWs / kpis.totalCOWs) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
+            ))}
           </div>
-        </div>
 
-        <div
-          className="bg-white rounded-2xl p-6 border-2 border-purple-600 transition-all duration-300 hover:shadow-xl shadow-lg flex flex-col items-center justify-center"
-          style={{
-            boxShadow:
-              "0 10px 25px -5px rgba(168, 85, 247, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.05)",
-          }}
-        >
-          <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
-            Coverage Summary
-          </h3>
-          <div className="space-y-2 text-sm w-full">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Total Regions Served</span>
-              <span className="font-bold text-gray-900">4/4</span>
+          {/* Summary Stats */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+            {summaryStats.map((stat, idx) => (
+              <div
+                key={idx}
+                className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-3 transform transition-all hover:scale-105"
+                style={{
+                  boxShadow:
+                    "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+                  border: "2px solid rgba(255, 255, 255, 0.2)",
+                }}
+              >
+                <p className="text-white text-xs font-bold">
+                  {stat.label}
+                </p>
+                <p className="text-white text-lg font-bold mt-1">
+                  {stat.value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Charts: Movement Classification and COW Status (Donut Charts) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1">
+            {/* Movement Classification Donut Chart */}
+            <div
+              className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-4 flex flex-col items-center justify-center"
+              style={{
+                boxShadow:
+                  "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+                border: "2px solid rgba(255, 255, 255, 0.2)",
+              }}
+            >
+              <h3 className="text-white text-sm font-bold mb-3 text-center">
+                Movement Classification
+              </h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={movementChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {movementChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(0, 0, 0, 0.8)",
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      borderRadius: "8px",
+                      color: "#fff",
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{ paddingTop: "10px" }}
+                    formatter={(value, entry: any) => (
+                      <span style={{ color: "#fff", fontSize: "11px" }}>
+                        {entry.payload.name}
+                      </span>
+                    )}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Avg Distance per Move</span>
-              <span className="font-bold text-gray-900">
-                {(kpis.totalDistanceKM / kpis.totalMovements).toFixed(0)} KM
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Data Span</span>
-              <span className="font-bold text-gray-900">5 years</span>
+
+            {/* COW Status Donut Chart */}
+            <div
+              className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-4 flex flex-col items-center justify-center"
+              style={{
+                boxShadow:
+                  "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
+                border: "2px solid rgba(255, 255, 255, 0.2)",
+              }}
+            >
+              <h3 className="text-white text-sm font-bold mb-3 text-center">
+                COW Status
+              </h3>
+              <ResponsiveContainer width="100%" height={200}>
+                <PieChart>
+                  <Pie
+                    data={cowStatusChartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={2}
+                    dataKey="value"
+                  >
+                    {cowStatusChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(0, 0, 0, 0.8)",
+                      border: "1px solid rgba(255, 255, 255, 0.2)",
+                      borderRadius: "8px",
+                      color: "#fff",
+                    }}
+                  />
+                  <Legend
+                    wrapperStyle={{ paddingTop: "10px" }}
+                    formatter={(value, entry: any) => (
+                      <span style={{ color: "#fff", fontSize: "11px" }}>
+                        {entry.payload.name}
+                      </span>
+                    )}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
@@ -324,7 +411,6 @@ export function ExecutiveOverviewCard({
       {showStaticCowsModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-            {/* Modal Header */}
             <div className="flex items-center justify-between bg-gradient-to-r from-red-500 to-red-600 p-6 flex-shrink-0">
               <h2 className="text-xl font-bold text-white">
                 Static COWs Details
@@ -337,7 +423,6 @@ export function ExecutiveOverviewCard({
               </button>
             </div>
 
-            {/* Modal Content */}
             <div className="overflow-x-auto overflow-y-auto p-6 flex-1">
               <Table>
                 <TableHeader>
@@ -372,7 +457,6 @@ export function ExecutiveOverviewCard({
               </Table>
             </div>
 
-            {/* Modal Footer */}
             <div className="border-t border-gray-200 dark:border-gray-700 p-4 flex-shrink-0 flex justify-end gap-3">
               <button
                 onClick={() => setShowStaticCowsModal(false)}
@@ -384,13 +468,6 @@ export function ExecutiveOverviewCard({
           </div>
         </div>
       )}
-
-      {/* Footer note */}
-      <div className="flex-1 flex items-end px-6 pb-6">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          Powered by ACES MSD
-        </p>
-      </div>
     </div>
   );
 }
