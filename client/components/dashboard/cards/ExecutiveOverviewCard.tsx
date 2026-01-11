@@ -393,12 +393,12 @@ export function ExecutiveOverviewCard({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 flex-1 min-h-0">
             {/* Movement Classification Donut Chart */}
             <div
-              className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
+              className="bg-white rounded-lg p-2 flex flex-col items-center justify-center shadow-sm border border-gray-200 overflow-hidden"
             >
-              <h3 className="text-gray-900 text-sm font-bold mb-3 text-center">
+              <h3 className="text-gray-900 text-xs font-bold mb-1 text-center">
                 Movement Classification
               </h3>
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={160}>
                 <PieChart>
                   <Pie
                     data={movementChartData}
