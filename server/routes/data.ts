@@ -398,18 +398,34 @@ function processData(rows: any[]) {
  */
 const processedDataHandler: RequestHandler = async (req, res) => {
   try {
+    // Check cache first - reduces load on Google Sheets API
+    const cacheKey = "processed-data";
+    const cachedData = getCached(cacheKey);
+    if (cachedData) {
+      console.log(`✓ Serving cached data for processed-data`);
+      return res.json(cachedData);
+    }
+
     let csvData: string | null = null;
     let lastError: Error | null = null;
 
-    // Try each URL format
+    // Try each URL format with timeout protection
     for (const url of CSV_URLS) {
       try {
         console.log(`Attempting to fetch from: ${url}`);
+
+        // Create abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
+
         const response = await fetch(url, {
           headers: {
             "User-Agent": "Mozilla/5.0",
           },
+          signal: controller.signal,
         });
+
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           csvData = await response.text();
@@ -423,7 +439,12 @@ const processedDataHandler: RequestHandler = async (req, res) => {
         }
       } catch (e) {
         lastError = e instanceof Error ? e : new Error(String(e));
-        console.warn(`✗ URL fetch failed:`, lastError.message);
+        // Only log abort errors as warnings, not as failures
+        if (lastError.message.includes("abort")) {
+          console.warn(`✗ URL fetch timed out (${FETCH_TIMEOUT}ms)`);
+        } else {
+          console.warn(`✗ URL fetch failed:`, lastError.message);
+        }
       }
     }
 
