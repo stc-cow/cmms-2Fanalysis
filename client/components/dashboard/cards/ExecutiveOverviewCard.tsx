@@ -440,49 +440,49 @@ export function ExecutiveOverviewCard({
               </ResponsiveContainer>
             </div>
 
-            {/* EBU Classification Donut Chart */}
+            {/* Top Vendor Chart */}
             <div
               className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
             >
               <h3 className="text-gray-900 text-sm font-bold mb-3 text-center">
-                Movement Category (EBU)
+                Top Vendor
               </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={ebuChartData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
-                    paddingAngle={2}
-                    dataKey="value"
-                  >
-                    {ebuChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(255, 255, 255, 0.95)",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                      color: "#000",
-                    }}
-                    formatter={(value: number) =>
-                      `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
-                    }
-                  />
-                  <Legend
-                    wrapperStyle={{ paddingTop: "10px" }}
-                    formatter={(value, entry: any) => (
-                      <span style={{ color: "#374151", fontSize: "11px" }}>
-                        {entry.payload.name}
-                      </span>
-                    )}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
+              {topVendor ? (
+                <div className="w-full h-full flex flex-col items-center justify-center gap-4">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-purple-600">
+                      {topVendor.value}
+                    </div>
+                    <div className="text-gray-600 text-sm mt-1">
+                      {topVendor.name}
+                    </div>
+                  </div>
+                  {vendorData.length > 0 && (
+                    <ResponsiveContainer width="100%" height={120}>
+                      <BarChart
+                        data={vendorData}
+                        layout="vertical"
+                        margin={{ top: 5, right: 20, left: 80, bottom: 5 }}
+                      >
+                        <XAxis type="number" fontSize={10} />
+                        <YAxis dataKey="name" type="category" fontSize={9} width={80} />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "rgba(255, 255, 255, 0.95)",
+                            border: "1px solid #e5e7eb",
+                            borderRadius: "8px",
+                          }}
+                        />
+                        <Bar dataKey="value" fill="#a855f7" radius={[0, 8, 8, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+                  No vendor data
+                </div>
+              )}
             </div>
 
             {/* Movement Category by Event Type Donut Chart */}
