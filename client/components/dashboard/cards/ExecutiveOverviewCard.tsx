@@ -410,8 +410,8 @@ export function ExecutiveOverviewCard({
             ))}
           </div>
 
-          {/* Charts: Movement Classification and EBU Classification (Donut Charts) - WHITE BACKGROUND */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1">
+          {/* Charts: Movement Classification, EBU Classification, and Movements by Event Type - WHITE BACKGROUND */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-1">
             {/* Movement Classification Donut Chart */}
             <div
               className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
@@ -497,6 +497,54 @@ export function ExecutiveOverviewCard({
                   />
                 </PieChart>
               </ResponsiveContainer>
+            </div>
+
+            {/* Movements by Event Type Donut Chart */}
+            <div
+              className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg border border-gray-200"
+            >
+              <h3 className="text-gray-900 text-sm font-bold mb-3 text-center">
+                Movements by Event Type
+              </h3>
+              {eventDataWithPercentages.length > 0 ? (
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie
+                      data={eventDataWithPercentages}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ displayName }) => displayName}
+                      innerRadius={40}
+                      outerRadius={70}
+                      fill="#8884d8"
+                      dataKey="value"
+                    >
+                      {eventDataWithPercentages.map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.95)",
+                        border: "1px solid #e5e7eb",
+                        borderRadius: "8px",
+                        color: "#000",
+                      }}
+                      formatter={(value: number) =>
+                        `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
+                      }
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400 text-sm">
+                  No event data
+                </div>
+              )}
             </div>
           </div>
         </div>
