@@ -114,7 +114,9 @@ export default function Dashboard() {
             new Date(m.Moved_DateTime).getFullYear(),
           ),
         ),
-      ).sort((a, b) => b - a),
+      )
+        .filter((y) => y !== 2026)
+        .sort((a, b) => b - a),
     [enrichedMovements],
   );
 
