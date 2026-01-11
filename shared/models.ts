@@ -124,6 +124,21 @@ export interface DashboardData {
   };
 }
 
+// Never Moved COW: Static COW that never moved
+export interface NeverMovedCow {
+  COW_ID: string;
+  Region: string;
+  District: string;
+  City: string;
+  Location: string;
+  Latitude: number;
+  Longitude: number;
+  Status: "ON-AIR" | "OFF-AIR"; // From Column K
+  First_Deploy_Date: string; // ISO date - Column L
+  Last_Deploy_Date: string; // ISO date - Column M
+  Days_On_Air?: number; // Calculated: days from Last_Deploy_Date to today
+}
+
 // Filter state
 export interface DashboardFilters {
   year?: number;
