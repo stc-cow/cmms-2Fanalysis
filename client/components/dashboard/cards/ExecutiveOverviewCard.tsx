@@ -370,7 +370,7 @@ export function ExecutiveOverviewCard({
             ))}
           </div>
 
-          {/* Charts: Movement Classification and COW Status (Donut Charts) - WHITE BACKGROUND */}
+          {/* Charts: Movement Classification and EBU Classification (Donut Charts) - WHITE BACKGROUND */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 flex-1">
             {/* Movement Classification Donut Chart */}
             <div
