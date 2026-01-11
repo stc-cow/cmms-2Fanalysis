@@ -355,22 +355,17 @@ export function ExecutiveOverviewCard({
 
         {/* Right Side: Executive Overview (60%) */}
         <div className="w-full lg:w-3/5 flex flex-col overflow-y-auto gap-4">
-          {/* KPI Cards - 3D Style with Purple Background */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+          {/* KPI Cards - White Background */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2">
             {metrics.map((metric) => (
               <div
                 key={metric.label}
-                className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-4 transform transition-all hover:scale-105 hover:shadow-2xl"
-                style={{
-                  boxShadow:
-                    "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1)",
-                  border: "2px solid rgba(255, 255, 255, 0.2)",
-                }}
+                className="bg-white rounded-lg p-3 border border-gray-200 shadow-sm hover:shadow-md transition-all"
               >
-                <p className="text-white text-xs font-bold uppercase tracking-wider">
+                <p className="text-gray-700 text-xs font-semibold uppercase tracking-wider">
                   {metric.label}
                 </p>
-                <p className="text-white text-2xl font-bold mt-2">
+                <p className="text-gray-900 text-xl font-bold mt-1">
                   {metric.value}
                 </p>
               </div>
