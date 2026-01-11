@@ -524,12 +524,29 @@ function processData(rows: any[]) {
     }
   });
 
+  // Count warehouses (locations with "WH" in name)
+  const locations = Array.from(locationMap.values());
+  const warehouses = locations.filter(
+    (l) =>
+      l.Location_Type === "Warehouse" ||
+      l.Location_Name.toUpperCase().includes("WH"),
+  );
+
   console.log(`📊 Processing complete:`);
   console.log(`   Total input rows: ${rows.length}`);
   console.log(`   Valid movements: ${movements.length}`);
   console.log(`   Skipped (invalid): ${skippedCount}`);
   console.log(`   Unique COWs: ${cowMap.size}`);
   console.log(`   Unique locations: ${locationMap.size}`);
+  console.log(`   🏢 Active Warehouses: ${warehouses.length}`);
+  if (warehouses.length > 0) {
+    console.log(`   Warehouse details:`);
+    warehouses.forEach((wh) => {
+      console.log(
+        `      ✓ ${wh.Location_Name} [${wh.Location_Type}]`,
+      );
+    });
+  }
 
   return {
     movements: movements.sort(
@@ -538,7 +555,7 @@ function processData(rows: any[]) {
         new Date(b.Moved_DateTime).getTime(),
     ),
     cows: Array.from(cowMap.values()),
-    locations: Array.from(locationMap.values()),
+    locations: locations,
     events: [],
   };
 }
