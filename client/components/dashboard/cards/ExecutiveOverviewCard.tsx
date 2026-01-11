@@ -13,7 +13,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 import { SaudiHighchartsMap } from "./SaudiHighchartsMap";
 import { generateTimelineMonths, TimelineMonth } from "@/lib/saudiMapData";
 
@@ -116,7 +128,9 @@ export function ExecutiveOverviewCard({
     };
 
     currentMonth.movements.forEach((movement) => {
-      const regionName = regionMap[movement.toRegion as keyof typeof regionMap] || movement.toRegion;
+      const regionName =
+        regionMap[movement.toRegion as keyof typeof regionMap] ||
+        movement.toRegion;
       if (regionName) {
         metrics[regionName] = (metrics[regionName] || 0) + 1;
       }
@@ -392,9 +406,7 @@ export function ExecutiveOverviewCard({
           {/* Charts: Movement Classification, EBU Classification, and Movements by Event Type - WHITE BACKGROUND */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 flex-1 min-h-0">
             {/* Movement Classification Donut Chart */}
-            <div
-              className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden"
-            >
+            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
                 Movement Classification
               </h3>
@@ -436,9 +448,7 @@ export function ExecutiveOverviewCard({
             </div>
 
             {/* Top Vendor Chart */}
-            <div
-              className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden"
-            >
+            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
                 Top Vendor
               </h3>
@@ -468,7 +478,11 @@ export function ExecutiveOverviewCard({
                         data={vendorData}
                         margin={{ top: 2, right: 5, left: 5, bottom: 15 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#e5e7eb"
+                          vertical={false}
+                        />
                         <XAxis
                           dataKey="name"
                           angle={-45}
@@ -485,7 +499,11 @@ export function ExecutiveOverviewCard({
                           }}
                           formatter={(value: number) => `${value} movements`}
                         />
-                        <Bar dataKey="value" fill="#a855f7" radius={[8, 8, 0, 0]} />
+                        <Bar
+                          dataKey="value"
+                          fill="#a855f7"
+                          radius={[8, 8, 0, 0]}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
                   )}
@@ -498,9 +516,7 @@ export function ExecutiveOverviewCard({
             </div>
 
             {/* Movement Category by Event Type Donut Chart */}
-            <div
-              className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden"
-            >
+            <div className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
                 Movement Category (Event)
               </h3>
