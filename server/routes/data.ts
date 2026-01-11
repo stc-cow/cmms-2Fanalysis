@@ -672,11 +672,16 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
 
     console.log(`  ├─ ON-AIR: ${stats.onAir}, OFF-AIR: ${stats.offAir}`);
 
-    res.json({
+    const responseData = {
       cows: neverMovedCows,
       stats,
       source: "Dashboard Sheet (CSV)",
-    });
+    };
+
+    // Cache the result
+    setCached(cacheKey, responseData, CACHE_TTL);
+
+    res.json(responseData);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
     console.error("Error fetching Never Moved COW data:", errorMsg);
