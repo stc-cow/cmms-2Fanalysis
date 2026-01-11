@@ -28,6 +28,28 @@ export default function Dashboard() {
   // Dashboard filters state - MUST be before any conditional returns
   const [filters, setFilters] = useState<DashboardFiltersType>({});
   const [activeCard, setActiveCard] = useState("executive");
+  const [neverMovedCows, setNeverMovedCows] = useState<NeverMovedCow[]>([]);
+  const [neverMovedLoading, setNeverMovedLoading] = useState(false);
+
+  // Fetch "Never Moved COWs" data
+  useEffect(() => {
+    const fetchNeverMovedCows = async () => {
+      try {
+        setNeverMovedLoading(true);
+        const response = await fetch("/api/data/never-moved-cows");
+        if (!response.ok) throw new Error("Failed to fetch never-moved COWs");
+        const result = await response.json();
+        setNeverMovedCows(result.cows || []);
+        console.log(`✓ Loaded ${result.cows?.length || 0} Never Moved COWs`);
+      } catch (err) {
+        console.error("Error fetching never-moved COWs:", err);
+      } finally {
+        setNeverMovedLoading(false);
+      }
+    };
+
+    fetchNeverMovedCows();
+  }, []);
 
   // Initialize with empty data and update when data loads
   const {
