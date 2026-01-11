@@ -110,6 +110,31 @@ export function ExecutiveOverviewCard({
     );
   }, [currentMonthIndex, timelineMonths]);
 
+  // Calculate region metrics for the map
+  const regionMetrics = useMemo(() => {
+    const metrics: Record<string, number> = {};
+    const regionMap: Record<string, string> = {
+      WEST: "Western Province",
+      EAST: "Eastern Province",
+      CENTRAL: "Riyadh",
+      SOUTH: "Asir",
+    };
+
+    currentMonth.movements.forEach((movement) => {
+      const regionName = regionMap[movement.toRegion as keyof typeof regionMap] || movement.toRegion;
+      if (regionName) {
+        metrics[regionName] = (metrics[regionName] || 0) + 1;
+      }
+    });
+
+    return metrics;
+  }, [currentMonth]);
+
+  // Get max metric for color scaling
+  const maxMetric = useMemo(() => {
+    return Math.max(...Object.values(regionMetrics || {}), 1);
+  }, [regionMetrics]);
+
   // Calculate KPIs for current month
   const monthlyKpis = useMemo(() => {
     const uniqueCows = new Set(currentMonth.movements.map((m) => m.COW_ID));
