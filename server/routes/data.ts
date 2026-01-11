@@ -251,12 +251,36 @@ function processData(rows: any[]) {
   const locationMap = new Map();
   let skippedCount = 0;
 
+  console.log(`\n🔄 Processing ${rows.length} parsed rows...`);
+  if (rows.length > 0) {
+    console.log(`📍 First row sample:`, {
+      cow_id: rows[0].cow_id,
+      from_location: rows[0].from_location,
+      to_location: rows[0].to_location,
+      movement_type: rows[0].movement_type,
+      distance_km: rows[0].distance_km,
+    });
+  }
+
   rows.forEach((row, idx) => {
     // Skip invalid rows - but log why
-    if (!row.cow_id || !row.from_location || !row.to_location) {
+    const hasCowId = row.cow_id && row.cow_id.toString().trim().length > 0;
+    const hasFromLocation = row.from_location && row.from_location.toString().trim().length > 0;
+    const hasToLocation = row.to_location && row.to_location.toString().trim().length > 0;
+
+    if (!hasCowId || !hasFromLocation || !hasToLocation) {
       if (idx < 3) {
         // Log first 3 skipped rows for debugging
-        console.warn(`⚠️  Skipping row ${idx}: cow_id="${row.cow_id}", from_location="${row.from_location}", to_location="${row.to_location}"`);
+        console.warn(`⚠️  Skipping row ${idx}:`, {
+          has_cow_id: hasCowId,
+          has_from_location: hasFromLocation,
+          has_to_location: hasToLocation,
+          values: {
+            cow_id: rows[idx].cow_id,
+            from_location: rows[idx].from_location,
+            to_location: rows[idx].to_location,
+          },
+        });
       }
       skippedCount++;
       return;
