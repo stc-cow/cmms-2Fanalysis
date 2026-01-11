@@ -121,14 +121,14 @@ export function ExecutiveOverviewCard({
       borderColor: "border-purple-600",
     },
     {
-      label: "Active COWs",
+      label: "High Moved COWs",
       value: kpis.activeCOWs,
       bgColor: "bg-white dark:bg-white",
       accentColor: "text-purple-600",
       borderColor: "border-purple-600",
     },
     {
-      label: "Static COWs",
+      label: "One Time Moved COWs",
       value: kpis.staticCOWs,
       bgColor: "bg-white dark:bg-white",
       accentColor: "text-purple-600",
@@ -281,7 +281,7 @@ export function ExecutiveOverviewCard({
           }}
         >
           <h3 className="text-lg font-bold text-purple-600 mb-4 text-center">
-            Asset Status
+            COW Status
           </h3>
           <div className="space-y-3 w-full">
             <div>
