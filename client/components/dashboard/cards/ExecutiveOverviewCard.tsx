@@ -511,8 +511,8 @@ export function ExecutiveOverviewCard({
                       cy="50%"
                       labelLine={false}
                       label={({ displayName }) => displayName}
-                      innerRadius={40}
-                      outerRadius={70}
+                      innerRadius={35}
+                      outerRadius={55}
                       fill="#8884d8"
                       dataKey="value"
                     >
