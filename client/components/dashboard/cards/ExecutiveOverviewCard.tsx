@@ -195,20 +195,23 @@ export function ExecutiveOverviewCard({
   // Calculate EBU Classification data
   const totalCurrentMovements = currentMonth.movements.length;
 
-  // Calculate vendor counts for current month
+  // Calculate vendor counts for current month (from Column AC - Vendor)
   const vendorCounts: Record<string, number> = {};
   currentMonth.movements.forEach((mov) => {
-    const vendor = mov.Vendor || "Unknown";
-    vendorCounts[vendor] = (vendorCounts[vendor] || 0) + 1;
+    if (mov.Vendor && mov.Vendor.trim()) {
+      const vendor = mov.Vendor.trim();
+      vendorCounts[vendor] = (vendorCounts[vendor] || 0) + 1;
+    }
   });
 
+  // Sort vendors by movement count descending
   const vendorData = Object.entries(vendorCounts)
     .map(([vendor, count]) => ({
       name: vendor,
       value: count,
     }))
     .sort((a, b) => b.value - a.value)
-    .slice(0, 5); // Top 5 vendors
+    .slice(0, 3); // Top 3 vendors (Ericsson, Nokia, Huawei)
 
   const topVendor = vendorData.length > 0 ? vendorData[0] : null;
 
