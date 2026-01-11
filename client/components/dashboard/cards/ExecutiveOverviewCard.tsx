@@ -176,17 +176,17 @@ export function ExecutiveOverviewCard({
   // Donut chart data for Movement Classification
   const movementChartData = [
     {
-      name: "Full (Site→Site)",
+      name: "Full",
       value: movementsByType.full,
       color: "#3B82F6",
     },
     {
-      name: "Half (WH↔Site)",
+      name: "Half",
       value: movementsByType.half,
       color: "#A855F7",
     },
     {
-      name: "Zero (WH→WH)",
+      name: "Zero",
       value: movementsByType.zero,
       color: "#6B7280",
     },
