@@ -297,17 +297,17 @@ function processData(rows: any[]) {
     const hasToLocation = row.to_location && row.to_location.toString().trim().length > 0;
 
     if (!hasCowId || !hasFromLocation || !hasToLocation) {
-      if (idx < 3) {
-        // Log first 3 skipped rows for debugging
-        console.warn(`⚠️  Skipping row ${idx}:`, {
-          has_cow_id: hasCowId,
-          has_from_location: hasFromLocation,
-          has_to_location: hasToLocation,
-          values: {
-            cow_id: rows[idx].cow_id,
-            from_location: rows[idx].from_location,
-            to_location: rows[idx].to_location,
-          },
+      if (idx < 5) {
+        // Log first 5 skipped rows for debugging
+        const reason = [];
+        if (!hasCowId) reason.push("no cow_id");
+        if (!hasFromLocation) reason.push("no from_location");
+        if (!hasToLocation) reason.push("no to_location");
+
+        console.warn(`⚠️  Row ${idx} skipped (${reason.join(", ")}):`, {
+          cow_id: `"${row.cow_id}"`,
+          from_location: `"${row.from_location}"`,
+          to_location: `"${row.to_location}"`,
         });
       }
       skippedCount++;
