@@ -83,7 +83,7 @@ function parseCSVData(csvText: string) {
     return [];
   }
 
-  // Parse and show ALL header columns
+  // Parse header
   const headerLine = lines[0];
   const headerCells = parseCSVLine(headerLine);
   console.log(`\n📋 HEADER ROW (${headerCells.length} columns):`);
@@ -91,47 +91,57 @@ function parseCSVData(csvText: string) {
     console.log(`   [${idx}] = "${col}"`);
   });
 
-  // Show first 5 data rows
-  console.log(`\n📍 FIRST 5 DATA ROWS (raw values):`);
-  for (let i = 1; i < Math.min(6, lines.length); i++) {
+  // Show first 3 data rows in detail
+  console.log(`\n📍 FIRST 3 DATA ROWS (ALL cells):`);
+  for (let i = 1; i < Math.min(4, lines.length); i++) {
     const cells = parseCSVLine(lines[i]);
     console.log(`   Row ${i}: ${cells.length} cells`);
     cells.forEach((cell, idx) => {
-      if (idx < 10) { // Show first 10 cells per row
-        console.log(`      [${idx}] = "${cell}"`);
-      }
+      console.log(`      [${idx}] = "${cell}"`);
     });
   }
 
-  // Detect column positions
+  // Map column headers to lowercase for matching
   const headerLower = headerCells.map((h, idx) => ({
     original: h,
     lower: h.toLowerCase().trim(),
     index: idx
   }));
 
+  // Column detection - try multiple variations
   console.log(`\n🔍 COLUMN DETECTION:`);
 
+  // Find COW_ID column (might be labeled as "Cows ID", "Cow ID", "COW", etc.)
   const cowIdMatch = headerLower.find(h =>
-    h.lower === "cow" || h.lower === "cow_id" || h.lower === "cow id" ||
-    h.lower.includes("cow") || h.lower === "id"
+    h.lower.includes("cow") && h.lower.includes("id") ||
+    h.lower === "cow" ||
+    h.lower === "cows id"
   );
-  console.log(`   COW ID: ${cowIdMatch ? `✓ Found at index ${cowIdMatch.index} ("${cowIdMatch.original}")` : `✗ NOT FOUND - will use index 0`}`);
 
+  // Find From Location (might be "from_location", "From Location", "Origin", etc.)
   const fromLocationMatch = headerLower.find(h =>
-    h.lower.includes("from") && h.lower.includes("location")
+    h.lower.includes("from") && h.lower.includes("location") ||
+    h.lower === "origin" ||
+    h.lower === "from"
   );
-  console.log(`   FROM LOCATION: ${fromLocationMatch ? `✓ Found at index ${fromLocationMatch.index} ("${fromLocationMatch.original}")` : `✗ NOT FOUND - will use index 16`}`);
 
+  // Find To Location
   const toLocationMatch = headerLower.find(h =>
-    h.lower.includes("to") && h.lower.includes("location")
+    h.lower.includes("to") && h.lower.includes("location") ||
+    h.lower === "destination" ||
+    h.lower === "to"
   );
-  console.log(`   TO LOCATION: ${toLocationMatch ? `✓ Found at index ${toLocationMatch.index} ("${toLocationMatch.original}")` : `✗ NOT FOUND - will use index 20`}`);
 
-  // Set indices with fallbacks
-  const cowIdIdx = cowIdMatch?.index ?? 0;
-  const fromLocationIdx = fromLocationMatch?.index ?? 16;
-  const toLocationIdx = toLocationMatch?.index ?? 20;
+  // Log detection results
+  console.log(`   COW ID: ${cowIdMatch ? `✓ [${cowIdMatch.index}] "${cowIdMatch.original}"` : `✗ NOT FOUND`}`);
+  console.log(`   FROM LOCATION: ${fromLocationMatch ? `✓ [${fromLocationMatch.index}] "${fromLocationMatch.original}"` : `✗ NOT FOUND`}`);
+  console.log(`   TO LOCATION: ${toLocationMatch ? `✓ [${toLocationMatch.index}] "${toLocationMatch.original}"` : `✗ NOT FOUND`}`);
+
+  // Use detected or fallback to positional indices
+  // Key insight: if headers don't match, use column positions A-U (0-20)
+  const cowIdIdx = cowIdMatch?.index ?? 0;        // Usually column A
+  const fromLocationIdx = fromLocationMatch?.index ?? 16;  // Usually column Q
+  const toLocationIdx = toLocationMatch?.index ?? 20;      // Usually column U
 
   console.log(`\n✅ Using indices: cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx}`);
 
