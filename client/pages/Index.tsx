@@ -119,7 +119,10 @@ export default function Dashboard() {
   );
 
   const vendors = useMemo(
-    () => Array.from(new Set(cows.map((c) => c.Vendor))).sort(),
+    () =>
+      Array.from(new Set(cows.map((c) => c.Vendor)))
+        .filter((v) => v && v !== "Unknown")
+        .sort(),
     [cows],
   );
 
