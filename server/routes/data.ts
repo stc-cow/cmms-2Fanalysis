@@ -199,11 +199,11 @@ function parseCSVData(csvText: string) {
 
     successCount++;
 
-    // Map all columns
+    // Map all columns - use all available cells, cycling through for fallbacks
     const row: any = {
-      cow_id,
-      from_location,
-      to_location,
+      cow_id: cow_id || cells[0]?.trim() || "",
+      from_location: from_location || cells[1]?.trim() || cells[14]?.trim() || "",
+      to_location: to_location || cells[2]?.trim() || cells[18]?.trim() || "",
       site_label: cells[1]?.trim() || "",
       last_deploy_date: cells[2]?.trim() || cells[11]?.trim() || "",
       first_deploy_date: cells[3]?.trim() || cells[10]?.trim() || "",
