@@ -78,12 +78,18 @@ function parseCSVData(csvText: string) {
 
   console.log(`📊 First data row has ${firstDataCells.length} cells (sample: "${firstDataCells[0]}", "${firstDataCells[1] || ''}", "${firstDataCells[2] || ''}")`);
 
-  // Try to detect structure by looking for key column names
+  // Try to detect column positions by looking for key column names
   const headerLower = headerCells.map(h => h.toLowerCase());
-  const hasFromLocation = headerLower.some(h => h.includes("from") && h.includes("location"));
-  const hasToLocation = headerLower.some(h => h.includes("to") && h.includes("location"));
+  const fromLocationIdx = headerLower.findIndex(h => h.includes("from") && h.includes("location"));
+  const toLocationIdx = headerLower.findIndex(h => h.includes("to") && h.includes("location"));
+  const cowIdIdx = headerLower.findIndex(h => h.includes("cow") || h === "a");
 
-  console.log(`🔍 Has from_location column: ${hasFromLocation}, Has to_location column: ${hasToLocation}`);
+  console.log(`🔍 Column detection:`, {
+    fromLocationIdx,
+    toLocationIdx,
+    cowIdIdx,
+    headerSample: headerCells.slice(0, 10),
+  });
 
   const rows = [];
   let skippedCount = 0;
