@@ -15,12 +15,14 @@
 ### 1. Enhanced CSV Parsing (`server/routes/data.ts`)
 
 **Before:**
+
 ```typescript
 // Old: Strict 20+ column requirement
 if (cells.length < 20 || !cells[0]?.trim()) continue;
 ```
 
 **After:**
+
 ```typescript
 // New: More flexible parsing
 if (cells.length === 0 || !cells[0]?.trim()) {
@@ -36,6 +38,7 @@ if (cells.length < 5) {
 ```
 
 **Benefits:**
+
 - ✅ Works with CSV files that have fewer columns
 - ✅ Better error messages for debugging
 - ✅ Logs row skip reasons
@@ -43,6 +46,7 @@ if (cells.length < 5) {
 ### 2. Flexible Column Mapping
 
 **Before:**
+
 ```typescript
 if (isNewStructure) {
   // Map to exact columns 0-30
@@ -52,6 +56,7 @@ if (isNewStructure) {
 ```
 
 **After:**
+
 ```typescript
 // Try multiple column positions for each field
 row = {
@@ -64,6 +69,7 @@ row = {
 ```
 
 **Benefits:**
+
 - ✅ Works with different column arrangements
 - ✅ Uses fallback positions if primary column is empty
 - ✅ More resilient to CSV structure variations
@@ -71,6 +77,7 @@ row = {
 ### 3. Added Detailed Logging
 
 **New diagnostic output:**
+
 ```
 📊 CSV has 500 total lines
 📋 Header row has 31 columns: COW_ID | Site_Label | ...
@@ -86,6 +93,7 @@ row = {
 ```
 
 **Benefits:**
+
 - ✅ See exactly what's happening during parsing
 - ✅ Identify column structure issues
 - ✅ Track which rows are skipped and why
@@ -93,6 +101,7 @@ row = {
 ### 4. Better Error Messages
 
 When no data is found:
+
 ```
 ❌ NO DATA ROWS FOUND:
    CSV received: 0 bytes
@@ -132,6 +141,7 @@ https://cow-analysis.netlify.app
 ```
 
 **Expected:**
+
 - Dashboard loads without errors
 - All cards display data
 - No "Unable to Load Dashboard Data" message
@@ -181,6 +191,7 @@ The new parser tries multiple positions for each column:
 3. **Empty check**: Uses empty string if both positions are empty
 
 Example:
+
 ```typescript
 last_deploy_date: cells[2]?.trim() || cells[11]?.trim() || ""
                   ↑ Try index 2 first
@@ -200,7 +211,7 @@ last_deploy_date: cells[2]?.trim() || cells[11]?.trim() || ""
 ✅ CSV data is fetched successfully  
 ✅ Data rows are parsed (no "No data rows found" error)  
 ✅ Dashboard displays movement data  
-✅ All cards show data without errors  
+✅ All cards show data without errors
 
 ## Next Steps
 
@@ -213,6 +224,7 @@ last_deploy_date: cells[2]?.trim() || cells[11]?.trim() || ""
 ---
 
 **If you have questions or encounter other errors, check:**
+
 - `/api/data/diagnostic` - Shows which endpoints are working
 - Browser console (F12) - Shows network errors
 - Netlify build logs - Shows deployment issues

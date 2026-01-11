@@ -45,6 +45,7 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ---
 
 ## ✅ Good Response Means:
+
 - ✓ httpStatus: 200
 - ✓ csvSize: > 0
 - ✓ isEmpty: false
@@ -59,25 +60,31 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ## ❌ Bad Responses:
 
 ### Response: `csvSize: 0` or `isEmpty: true`
+
 **Problem:** CSV is empty
-**Solution:** 
+**Solution:**
+
 1. Check if the Google Sheet has data
 2. Verify the GID is correct
 3. Check if the sheet is published to web
 
 ### Response: `isHTML: true` with HTML content
+
 **Problem:** Google Sheets returned an error page instead of CSV
 **Meaning:** Sheet is not published or URL is wrong
 **Solution:**
+
 1. Open Google Sheet
 2. Click **Share** → **Publish to web**
 3. Copy the CSV export URL
 4. Update `MOVEMENT_DATA_CSV_URL` environment variable
 
 ### Response: `httpStatus: 404` or `500`
+
 **Problem:** HTTP error from Google Sheets
 **Meaning:** URL is malformed or doesn't exist
 **Solution:**
+
 1. Test the CSV URL in your browser
 2. Should download a CSV file, not show error
 
@@ -124,23 +131,29 @@ https://cow-analysis.netlify.app/api/data/processed-data
 ## STEP 3: Common Issues & Fixes
 
 ### Issue: "csvSize: 0" (Empty CSV)
+
 **Check:**
+
 1. Open Google Sheet → Is there data in columns A-U?
 2. Are you using the correct GID?
 3. Is the sheet published to web?
 
 **Fix:**
+
 - Add data to the sheet
 - Use correct GID
 - File → Share → Publish to web
 
 ### Issue: "isHTML: true" (Got HTML error page)
+
 **Check:**
+
 1. The sheet is not published
 2. URL is incorrect
 3. GID is wrong
 
 **Fix:**
+
 ```
 1. Open Google Sheet in edit mode
 2. Click File → Share → Publish to web
@@ -150,20 +163,26 @@ https://cow-analysis.netlify.app/api/data/processed-data
 ```
 
 ### Issue: "csvSize > 0 but isHTML: true"
+
 **Check:**
+
 - Google Sheets is returning an error page
 
 **Fix:**
+
 - Make sure sheet is published
 - Try the URL in browser - should download CSV, not show error page
 
 ### Issue: CSV loads but "No movement data found"
+
 **Check:**
+
 1. Is column [0] (COW_ID) populated with data?
 2. Is column [16] (From_Location) populated?
 3. Is column [20] (To_Location) populated?
 
 **Look at the parsing logs:**
+
 ```
 Row 1:
    cells[0] = ""  ← EMPTY - This is the problem!
@@ -172,6 +191,7 @@ Row 1:
 ```
 
 **Fix:**
+
 - Your COW_ID column is empty
 - Verify the GID points to the right sheet
 - Or the column positions are wrong
@@ -183,6 +203,7 @@ Row 1:
 Run these steps and tell me:
 
 1. **CSV Viewer Response:**
+
    ```
    httpStatus: ?
    csvSize: ?
@@ -192,6 +213,7 @@ Run these steps and tell me:
    ```
 
 2. **If csvSize > 0, show first lines:**
+
    ```
    firstLine: [exact content]
    secondLine: [exact content]
@@ -229,6 +251,7 @@ With this info, I can pinpoint the exact issue!
 4. **Check Google Sheet** - open it, make sure data is there
 
 **Most Common Issue:** The sheet is not published to web
+
 - Open sheet → Click Share → Look for "Published to web" → If not there, click "Publish"
 
 ---

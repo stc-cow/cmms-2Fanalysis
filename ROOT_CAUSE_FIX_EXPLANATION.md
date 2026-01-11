@@ -15,11 +15,13 @@ Google Sheet: 1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM
 ```
 
 **What we were doing (WRONG):**
+
 - Using GID `1464106304` for BOTH endpoints
 - `/api/data/processed-data` was fetching the "Never Moved COWs" sheet
 - `/api/data/never-moved-cows` was also fetching the same sheet
 
 **Why it failed:**
+
 - The "Never Moved COWs" sheet doesn't have "From Location" and "To Location" columns
 - The parser couldn't find these required columns
 - Result: "No movement data found"
@@ -34,16 +36,14 @@ Google Sheet: 1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM
 
 ```typescript
 const SHEET_ID = "1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM";
-const MOVEMENT_DATA_GID = "1539310010";      // ← Movement-data tab
-const NEVER_MOVED_COW_GID = "1464106304";   // ← Dashboard tab
+const MOVEMENT_DATA_GID = "1539310010"; // ← Movement-data tab
+const NEVER_MOVED_COW_GID = "1464106304"; // ← Dashboard tab
 
 // Movement data endpoint (FOR MAIN DASHBOARD)
-const MOVEMENT_DATA_CSV_URL = 
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MOVEMENT_DATA_GID}`;
+const MOVEMENT_DATA_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${MOVEMENT_DATA_GID}`;
 
 // Never moved cows endpoint
-const NEVER_MOVED_COW_CSV_URL = 
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${NEVER_MOVED_COW_GID}`;
+const NEVER_MOVED_COW_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${NEVER_MOVED_COW_GID}`;
 ```
 
 ### Environment Variables Set
@@ -58,14 +58,15 @@ const NEVER_MOVED_COW_CSV_URL =
 
 ### What's Different Now
 
-| Endpoint | Before | After |
-|----------|--------|-------|
-| `/api/data/processed-data` | GID 1464106304 (Never Moved COWs) ❌ | GID 1539310010 (Movement-data) ✅ |
+| Endpoint                     | Before                               | After                                |
+| ---------------------------- | ------------------------------------ | ------------------------------------ |
+| `/api/data/processed-data`   | GID 1464106304 (Never Moved COWs) ❌ | GID 1539310010 (Movement-data) ✅    |
 | `/api/data/never-moved-cows` | GID 1464106304 (Never Moved COWs) ✅ | GID 1464106304 (Never Moved COWs) ✅ |
 
 ### Expected Results After Deploy
 
 **Main Dashboard (`/api/data/processed-data`):**
+
 ```
 ✓ Fetches Movement-data sheet (GID 1539310010)
 ✓ Finds "From Location" and "To Location" columns
@@ -74,6 +75,7 @@ const NEVER_MOVED_COW_CSV_URL =
 ```
 
 **Never Moved COWs Card (`/api/data/never-moved-cows`):**
+
 ```
 ✓ Fetches Dashboard sheet (GID 1464106304)
 ✓ Finds COW location data
@@ -85,6 +87,7 @@ const NEVER_MOVED_COW_CSV_URL =
 ## 📋 Deployment Steps
 
 ### Step 1: Deploy the Fixed Code
+
 ```bash
 git add -A
 git commit -m "Fix: Use correct GID (1539310010) for Movement-data sheet"
@@ -92,6 +95,7 @@ git push origin main
 ```
 
 ### Step 2: Clear Netlify Cache and Redeploy
+
 1. Go to https://app.netlify.com
 2. Select **cow-analysis** site
 3. Click **Deploys** tab
@@ -107,6 +111,7 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ```
 
 **Expected response:**
+
 ```json
 {
   "httpStatus": 200,
@@ -131,6 +136,7 @@ https://cow-analysis.netlify.app/api/data/processed-data
 ## 🎓 Why This Happened
 
 Google Sheets allows multiple sheets within a single spreadsheet file. Each sheet has:
+
 - **Sheet ID** (the file itself): `1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM`
 - **GID** (the specific tab): `1539310010` or `1464106304`
 
@@ -141,16 +147,19 @@ The original code assumed both datasets were in the same sheet (same GID), when 
 ## ✨ Key Takeaways
 
 ✅ **Correct CSV URL structure:**
+
 ```
 https://docs.google.com/spreadsheets/d/{SHEET_ID}/export?format=csv&gid={GID}
 ```
 
 ✅ **Your Sheet Details:**
+
 - Sheet ID: `1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM`
 - Movement-data GID: `1539310010`
 - Never Moved COWs GID: `1464106304`
 
 ✅ **Environment Variables Used:**
+
 - `MOVEMENT_DATA_CSV_URL` → Points to GID 1539310010
 - `NEVER_MOVED_COW_CSV_URL` → Points to GID 1464106304
 

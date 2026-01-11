@@ -9,6 +9,7 @@ The COW Analytics dashboard now uses **published Google Sheets CSV exports** for
 **Two CSV URLs from a single published Google Sheet:**
 
 1. **Movement-data** (Main Dashboard Data)
+
    ```
    https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv
    ```
@@ -20,10 +21,10 @@ The COW Analytics dashboard now uses **published Google Sheets CSV exports** for
 
 ## Required Environment Variables
 
-| Variable                  | Value                                        | Required    | Notes                                    |
-| ------------------------- | -------------------------------------------- | ----------- | ---------------------------------------- |
-| `MOVEMENT_DATA_CSV_URL`   | Published CSV URL (see above)                | ✅ Yes      | Main dashboard data (Movement-data)      |
-| `NEVER_MOVED_COW_CSV_URL` | Published CSV URL (see above)                | ✅ Yes      | Never moved COWs data (Dashboard sheet)  |
+| Variable                  | Value                         | Required | Notes                                   |
+| ------------------------- | ----------------------------- | -------- | --------------------------------------- |
+| `MOVEMENT_DATA_CSV_URL`   | Published CSV URL (see above) | ✅ Yes   | Main dashboard data (Movement-data)     |
+| `NEVER_MOVED_COW_CSV_URL` | Published CSV URL (see above) | ✅ Yes   | Never moved COWs data (Dashboard sheet) |
 
 ## ✨ Benefits of This Setup
 
@@ -31,7 +32,7 @@ The COW Analytics dashboard now uses **published Google Sheets CSV exports** for
 ✅ **Simple** - Just copy-paste the CSV URL  
 ✅ **Reliable** - 5-minute in-memory cache prevents timeouts  
 ✅ **Fast** - ~20 second fetch timeout with retry logic  
-✅ **Easy to Update** - Change the Google Sheet, redeploy  
+✅ **Easy to Update** - Change the Google Sheet, redeploy
 
 ## How to Set Environment Variables on Netlify
 
@@ -50,7 +51,7 @@ The COW Analytics dashboard now uses **published Google Sheets CSV exports** for
    **Variable 1: MOVEMENT_DATA_CSV_URL**
    - Click **+ Add variable** (or **Edit variables**)
    - Key: `MOVEMENT_DATA_CSV_URL`
-   - Value: 
+   - Value:
      ```
      https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv
      ```
@@ -59,7 +60,7 @@ The COW Analytics dashboard now uses **published Google Sheets CSV exports** for
    **Variable 2: NEVER_MOVED_COW_CSV_URL**
    - Click **+ Add variable**
    - Key: `NEVER_MOVED_COW_CSV_URL`
-   - Value: 
+   - Value:
      ```
      https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv
      ```
@@ -166,9 +167,11 @@ https://cow-analysis.netlify.app/api/data/diagnostic
    - Confirm `MOVEMENT_DATA_CSV_URL` and `NEVER_MOVED_COW_CSV_URL` are listed
 
 2. **Check the Diagnostic Endpoint**
+
    ```
    https://cow-analysis.netlify.app/api/data/diagnostic
    ```
+
    - Shows which URLs are working and which failed
 
 3. **Clear Netlify Cache**
@@ -215,16 +218,19 @@ https://cow-analysis.netlify.app/api/data/diagnostic
 ## 📝 Notes
 
 **Changed from:**
+
 - Complex Sheet ID + GID configuration
 - Multiple fallback URLs
 - SDK dependencies
 
 **Now using:**
+
 - Single published CSV export URLs
 - Direct fetch with timeout protection
 - 5-minute in-memory caching
 
 **Why this is better:**
+
 - Simpler setup (just URLs, no API keys)
 - More reliable (published links are stable)
 - Easier to debug (diagnostic endpoint shows status)

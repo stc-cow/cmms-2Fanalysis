@@ -25,6 +25,7 @@ https://cow-analysis.netlify.app/api/data/diagnostic
 ```
 
 This shows:
+
 - ✓ Which CSV URLs are accessible
 - ✓ Any errors connecting to Google Sheets
 - ✓ HTTP status codes
@@ -47,6 +48,7 @@ AB=Region To,             AC=Vendor,          AD=Installation Status, AE=Remarks
 ```
 
 **Critical Columns** (must have data):
+
 - **A (COW_ID)** - The COW identifier
 - **Q (From Location)** - Where the COW moved FROM
 - **U (To Location)** - Where the COW moved TO
@@ -58,12 +60,14 @@ AB=Region To,             AC=Vendor,          AD=Installation Status, AE=Remarks
 ### Issue 1: "No movement data found"
 
 **Possible Causes:**
+
 1. The CSV URL is empty or returns an error page
 2. The CSV only contains headers, no data rows
 3. The required columns (A, Q, U) are empty or have different names
 4. The data is in a different sheet (wrong GID)
 
 **How to Fix:**
+
 1. Check the CSV URL in browser (see above)
 2. Count the columns - should be at least 21 columns (A-U)
 3. Verify columns have data (not just headers)
@@ -74,6 +78,7 @@ AB=Region To,             AC=Vendor,          AD=Installation Status, AE=Remarks
 **Cause:** Old code version cached on Netlify
 
 **How to Fix:**
+
 1. Go to Netlify Deploys
 2. Click "Clear cache and retry deploy"
 3. Wait for deployment to complete
@@ -84,6 +89,7 @@ AB=Region To,             AC=Vendor,          AD=Installation Status, AE=Remarks
 **Cause:** Frontend cannot reach the API endpoint
 
 **How to Fix:**
+
 1. Check browser console (F12) for detailed error
 2. Try visiting `/api/data/diagnostic` to check API status
 3. Verify Netlify site is not in "paused" state
@@ -106,6 +112,7 @@ If your Google Sheet has multiple sheets:
 - **Dashboard sheet:** might have a different GID like `1539310010`
 
 You need TWO URLs:
+
 ```
 MOVEMENT_DATA_CSV_URL=https://docs.google.com/spreadsheets/d/e/.../pub?gid=[GID1]&single=true&output=csv
 NEVER_MOVED_COW_CSV_URL=https://docs.google.com/spreadsheets/d/e/.../pub?gid=[GID2]&single=true&output=csv
@@ -163,6 +170,7 @@ When the API tries to fetch the CSV, you'll see logs like:
 ```
 
 **If you see "0 valid rows" instead of 450:**
+
 - The column mapping is wrong
 - The CSV structure doesn't match expectations
 - You might have the wrong GID

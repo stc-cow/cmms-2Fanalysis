@@ -7,6 +7,7 @@
 ## 🔍 Available Diagnostic Endpoints
 
 ### 1. **CSV Viewer** (Most Important for Debugging)
+
 ```
 https://cow-analysis.netlify.app/api/data/csv-viewer
 ```
@@ -14,6 +15,7 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 **What it does:** Fetches the CSV from Google Sheets and shows raw content analysis
 
 **Response shows:**
+
 - HTTP status code
 - CSV file size
 - Number of lines
@@ -21,11 +23,13 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 - First 3 lines of content
 
 **Use this to:**
+
 - Verify CSV is being fetched
 - Check if response is valid
 - See first few rows of data
 
 **Example Good Response:**
+
 ```json
 {
   "httpStatus": 200,
@@ -41,6 +45,7 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ```
 
 **Example Bad Response (Empty CSV):**
+
 ```json
 {
   "httpStatus": 200,
@@ -52,6 +57,7 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ```
 
 **Example Bad Response (HTML Error):**
+
 ```json
 {
   "httpStatus": 200,
@@ -66,11 +72,13 @@ https://cow-analysis.netlify.app/api/data/csv-viewer
 ---
 
 ### 2. **Main Data Endpoint**
+
 ```
 https://cow-analysis.netlify.app/api/data/processed-data
 ```
 
-**What it does:** 
+**What it does:**
+
 - Fetches CSV
 - Parses columns
 - Detects column positions
@@ -78,15 +86,18 @@ https://cow-analysis.netlify.app/api/data/processed-data
 - Returns processed movement data
 
 **Response shows:**
+
 - Array of movements with COW_ID, from/to locations, etc.
 - Array of COWs
 - Array of locations
 
 **Use this to:**
+
 - Test if dashboard data works
 - See final processed data structure
 
 **Check Netlify function logs** to see detailed parsing info:
+
 ```
 📋 HEADER ROW (31 columns):
    [0] = "COW_ID"
@@ -106,16 +117,19 @@ https://cow-analysis.netlify.app/api/data/processed-data
 ---
 
 ### 3. **Never Moved COWs Endpoint**
+
 ```
 https://cow-analysis.netlify.app/api/data/never-moved-cows
 ```
 
 **What it does:**
+
 - Fetches Dashboard sheet CSV (GID: 1464106304)
 - Parses never-moved COW data
 - Returns COWs that never moved + statistics
 
 **Response shows:**
+
 ```json
 {
   "cows": [
@@ -138,16 +152,19 @@ https://cow-analysis.netlify.app/api/data/never-moved-cows
 ---
 
 ### 4. **Diagnostic Endpoint**
+
 ```
 https://cow-analysis.netlify.app/api/data/diagnostic
 ```
 
 **What it does:**
+
 - Tests connectivity to both CSV URLs
 - Shows HTTP status for each URL
 - Provides recommendations
 
 **Response shows:**
+
 ```json
 {
   "urls": {
@@ -214,6 +231,7 @@ Start: Dashboard shows "Unable to Load Dashboard Data"
 ## 📋 Debugging Workflow
 
 ### Step 1: Check Raw CSV
+
 ```bash
 curl https://cow-analysis.netlify.app/api/data/csv-viewer
 ```
@@ -221,6 +239,7 @@ curl https://cow-analysis.netlify.app/api/data/csv-viewer
 If this shows errors → **Fix the CSV URL or publish the sheet**
 
 ### Step 2: Check Parsing
+
 ```bash
 curl https://cow-analysis.netlify.app/api/data/processed-data
 ```
@@ -230,6 +249,7 @@ Then **check Netlify function logs** for detailed output
 If "Valid rows: 0" → **Columns are empty or in wrong positions**
 
 ### Step 3: Check Dashboard
+
 ```
 https://cow-analysis.netlify.app
 ```
@@ -241,6 +261,7 @@ If still failing → Check browser console (F12) for errors
 ## 🔍 Key Things to Look For
 
 ### CSV Viewer Response
+
 - ✓ `httpStatus: 200` - URL is working
 - ❌ `httpStatus: 404` - URL doesn't exist
 - ❌ `httpStatus: 403` - Access denied
@@ -252,6 +273,7 @@ If still failing → Check browser console (F12) for errors
 - ❌ `isHTML: true` - Got error page (sheet not published)
 
 ### Parsing Logs
+
 - ✓ `COW ID: ✓ Found at index 0` - Column found
 - ❌ `COW ID: ✗ NOT FOUND - will use index 0` - Column not found
 
@@ -262,13 +284,13 @@ If still failing → Check browser console (F12) for errors
 
 ## 💡 Quick Fixes
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `csvSize: 0` | Empty CSV | Check Google Sheet has data |
-| `isHTML: true` | Sheet not published | File → Share → Publish to web |
-| `httpStatus: 404` | URL wrong | Test URL in browser |
-| `Valid rows: 0` | Empty columns | Check column data in sheet |
-| Dashboard blank | API not responding | Check /csv-viewer endpoint |
+| Symptom           | Cause               | Fix                           |
+| ----------------- | ------------------- | ----------------------------- |
+| `csvSize: 0`      | Empty CSV           | Check Google Sheet has data   |
+| `isHTML: true`    | Sheet not published | File → Share → Publish to web |
+| `httpStatus: 404` | URL wrong           | Test URL in browser           |
+| `Valid rows: 0`   | Empty columns       | Check column data in sheet    |
+| Dashboard blank   | API not responding  | Check /csv-viewer endpoint    |
 
 ---
 
@@ -301,6 +323,7 @@ curl https://cow-analysis.netlify.app
 Tell me:
 
 1. **CSV Viewer response:**
+
    ```json
    {
      "httpStatus": ?,
@@ -313,6 +336,7 @@ Tell me:
    ```
 
 2. **If csvSize > 0, the first line:**
+
    ```
    "firstLine": "[show exact content]"
    ```

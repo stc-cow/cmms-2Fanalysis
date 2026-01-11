@@ -3,6 +3,7 @@
 ## ✅ Problem Identified
 
 The parser was **rejecting ALL data rows** because:
+
 1. It required ALL THREE fields: `cow_id`, `from_location`, `to_location`
 2. The actual CSV might have:
    - Different column names
@@ -16,6 +17,7 @@ The parser was **rejecting ALL data rows** because:
 ## 🔧 What Was Fixed
 
 ### Before (Strict)
+
 ```typescript
 // REJECTED if ANY of these were missing:
 if (!hasCowId || !hasFromLocation || !hasToLocation) {
@@ -24,6 +26,7 @@ if (!hasCowId || !hasFromLocation || !hasToLocation) {
 ```
 
 ### After (Lenient)
+
 ```typescript
 // ONLY REJECT if cow_id is missing
 if (!hasCowId) {
@@ -40,16 +43,19 @@ const to_loc = hasToLocation ? row.to_location : "Unknown";
 ## 📋 Changes Made
 
 ### 1. **More Flexible Column Detection**
+
 - Now checks multiple variations of column names
 - Falls back to standard positions (A=cow_id, Q=from_location, U=to_location)
 - Logs all detected columns clearly
 
 ### 2. **Lenient Row Acceptance**
+
 - Accepts any row with a `cow_id`
 - Provides defaults for empty locations
 - No longer rejects entire rows for missing location data
 
 ### 3. **Better Logging**
+
 - Shows ALL header columns
 - Shows ALL cells in first 5 rows
 - Clear detection of which columns were found/not found
@@ -60,6 +66,7 @@ const to_loc = hasToLocation ? row.to_location : "Unknown";
 ## 🚀 Deploy Now
 
 ### Step 1: Commit and Push
+
 ```bash
 git add -A
 git commit -m "Fix: Make CSV parser lenient - accept rows with cow_id even if locations empty"
@@ -67,14 +74,17 @@ git push origin main
 ```
 
 ### Step 2: Clear Netlify Cache
+
 1. https://app.netlify.com → **cow-analysis**
 2. **Deploys** → **Clear cache and retry deploy**
 3. Wait 2-3 minutes
 
 ### Step 3: Test
+
 Visit: https://cow-analysis.netlify.app
 
 **Expected Results:**
+
 - ✅ Dashboard loads with data
 - ✅ Executive Summary shows correct warehouse count (10 not 33)
 - ✅ Movement cards show data
@@ -89,33 +99,36 @@ After deployment, the parser will:
 1. **Fetch the CSV** from GID 1539310010 (Movement-data sheet)
 
 2. **Parse ALL rows** with a cow_id:
+
    ```
    ✓ Valid rows: ~450+
    ✗ Skipped: 0 (or very few)
    ```
 
 3. **Show detailed logs** in Netlify:
+
    ```
    📋 HEADER ROW (31 columns):
    [0] = "COW_ID"
    [16] = "From_Location"
    [20] = "To_Location"
    ... (all 31 columns)
-   
+
    📍 FIRST 5 DATA ROWS:
    Row 1: 31 cells
       [0] = "COW-001"
       [16] = "Warehouse A"
       [20] = "Warehouse B"
-   
+
    ✅ Using indices: cow=0, from=16, to=20
-   
+
    📊 PARSING SUMMARY:
    ✓ Valid rows: 450
    ✗ Skipped: 0
    ```
 
 4. **Extract unique warehouse list**:
+
    ```
    Unique From Locations (Column Q):
    1. STC WH Al Ula
@@ -128,7 +141,7 @@ After deployment, the parser will:
    8. STC Umluj WH
    9. STC WH EXIT 18 Riyad
    10. STC WH Madina
-   
+
    Total: 10 unique warehouses
    ```
 
@@ -137,6 +150,7 @@ After deployment, the parser will:
 ## 📝 Expected Output
 
 ### CSV Viewer Endpoint
+
 ```json
 {
   "httpStatus": 200,
@@ -151,6 +165,7 @@ After deployment, the parser will:
 ```
 
 ### Executive Summary (Fixed)
+
 - **Active Warehouses:** 10 (not 33) ✅
 - **Deployment Sites:** [Correct count]
 - **Total COWs:** [Actual count from data]
@@ -160,19 +175,20 @@ After deployment, the parser will:
 
 ## 🎯 Key Changes Summary
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| Row rejection | All rows if any field missing | Only if no cow_id |
-| Location defaults | N/A (rows rejected) | "Unknown" if empty |
-| Column detection | Strict matching | Flexible with fallbacks |
-| Logging | Limited | Detailed (all headers, rows, reasons) |
-| Data parsed | 0 rows ❌ | 450+ rows ✅ |
+| Aspect            | Before                        | After                                 |
+| ----------------- | ----------------------------- | ------------------------------------- |
+| Row rejection     | All rows if any field missing | Only if no cow_id                     |
+| Location defaults | N/A (rows rejected)           | "Unknown" if empty                    |
+| Column detection  | Strict matching               | Flexible with fallbacks               |
+| Logging           | Limited                       | Detailed (all headers, rows, reasons) |
+| Data parsed       | 0 rows ❌                     | 450+ rows ✅                          |
 
 ---
 
 ## ✨ Why This Works
 
 The root issue was the parser being **too strict**. Real-world CSV data might have:
+
 - Columns in different positions
 - Different column names
 - Some empty cells

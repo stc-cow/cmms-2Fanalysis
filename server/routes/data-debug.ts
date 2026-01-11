@@ -5,10 +5,16 @@
 
 export function parseCSVData(csvText: string) {
   // First, check if we got HTML error page instead of CSV
-  if (csvText.includes("<html") || csvText.includes("<HTML") || csvText.includes("<!DOCTYPE")) {
+  if (
+    csvText.includes("<html") ||
+    csvText.includes("<HTML") ||
+    csvText.includes("<!DOCTYPE")
+  ) {
     console.error("❌ RECEIVED HTML INSTEAD OF CSV!");
     console.error("First 500 chars:", csvText.substring(0, 500));
-    throw new Error("Google Sheets returned HTML instead of CSV. The sheet may not be published or URL is incorrect.");
+    throw new Error(
+      "Google Sheets returned HTML instead of CSV. The sheet may not be published or URL is incorrect.",
+    );
   }
 
   const lines = csvText.trim().split("\n");
@@ -46,34 +52,47 @@ export function parseCSVData(csvText: string) {
   const headerLower = headerCells.map((h, idx) => ({
     original: h,
     lower: h.toLowerCase().trim(),
-    index: idx
+    index: idx,
   }));
 
   // Find critical columns with detailed logging
   console.log(`\n🔍 COLUMN DETECTION:`);
 
-  const cowIdMatch = headerLower.find(h => 
-    h.lower === "cow" || h.lower === "cow_id" || h.lower === "cow id" || 
-    h.lower === "id" || h.lower === "a" || h.lower.includes("cow")
+  const cowIdMatch = headerLower.find(
+    (h) =>
+      h.lower === "cow" ||
+      h.lower === "cow_id" ||
+      h.lower === "cow id" ||
+      h.lower === "id" ||
+      h.lower === "a" ||
+      h.lower.includes("cow"),
   );
-  console.log(`   COW ID: ${cowIdMatch ? `Found at index ${cowIdMatch.index} (${cowIdMatch.original})` : "NOT FOUND - will use index 0"}`);
+  console.log(
+    `   COW ID: ${cowIdMatch ? `Found at index ${cowIdMatch.index} (${cowIdMatch.original})` : "NOT FOUND - will use index 0"}`,
+  );
 
-  const fromLocationMatch = headerLower.find(h => 
-    h.lower.includes("from") && h.lower.includes("location")
+  const fromLocationMatch = headerLower.find(
+    (h) => h.lower.includes("from") && h.lower.includes("location"),
   );
-  console.log(`   FROM LOCATION: ${fromLocationMatch ? `Found at index ${fromLocationMatch.index} (${fromLocationMatch.original})` : "NOT FOUND - will use index 16"}`);
+  console.log(
+    `   FROM LOCATION: ${fromLocationMatch ? `Found at index ${fromLocationMatch.index} (${fromLocationMatch.original})` : "NOT FOUND - will use index 16"}`,
+  );
 
-  const toLocationMatch = headerLower.find(h => 
-    h.lower.includes("to") && h.lower.includes("location")
+  const toLocationMatch = headerLower.find(
+    (h) => h.lower.includes("to") && h.lower.includes("location"),
   );
-  console.log(`   TO LOCATION: ${toLocationMatch ? `Found at index ${toLocationMatch.index} (${toLocationMatch.original})` : "NOT FOUND - will use index 20"}`);
+  console.log(
+    `   TO LOCATION: ${toLocationMatch ? `Found at index ${toLocationMatch.index} (${toLocationMatch.original})` : "NOT FOUND - will use index 20"}`,
+  );
 
   // Set column indices with fallbacks
   let cowIdIdx = cowIdMatch?.index ?? 0;
   let fromLocationIdx = fromLocationMatch?.index ?? 16;
   let toLocationIdx = toLocationMatch?.index ?? 20;
 
-  console.log(`\n✅ Using indices: cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx}`);
+  console.log(
+    `\n✅ Using indices: cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx}`,
+  );
 
   // Parse data rows
   const rows: any[] = [];
@@ -99,7 +118,9 @@ export function parseCSVData(csvText: string) {
       const reason = `too_few_cells_${cells.length}`;
       skipReasons.set(reason, (skipReasons.get(reason) ?? 0) + 1);
       if (i <= 3) {
-        console.warn(`   ⚠️  Row ${i}: Only ${cells.length} cells (need ≥5) - SKIPPED`);
+        console.warn(
+          `   ⚠️  Row ${i}: Only ${cells.length} cells (need ≥5) - SKIPPED`,
+        );
       }
       skippedCount++;
       continue;
@@ -177,7 +198,7 @@ export function parseCSVData(csvText: string) {
   console.log(`\n📊 PARSING SUMMARY:`);
   console.log(`   ✓ Valid rows parsed: ${successCount}`);
   console.log(`   ✗ Rows skipped: ${skippedCount}`);
-  
+
   if (skipReasons.size > 0) {
     console.log(`   Skip breakdown:`);
     skipReasons.forEach((count, reason) => {
@@ -190,7 +211,9 @@ export function parseCSVData(csvText: string) {
     if (skippedCount > 0) {
       console.error(`   Problem: All ${skippedCount} data rows were rejected.`);
       console.error(`   Possible causes:`);
-      console.error(`     1. Column indices are wrong (cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx})`);
+      console.error(
+        `     1. Column indices are wrong (cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx})`,
+      );
       console.error(`     2. Required columns contain empty data`);
       console.error(`     3. CSV format is corrupted`);
       console.error(`     4. You're looking at the wrong sheet/GID`);

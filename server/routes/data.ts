@@ -64,10 +64,16 @@ const NEVER_MOVED_COW_CSV_URL =
  */
 function parseCSVData(csvText: string) {
   // Check for HTML error page
-  if (csvText.includes("<html") || csvText.includes("<HTML") || csvText.includes("<!DOCTYPE")) {
+  if (
+    csvText.includes("<html") ||
+    csvText.includes("<HTML") ||
+    csvText.includes("<!DOCTYPE")
+  ) {
     console.error("❌ RECEIVED HTML INSTEAD OF CSV!");
     console.error("First 500 chars:", csvText.substring(0, 500));
-    throw new Error("Google Sheets returned HTML instead of CSV. Check if sheet is published.");
+    throw new Error(
+      "Google Sheets returned HTML instead of CSV. Check if sheet is published.",
+    );
   }
 
   const lines = csvText.trim().split("\n");
@@ -105,45 +111,56 @@ function parseCSVData(csvText: string) {
   const headerLower = headerCells.map((h, idx) => ({
     original: h,
     lower: h.toLowerCase().trim(),
-    index: idx
+    index: idx,
   }));
 
   // Column detection - try multiple variations
   console.log(`\n🔍 COLUMN DETECTION:`);
 
   // Find COW_ID column (might be labeled as "Cows ID", "Cow ID", "COW", etc.)
-  const cowIdMatch = headerLower.find(h =>
-    h.lower.includes("cow") && h.lower.includes("id") ||
-    h.lower === "cow" ||
-    h.lower === "cows id"
+  const cowIdMatch = headerLower.find(
+    (h) =>
+      (h.lower.includes("cow") && h.lower.includes("id")) ||
+      h.lower === "cow" ||
+      h.lower === "cows id",
   );
 
   // Find From Location (might be "from_location", "From Location", "Origin", etc.)
-  const fromLocationMatch = headerLower.find(h =>
-    h.lower.includes("from") && h.lower.includes("location") ||
-    h.lower === "origin" ||
-    h.lower === "from"
+  const fromLocationMatch = headerLower.find(
+    (h) =>
+      (h.lower.includes("from") && h.lower.includes("location")) ||
+      h.lower === "origin" ||
+      h.lower === "from",
   );
 
   // Find To Location
-  const toLocationMatch = headerLower.find(h =>
-    h.lower.includes("to") && h.lower.includes("location") ||
-    h.lower === "destination" ||
-    h.lower === "to"
+  const toLocationMatch = headerLower.find(
+    (h) =>
+      (h.lower.includes("to") && h.lower.includes("location")) ||
+      h.lower === "destination" ||
+      h.lower === "to",
   );
 
   // Log detection results
-  console.log(`   COW ID: ${cowIdMatch ? `✓ [${cowIdMatch.index}] "${cowIdMatch.original}"` : `✗ NOT FOUND`}`);
-  console.log(`   FROM LOCATION: ${fromLocationMatch ? `✓ [${fromLocationMatch.index}] "${fromLocationMatch.original}"` : `✗ NOT FOUND`}`);
-  console.log(`   TO LOCATION: ${toLocationMatch ? `✓ [${toLocationMatch.index}] "${toLocationMatch.original}"` : `✗ NOT FOUND`}`);
+  console.log(
+    `   COW ID: ${cowIdMatch ? `✓ [${cowIdMatch.index}] "${cowIdMatch.original}"` : `✗ NOT FOUND`}`,
+  );
+  console.log(
+    `   FROM LOCATION: ${fromLocationMatch ? `✓ [${fromLocationMatch.index}] "${fromLocationMatch.original}"` : `✗ NOT FOUND`}`,
+  );
+  console.log(
+    `   TO LOCATION: ${toLocationMatch ? `✓ [${toLocationMatch.index}] "${toLocationMatch.original}"` : `✗ NOT FOUND`}`,
+  );
 
   // Use detected or fallback to positional indices
   // Key insight: if headers don't match, use column positions A-U (0-20)
-  const cowIdIdx = cowIdMatch?.index ?? 0;        // Usually column A
-  const fromLocationIdx = fromLocationMatch?.index ?? 16;  // Usually column Q
-  const toLocationIdx = toLocationMatch?.index ?? 20;      // Usually column U
+  const cowIdIdx = cowIdMatch?.index ?? 0; // Usually column A
+  const fromLocationIdx = fromLocationMatch?.index ?? 16; // Usually column Q
+  const toLocationIdx = toLocationMatch?.index ?? 20; // Usually column U
 
-  console.log(`\n✅ Using indices: cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx}`);
+  console.log(
+    `\n✅ Using indices: cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx}`,
+  );
 
   // Parse rows
   const rows: any[] = [];
@@ -179,7 +196,9 @@ function parseCSVData(csvText: string) {
     if (i <= 5) {
       console.log(`   Row ${i}:`);
       console.log(`      cells[${cowIdIdx}] (cow) = "${cow_id}"`);
-      console.log(`      cells[${fromLocationIdx}] (from) = "${from_location}"`);
+      console.log(
+        `      cells[${fromLocationIdx}] (from) = "${from_location}"`,
+      );
       console.log(`      cells[${toLocationIdx}] (to) = "${to_location}"`);
     }
 
@@ -202,7 +221,8 @@ function parseCSVData(csvText: string) {
     // Map all columns - use all available cells, cycling through for fallbacks
     const row: any = {
       cow_id: cow_id || cells[0]?.trim() || "",
-      from_location: from_location || cells[1]?.trim() || cells[14]?.trim() || "",
+      from_location:
+        from_location || cells[1]?.trim() || cells[14]?.trim() || "",
       to_location: to_location || cells[2]?.trim() || cells[18]?.trim() || "",
       site_label: cells[1]?.trim() || "",
       last_deploy_date: cells[2]?.trim() || cells[11]?.trim() || "",
@@ -253,7 +273,9 @@ function parseCSVData(csvText: string) {
     if (successCount === 0 && skippedCount > 0) {
       console.error(`   Problem: All ${skippedCount} data rows were rejected.`);
       console.error(`   Checklist:`);
-      console.error(`     1. Are column indices correct? (cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx})`);
+      console.error(
+        `     1. Are column indices correct? (cow=${cowIdIdx}, from=${fromLocationIdx}, to=${toLocationIdx})`,
+      );
       console.error(`     2. Do those columns contain data or are they empty?`);
       console.error(`     3. Is the CSV format correct?`);
       console.error(`     4. Are you using the correct GID/sheet?`);
@@ -379,8 +401,10 @@ function processData(rows: any[]) {
   rows.forEach((row, idx) => {
     // Skip only if we have no cow_id - that's the absolute minimum
     const hasCowId = row.cow_id && row.cow_id.toString().trim().length > 0;
-    const hasFromLocation = row.from_location && row.from_location.toString().trim().length > 0;
-    const hasToLocation = row.to_location && row.to_location.toString().trim().length > 0;
+    const hasFromLocation =
+      row.from_location && row.from_location.toString().trim().length > 0;
+    const hasToLocation =
+      row.to_location && row.to_location.toString().trim().length > 0;
 
     // Require cow_id but be lenient about locations
     if (!hasCowId) {
@@ -555,7 +579,9 @@ const processedDataHandler: RequestHandler = async (req, res) => {
           `✓ Successfully fetched CSV data (${csvData.length} bytes)`,
         );
       } else {
-        fetchError = new Error(`HTTP ${response.status}: ${response.statusText}`);
+        fetchError = new Error(
+          `HTTP ${response.status}: ${response.statusText}`,
+        );
         console.error(`✗ Failed to fetch CSV: ${response.status}`);
       }
     } catch (e) {
@@ -575,8 +601,12 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       console.error("\n📋 TROUBLESHOOTING:");
       console.error("   1. Verify the Google Sheet is published to the web");
       console.error("   2. Check that the CSV URL is accessible in a browser");
-      console.error("   3. Ensure the sheet contains data in the expected columns");
-      console.error("   4. If you see 'CSV_URLS is not defined', clear Netlify cache and redeploy");
+      console.error(
+        "   3. Ensure the sheet contains data in the expected columns",
+      );
+      console.error(
+        "   4. If you see 'CSV_URLS is not defined', clear Netlify cache and redeploy",
+      );
       console.error("");
       throw new Error(errorMsg);
     }
@@ -587,7 +617,9 @@ const processedDataHandler: RequestHandler = async (req, res) => {
     }
 
     if (csvData.length < 10) {
-      console.warn(`⚠️  CSV data is very small (${csvData.length} bytes) - may be incomplete`);
+      console.warn(
+        `⚠️  CSV data is very small (${csvData.length} bytes) - may be incomplete`,
+      );
     }
 
     const rows = parseCSVData(csvData);
@@ -603,7 +635,9 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       console.error("   2. Column structure doesn't match expected format");
       console.error("   3. All rows were filtered out as invalid");
       console.error("");
-      throw new Error("No data rows found in Google Sheet - CSV may be empty or incorrectly formatted");
+      throw new Error(
+        "No data rows found in Google Sheet - CSV may be empty or incorrectly formatted",
+      );
     }
 
     console.log(`✓ Parsed ${rows.length} data rows from CSV`);

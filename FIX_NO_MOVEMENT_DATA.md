@@ -5,9 +5,11 @@ This error means **the CSV is being fetched, but all data rows are being rejecte
 ## 🚀 Immediate Action Required
 
 ### Step 1: Deploy Enhanced Debugging Code
+
 Enhanced CSV parser has been created with detailed logging.
 
 The new code will show you:
+
 - ✅ Exact column names in the header
 - ✅ First 5 rows of data (raw cell values)
 - ✅ Which columns are being used as cow_id, from_location, to_location
@@ -15,9 +17,10 @@ The new code will show you:
 
 ### Step 2: Update the Code
 
-The enhanced debug version is in `server/routes/data-debug.ts`. 
+The enhanced debug version is in `server/routes/data-debug.ts`.
 
 **Option A: Quick Replace (Recommended)**
+
 ```bash
 # Backup the old version
 cp server/routes/data.ts server/routes/data.ts.backup
@@ -28,6 +31,7 @@ cp server/routes/data.ts server/routes/data.ts.backup
 
 **Option B: I Can Do It**
 Just let me know and I'll:
+
 1. Replace the parseCSVData function in `server/routes/data.ts` with the enhanced version
 2. Deploy the changes
 3. You run the test and we'll see the detailed output
@@ -43,6 +47,7 @@ git push origin main
 ```
 
 Then go to Netlify:
+
 1. Clear cache and retry deploy
 2. Wait for deployment to complete
 3. Visit: https://cow-analysis.netlify.app/api/data/processed-data
@@ -103,12 +108,14 @@ CSV size: 5234 bytes
 ## 📊 Understanding the Output
 
 ### Good Signs ✅
+
 - Headers are detected correctly (COW_ID, From_Location, To_Location, etc.)
 - Column indices are found (e.g., cow=0, from=16, to=20)
 - Data rows show actual values in those columns
 - Summary shows "Valid rows parsed: 445" or similar
 
 ### Problem Signs ❌
+
 - **"Column indices are wrong"** = Column headers don't match expected names
 - **"All rows skipped"** = Every row missing cow_id or location data
 - **"empty_from_location"** = Those columns in the CSV are empty
@@ -126,7 +133,8 @@ CSV size: 5234 bytes
 
 **Problem:** Column detection finds the right columns, but all cells are empty
 
-**Solution:** 
+**Solution:**
+
 - Check Google Sheet - columns Q and U might be empty
 - You may be looking at the wrong sheet (wrong GID)
 - Data might be in different columns
@@ -136,6 +144,7 @@ CSV size: 5234 bytes
 **Problem:** 450 rows total, only 5 skipped (good!)
 
 **Solution:** This is normal. The 5 skipped rows might be:
+
 - Empty template rows
 - Rows with missing required fields
 - Footer rows with notes
@@ -152,6 +161,7 @@ When you run this and see the output, tell me:
 4. **Total**: "Parsed 445 valid rows out of 450 total"
 
 With this information, I can:
+
 - Fix any column mapping issues
 - Update environment variables if needed
 - Ensure you're using the correct GID
