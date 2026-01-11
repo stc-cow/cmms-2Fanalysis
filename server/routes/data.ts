@@ -610,11 +610,15 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       source: "Google Apps Script",
     });
   } catch (error) {
-    console.error("Error fetching Never Moved COW data:", error);
+    const errorMsg = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error fetching Never Moved COW data:", errorMsg);
+
     res.status(500).json({
       error: "Failed to fetch Never Moved COW data",
-      details: error instanceof Error ? error.message : "Unknown error",
-      hint: 'Please ensure the Google Apps Script endpoint is accessible and returning valid JSON',
+      details: errorMsg,
+      hint: "Ensure the Google Apps Script is deployed with 'Who has access: Anyone' and check that it returns valid JSON",
+      scriptUrl: process.env.NEVER_MOVED_COW_SCRIPT_URL ||
+        "https://script.google.com/macros/s/AKfycbyP4BAqz11yoZpz2NA1OUCfYlw5mPcyk8rROrPoaBkWiv3M1dWN-6icFlp32bOu6apf/exec",
     });
   }
 };
