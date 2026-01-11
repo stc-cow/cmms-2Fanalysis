@@ -377,17 +377,12 @@ export function ExecutiveOverviewCard({
             {summaryStats.map((stat, idx) => (
               <div
                 key={idx}
-                className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl p-3 transform transition-all hover:scale-105"
-                style={{
-                  boxShadow:
-                    "0 15px 35px -5px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
-                  border: "2px solid rgba(255, 255, 255, 0.2)",
-                }}
+                className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm hover:shadow-md transition-all"
               >
-                <p className="text-white text-xs font-bold">
+                <p className="text-gray-600 text-xs font-semibold">
                   {stat.label}
                 </p>
-                <p className="text-white text-lg font-bold mt-1">
+                <p className="text-gray-900 text-lg font-bold mt-1">
                   {stat.value}
                 </p>
               </div>
