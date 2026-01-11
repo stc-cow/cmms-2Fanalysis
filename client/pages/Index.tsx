@@ -5,12 +5,13 @@ import { ExecutiveOverviewCard } from "@/components/dashboard/cards/ExecutiveOve
 import { SaudiMapCard } from "@/components/dashboard/cards/SaudiMapCard";
 import { MovementHeatMapCard } from "@/components/dashboard/cards/MovementHeatMapCard";
 import { StaticCowMapCard } from "@/components/dashboard/cards/StaticCowMapCard";
+import { NeverMovedCowCard } from "@/components/dashboard/cards/NeverMovedCowCard";
 import { RegionAnalysisCard } from "@/components/dashboard/cards/RegionAnalysisCard";
 import { WarehouseIntelligenceCard } from "@/components/dashboard/cards/WarehouseIntelligenceCard";
 import { COWUtilizationCard } from "@/components/dashboard/cards/COWUtilizationCard";
 import { EventsAnalysisCard } from "@/components/dashboard/cards/EventsAnalysisCard";
 import { RoyalEBUAnalysisCard } from "@/components/dashboard/cards/RoyalEBUAnalysisCard";
-import { DashboardFilters as DashboardFiltersType } from "@shared/models";
+import { DashboardFilters as DashboardFiltersType, NeverMovedCow } from "@shared/models";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import {
   enrichMovements,
