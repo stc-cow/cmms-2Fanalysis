@@ -59,30 +59,50 @@ const NEVER_MOVED_COW_CSV_URL =
  */
 function parseCSVData(csvText: string) {
   const lines = csvText.trim().split("\n");
-  if (lines.length < 2) return [];
 
-  // Parse first data row to detect column structure
+  console.log(`📊 CSV has ${lines.length} total lines`);
+
+  if (lines.length < 2) {
+    console.warn("⚠️  CSV has fewer than 2 lines (header + data)");
+    return [];
+  }
+
+  // Parse header row
   const headerLine = lines[0];
-  const firstDataLine = lines[1];
-
   const headerCells = parseCSVLine(headerLine);
+  console.log(`📋 Header row has ${headerCells.length} columns:`, headerCells.slice(0, 10).join(" | "));
+
+  // Detect column structure based on header names and first data row
+  const firstDataLine = lines[1];
   const firstDataCells = parseCSVLine(firstDataLine);
 
-  // Try to detect if this is the old or new column structure
-  // Old structure has "From Location" or similar at column O (14)
-  // New structure has more columns before from_location
-  const isNewStructure = firstDataCells.length >= 31;
+  console.log(`📊 First data row has ${firstDataCells.length} cells (sample: "${firstDataCells[0]}", "${firstDataCells[1] || ''}", "${firstDataCells[2] || ''}")`);
 
-  console.log(
-    `Detected ${isNewStructure ? "NEW" : "OLD"} column structure (${firstDataCells.length} columns)`,
-  );
+  // Try to detect structure by looking for key column names
+  const headerLower = headerCells.map(h => h.toLowerCase());
+  const hasFromLocation = headerLower.some(h => h.includes("from") && h.includes("location"));
+  const hasToLocation = headerLower.some(h => h.includes("to") && h.includes("location"));
+
+  console.log(`🔍 Has from_location column: ${hasFromLocation}, Has to_location column: ${hasToLocation}`);
 
   const rows = [];
+  let skippedCount = 0;
+
   for (let i = 1; i < lines.length; i++) {
     const cells = parseCSVLine(lines[i]);
 
-    // Skip if not enough cells for at least basic data
-    if (cells.length < 20 || !cells[0]?.trim()) continue;
+    // Skip completely empty rows
+    if (cells.length === 0 || !cells[0]?.trim()) {
+      skippedCount++;
+      continue;
+    }
+
+    // Skip rows that are clearly headers or metadata (less strict than before)
+    if (cells.length < 5) {
+      console.warn(`⚠️  Skipping row ${i}: too few columns (${cells.length})`);
+      skippedCount++;
+      continue;
+    }
 
     let row: any = {};
 
