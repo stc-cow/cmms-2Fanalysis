@@ -84,13 +84,12 @@ export function ExecutiveOverviewCard({
 
   // Calculate KPIs for current month
   const monthlyKpis = useMemo(() => {
-    const currentMonthMovements = monthlyMovements;
-    const uniqueCows = new Set(currentMonthMovements.map((m) => m.COW_ID));
-    
+    const uniqueCows = new Set(monthlyMovements.map((m) => m.COW_ID));
+
     return {
       totalCOWs: Math.max(kpis.totalCOWs, uniqueCows.size || kpis.totalCOWs),
-      totalMovements: currentMonthMovements.length,
-      totalDistanceKM: currentMonthMovements.reduce(
+      totalMovements: monthlyMovements.length,
+      totalDistanceKM: monthlyMovements.reduce(
         (sum, m) => sum + (m.Distance_KM || 0),
         0
       ),
@@ -98,10 +97,10 @@ export function ExecutiveOverviewCard({
       staticCOWs: kpis.staticCOWs,
       avgMovesPerCOW:
         uniqueCows.size > 0
-          ? currentMonthMovements.length / uniqueCows.size
+          ? monthlyMovements.length / uniqueCows.size
           : 0,
     };
-  }, [currentMonthMovements, kpis]);
+  }, [monthlyMovements, kpis]);
 
   // Get static COWs data
   const staticCowsData = cowMetrics
