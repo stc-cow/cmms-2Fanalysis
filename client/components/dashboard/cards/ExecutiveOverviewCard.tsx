@@ -266,14 +266,6 @@ export function ExecutiveOverviewCard({
       label: "Deployment Sites",
       value: sites.length,
     },
-    {
-      label: "Movement Types",
-      value: "Full / Half / Zero",
-    },
-    {
-      label: "Avg COW Utilization",
-      value: `${((monthlyKpis.activeCOWs / monthlyKpis.totalCOWs) * 100).toFixed(1)}%`,
-    },
   ];
 
   return (
