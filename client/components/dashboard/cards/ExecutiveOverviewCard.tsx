@@ -41,18 +41,13 @@ export function ExecutiveOverviewCard({
 }: ExecutiveOverviewCardProps) {
   const [showStaticCowsModal, setShowStaticCowsModal] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(-1);
   const playIndexRef = useRef(0);
 
   // Generate timeline from Saudi map data
   const timelineMonths = useMemo(() => {
     return generateTimelineMonths(movements, cows, locations);
   }, [movements, cows, locations]);
-
-  // Initialize to last month
-  useEffect(() => {
-    setCurrentMonthIndex(Math.max(0, timelineMonths.length - 1));
-  }, [timelineMonths.length]);
 
   // Auto-play timeline with looping
   useEffect(() => {
