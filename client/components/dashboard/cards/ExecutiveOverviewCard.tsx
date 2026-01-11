@@ -14,7 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
-import { SaudiMapCard } from "./SaudiMapCard";
+import { SaudiHighchartsMap } from "./SaudiHighchartsMap";
 import { generateTimelineMonths, TimelineMonth } from "@/lib/saudiMapData";
 
 interface ExecutiveOverviewCardProps {
