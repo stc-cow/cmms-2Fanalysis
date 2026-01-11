@@ -13,7 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from "recharts";
 import { SaudiHighchartsMap } from "./SaudiHighchartsMap";
 import { generateTimelineMonths, TimelineMonth } from "@/lib/saudiMapData";
 
