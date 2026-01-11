@@ -56,39 +56,7 @@ export function ExecutiveOverviewCard({
       };
     });
   // Filter to include both warehouse types and locations with "WH" in their name
-  const warehouses = locations.filter(
-    (l) =>
-      l.Location_Type === "Warehouse" ||
-      l.Location_Name.toUpperCase().includes("WH"),
-  );
   const sites = locations.filter((l) => l.Location_Type === "Site");
-
-  // Count warehouses that have at least one movement (incoming or outgoing)
-  const warehouseLocationIds = new Set(warehouses.map((w) => w.Location_ID));
-  const activeWarehouses = new Set<string>();
-
-  movements.forEach((mov) => {
-    // Also check location names for "WH" in movements
-    const fromLoc = locations.find(
-      (l) => l.Location_ID === mov.From_Location_ID,
-    );
-    const toLoc = locations.find((l) => l.Location_ID === mov.To_Location_ID);
-
-    if (
-      fromLoc &&
-      (fromLoc.Location_Type === "Warehouse" ||
-        fromLoc.Location_Name.toUpperCase().includes("WH"))
-    ) {
-      activeWarehouses.add(mov.From_Location_ID);
-    }
-    if (
-      toLoc &&
-      (toLoc.Location_Type === "Warehouse" ||
-        toLoc.Location_Name.toUpperCase().includes("WH"))
-    ) {
-      activeWarehouses.add(mov.To_Location_ID);
-    }
-  });
 
   const movementsByType = {
     full: movements.filter((m) => m.Movement_Type === "Full").length,
