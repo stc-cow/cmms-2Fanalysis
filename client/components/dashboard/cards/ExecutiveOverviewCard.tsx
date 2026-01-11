@@ -499,45 +499,47 @@ export function ExecutiveOverviewCard({
 
             {/* Movement Category by Event Type Donut Chart */}
             <div
-              className="bg-white rounded-lg p-2 flex flex-col items-center justify-center shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-lg p-2 flex flex-col items-center shadow-sm border border-gray-200 overflow-hidden"
             >
-              <h3 className="text-gray-900 text-xs font-bold mb-1 text-center">
+              <h3 className="text-gray-900 text-xs font-bold mb-2 text-center flex-shrink-0">
                 Movement Category (Event)
               </h3>
               {eventDataWithPercentages.length > 0 ? (
-                <ResponsiveContainer width="100%" height={160}>
-                  <PieChart>
-                    <Pie
-                      data={eventDataWithPercentages}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ displayName }) => displayName}
-                      innerRadius={35}
-                      outerRadius={55}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {eventDataWithPercentages.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={EVENT_COLORS[entry.name] || "#6b7280"}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.95)",
-                        border: "1px solid #e5e7eb",
-                        borderRadius: "8px",
-                        color: "#000",
-                      }}
-                      formatter={(value: number) =>
-                        `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
-                      }
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+                <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={eventDataWithPercentages}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ displayName }) => displayName}
+                        innerRadius={35}
+                        outerRadius={55}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {eventDataWithPercentages.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(255, 255, 255, 0.95)",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                          color: "#000",
+                        }}
+                        formatter={(value: number) =>
+                          `${value} movements (${totalCurrentMovements > 0 ? ((value / totalCurrentMovements) * 100).toFixed(1) : 0}%)`
+                        }
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               ) : (
                 <div className="flex items-center justify-center flex-1 text-gray-400 text-xs">
                   No event data
