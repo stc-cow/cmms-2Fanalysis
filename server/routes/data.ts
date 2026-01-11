@@ -41,28 +41,18 @@ const FETCH_TIMEOUT = 20000; // 20 seconds - safe for Netlify 30s limit
 const CACHE_TTL = 300; // 5 minutes cache for data endpoints
 
 // Google Sheet Configuration
-// IMPORTANT: Use the actual Sheet ID from the URL bar when editing the sheet
-// The Sheet ID is the long alphanumeric string after /spreadsheets/d/
-// Example: https://docs.google.com/spreadsheets/d/SHEET_ID_HERE/edit
-//
-// If you only have the published link (pubhtml URL), you need to:
-// 1. Open the sheet in edit mode
-// 2. Copy the Sheet ID from the URL bar
-// 3. Paste it here below
+// Using a single published CSV URL for simplified integration
+// This URL contains the "Movement-data" sheet (GID 1464106304)
 
-// Google Sheet ID from: https://docs.google.com/spreadsheets/d/1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM/edit
-const ACTUAL_SHEET_ID =
-  process.env.GOOGLE_SHEET_ID || "1bzcG70TopGRRm60NbKX4o3SCE2-QRUDFnY0Z4fYSjEM";
-const GID = process.env.GOOGLE_SHEET_GID || "1539310010";
+const MOVEMENT_DATA_CSV_URL =
+  process.env.MOVEMENT_DATA_CSV_URL ||
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv";
 
-const CSV_URLS = [
-  // Standard Google Sheet export format
-  `https://docs.google.com/spreadsheets/d/${ACTUAL_SHEET_ID}/export?format=csv&gid=${GID}`,
-  // Alternative format that sometimes works
-  `https://docs.google.com/spreadsheets/d/${ACTUAL_SHEET_ID}/export?format=csv`,
-  // Format for shared/published links (may not work)
-  `https://docs.google.com/spreadsheets/d/e/${ACTUAL_SHEET_ID}/export?format=csv&gid=${GID}`,
-];
+// Alternative published CSV URL for "dashboard" sheet (Never Moved COWs)
+// If the above URL doesn't contain dashboard data, use this for never-moved-cows endpoint
+const NEVER_MOVED_COW_CSV_URL =
+  process.env.NEVER_MOVED_COW_CSV_URL ||
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv";
 
 /**
  * Helper function to parse CSV from Google Sheets
