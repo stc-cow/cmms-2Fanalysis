@@ -615,10 +615,10 @@ export function ExecutiveOverviewCard({
               </div>
             </div>
 
-            {/* Movement by Events - COW IDs vs Movement Types (Column A vs Column R) */}
+            {/* Movement by Event Type (Column A: Movement Count vs Column R: Event Type) */}
             <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
-                Movement by Events
+                Movements by Event Type
               </h3>
               {movementByEventsData.length > 0 ? (
                 <div className="flex-1 min-h-0 flex items-center justify-center">
@@ -640,7 +640,7 @@ export function ExecutiveOverviewCard({
                         {movementByEventsData.map((entry, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                            fill={EVENT_TYPE_COLORS[entry.name] || "#6b7280"}
                           />
                         ))}
                       </Pie>
@@ -650,8 +650,8 @@ export function ExecutiveOverviewCard({
                           border: "1px solid #e5e7eb",
                           borderRadius: "8px",
                         }}
-                        formatter={(value: number) =>
-                          `${value} COWs with this movement type`
+                        formatter={(value: number, name, props) =>
+                          `${value} movements (${props.payload.percentage}%)`
                         }
                       />
                     </PieChart>
