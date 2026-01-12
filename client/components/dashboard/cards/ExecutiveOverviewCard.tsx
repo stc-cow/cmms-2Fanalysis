@@ -261,6 +261,51 @@ export function ExecutiveOverviewCard({
     },
   ];
 
+  // Calculate Movement by Events data (Column A: COW IDs vs Column R: Movement Types)
+  const movementByEventsData = useMemo(() => {
+    // Count unique COWs per movement type
+    const cowsByType: Record<string, Set<string>> = {
+      Full: new Set(),
+      Half: new Set(),
+      Zero: new Set(),
+      Unknown: new Set(),
+    };
+
+    currentMonth.movements.forEach((mov) => {
+      const movType = mov.Movement_Type || "Unknown";
+      const key = (
+        movType.charAt(0).toUpperCase() + movType.slice(1).toLowerCase()
+      ) as keyof typeof cowsByType;
+      if (cowsByType[key]) {
+        cowsByType[key].add(mov.COW_ID);
+      } else {
+        cowsByType["Unknown"].add(mov.COW_ID);
+      }
+    });
+
+    // Convert to chart data
+    return Object.entries(cowsByType)
+      .filter(([_, cowSet]) => cowSet.size > 0)
+      .map(([type, cowSet]) => ({
+        name: type,
+        value: cowSet.size, // Number of COWs with this type
+        cowCount: cowSet.size,
+        percentage: (
+          (cowSet.size / (new Set(currentMonth.movements.map((m) => m.COW_ID)).size || 1)) *
+          100
+        ).toFixed(1),
+      }))
+      .sort((a, b) => b.value - a.value);
+  }, [currentMonth.movements]);
+
+  // Event type colors for Movement by Events
+  const EVENT_COLORS: Record<string, string> = {
+    Full: "#10b981", // Green - Full movement COWs
+    Half: "#f59e0b", // Amber - Half movement COWs
+    Zero: "#ef4444", // Red - Zero movement COWs
+    Unknown: "#6b7280", // Gray - Unknown
+  };
+
   // Vendor logos and branding
   const VENDOR_LOGOS: Record<string, string> = {
     Ericsson:
