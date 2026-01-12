@@ -273,9 +273,8 @@ export function ExecutiveOverviewCard({
 
     currentMonth.movements.forEach((mov) => {
       const movType = mov.Movement_Type || "Unknown";
-      const key = (
-        movType.charAt(0).toUpperCase() + movType.slice(1).toLowerCase()
-      ) as keyof typeof cowsByType;
+      const key = (movType.charAt(0).toUpperCase() +
+        movType.slice(1).toLowerCase()) as keyof typeof cowsByType;
       if (cowsByType[key]) {
         cowsByType[key].add(mov.COW_ID);
       } else {
@@ -291,7 +290,8 @@ export function ExecutiveOverviewCard({
         value: cowSet.size, // Number of COWs with this type
         cowCount: cowSet.size,
         percentage: (
-          (cowSet.size / (new Set(currentMonth.movements.map((m) => m.COW_ID)).size || 1)) *
+          (cowSet.size /
+            (new Set(currentMonth.movements.map((m) => m.COW_ID)).size || 1)) *
           100
         ).toFixed(1),
       }))
