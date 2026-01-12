@@ -49,6 +49,14 @@ export function WarehouseHubTimeCard({
     [movements, locations],
   );
 
+  // Force chart to render on mount by triggering a state update after DOM is ready
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setForceRender((prev) => !prev);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
 
   // Filter table data by COW ID search
   const filteredTableData = useMemo(() => {
