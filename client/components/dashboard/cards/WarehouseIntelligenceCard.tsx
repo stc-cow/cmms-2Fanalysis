@@ -88,49 +88,31 @@ export function WarehouseIntelligenceCard({
 
   return (
     <div className="h-full overflow-y-auto flex flex-col gap-4 p-4">
-      {/* Map Section */}
-      <div className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200/60 dark:border-gray-700/40 shadow-lg overflow-hidden">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Warehouse Locations
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                Dispatch (From Location) and Receiving (To Location) by Region
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setSelectedRegion(undefined)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                  selectedRegion === undefined
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                }`}
-              >
-                All
-              </button>
-              {regions.map((region) => (
-                <button
-                  key={region}
-                  onClick={() => setSelectedRegion(region)}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
-                    selectedRegion === region
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
-                  }`}
-                >
-                  {region}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-        <WarehouseLocationMap
-          warehouses={warehouses}
-          selectedRegion={selectedRegion}
-        />
+      {/* Region Filter */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setSelectedRegion(undefined)}
+          className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+            selectedRegion === undefined
+              ? "bg-blue-500 text-white"
+              : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+          }`}
+        >
+          All
+        </button>
+        {regions.map((region) => (
+          <button
+            key={region}
+            onClick={() => setSelectedRegion(region)}
+            className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+              selectedRegion === region
+                ? "bg-blue-500 text-white"
+                : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+            }`}
+          >
+            {region}
+          </button>
+        ))}
       </div>
 
       {/* Charts Section */}
