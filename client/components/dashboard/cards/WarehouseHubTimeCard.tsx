@@ -198,16 +198,15 @@ export function WarehouseHubTimeCard({
                       borderRadius: "8px",
                     }}
                     formatter={(value: number) => `${value} days`}
-                    cursor={{ onClick: (state: any) => {
-                      if (state.activeTooltipIndex !== undefined) {
-                        handleOpenModal(cowsData[state.activeTooltipIndex].name);
-                      }
-                    } }}
                   />
                   <Bar
                     dataKey="Stay Days"
                     fill={CHART_COLOR}
-                    onClick={(data: any) => handleOpenModal(data.name)}
+                    onClick={(state: any) => {
+                      if (state && state.name) {
+                        handleOpenModal(state.name);
+                      }
+                    }}
                     style={{ cursor: "pointer" }}
                   />
                 </BarChart>
