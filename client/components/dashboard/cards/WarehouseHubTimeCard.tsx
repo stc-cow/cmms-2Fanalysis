@@ -145,6 +145,7 @@ export function WarehouseHubTimeCard({
           <div style={{ width: "100%", height: "350px" }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
+                key={`chart-${forceRender}`}
                 data={chartData}
                 margin={{ top: 20, right: 30, left: 0, bottom: 60 }}
               >
