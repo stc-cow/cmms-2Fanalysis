@@ -15,6 +15,8 @@ export interface MapLine {
   toGovernorate?: string; // Destination governorate (Column AD)
   toLocationId: string; // Destination location ID
   fromLocationId: string; // Origin location ID
+  fromSubLocation?: string; // Column R: From Sub Location (Event Type)
+  toSubLocation?: string; // Column V: To Sub Location (Event Type)
 }
 
 export interface TimelineMonth {
