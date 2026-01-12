@@ -308,13 +308,32 @@ export function ExecutiveOverviewCard({
       .sort((a, b) => b.value - a.value);
   }, [currentMonth.movements]);
 
-  // Event type colors for Movement by Events
-  const EVENT_COLORS: Record<string, string> = {
-    Full: "#10b981", // Green - Full movement COWs
-    Half: "#f59e0b", // Amber - Half movement COWs
-    Zero: "#ef4444", // Red - Zero movement COWs
-    Unknown: "#6b7280", // Gray - Unknown
+  // Event type colors for Movement by Events (Event Types)
+  const EVENT_TYPE_COLORS: Record<string, string> = {
+    Hajj: "#f59e0b",
+    Umrah: "#06b6d4",
+    Royal: "#8b5cf6",
+    "Mega Project": "#ec4899",
+    "National Event": "#10b981",
+    Seasonal: "#14b8a6",
+    Event: "#3b82f6",
+    "Normal Coverage": "#6b7280",
   };
+
+  // Normalize event type names
+  function normalizeEventType(type: string | undefined): string {
+    if (!type) return "Normal Coverage";
+    const normalized = type.trim().toLowerCase();
+    if (normalized.includes("hajj")) return "Hajj";
+    if (normalized.includes("umrah")) return "Umrah";
+    if (normalized.includes("royal")) return "Royal";
+    if (normalized.includes("mega")) return "Mega Project";
+    if (normalized.includes("national")) return "National Event";
+    if (normalized.includes("seasonal")) return "Seasonal";
+    if (normalized.includes("event")) return "Event";
+    if (normalized.includes("normal")) return "Normal Coverage";
+    return type;
+  }
 
   // Vendor logos and branding
   const VENDOR_LOGOS: Record<string, string> = {
