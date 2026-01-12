@@ -599,17 +599,17 @@ export function ExecutiveOverviewCard({
               </div>
             </div>
 
-            {/* Movement Category (Event) - Movements by Event Type */}
+            {/* Movement Type Distribution - Movements by Type (Full/Half/Zero) */}
             <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
-                Movements by Event Type
+                Movements by Type
               </h3>
-              {eventDataWithPercentages.length > 0 ? (
+              {movementTypeDataWithPercentages.length > 0 ? (
                 <div className="flex-1 min-h-0 flex items-center justify-center">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={eventDataWithPercentages}
+                        data={movementTypeDataWithPercentages}
                         cx="50%"
                         cy="50%"
                         labelLine={false}
@@ -619,10 +619,10 @@ export function ExecutiveOverviewCard({
                         fill="#8884d8"
                         dataKey="value"
                       >
-                        {eventDataWithPercentages.map((entry, index) => (
+                        {movementTypeDataWithPercentages.map((entry, index) => (
                           <Cell
                             key={`cell-${index}`}
-                            fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                            fill={MOVEMENT_TYPE_COLORS[entry.name] || "#6b7280"}
                           />
                         ))}
                       </Pie>
@@ -641,7 +641,7 @@ export function ExecutiveOverviewCard({
                 </div>
               ) : (
                 <div className="flex-1 flex items-center justify-center text-gray-400 text-xs">
-                  No event data
+                  No movement type data
                 </div>
               )}
             </div>
