@@ -35,8 +35,8 @@ export const DASHBOARD_CARDS: CardTab[] = [
   },
   {
     id: "warehouse-hub-time",
-    label: "Warehouse Hub Time",
-    description: "COW Stay Duration Analysis",
+    label: "Warehouse Hub Time (Off-Air Only)",
+    description: "COW Off-Air Idle Duration Analysis",
   },
   {
     id: "utilization",
