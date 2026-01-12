@@ -5,7 +5,9 @@ import { createServer } from "./server";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/",
+  // For GitHub Pages: if deployed to https://username.github.io/repo-name/
+  // set base to "/repo-name/". For root domain, use "/"
+  base: process.env.GITHUB_PAGES ? "/" : "/",
   server: {
     host: "::",
     port: 8080,
