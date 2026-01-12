@@ -240,7 +240,10 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
             style={{ zIndex: 2147483647 }}
           >
-            <div className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div
+              className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+              style={{ position: 'relative', zIndex: 1 }}
+            >
               {/* Modal Header */}
               <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600 p-6 flex-shrink-0">
                 <h2 className="text-2xl font-bold text-white">{selectedCow.COW_ID}</h2>
