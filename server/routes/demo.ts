@@ -1,9 +1,14 @@
 import { RequestHandler } from "express";
-import { DemoResponse } from "@shared/api";
 
+/**
+ * @deprecated Demo route - no longer used
+ * The application focuses on real data from Google Sheets only
+ */
 export const handleDemo: RequestHandler = (req, res) => {
-  const response: DemoResponse = {
-    message: "Hello from Express server",
-  };
-  res.status(200).json(response);
+  res.status(410).json({
+    error: "This endpoint has been deprecated",
+    message: "Demo route is no longer available",
+    message_detail:
+      "The application now uses real data from Google Sheets as the single source of truth",
+  });
 };
