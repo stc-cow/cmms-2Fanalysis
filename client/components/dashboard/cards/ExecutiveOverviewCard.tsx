@@ -282,7 +282,6 @@ export function ExecutiveOverviewCard({
     },
   ];
 
-
   // Vendor logos and branding
   const VENDOR_LOGOS: Record<string, string> = {
     Ericsson:
@@ -558,9 +557,7 @@ export function ExecutiveOverviewCard({
                     paddingAngle={1}
                     dataKey="value"
                     labelLine={false}
-                    label={({ name, percentage }) =>
-                      `${name} (${percentage}%)`
-                    }
+                    label={({ name, percentage }) => `${name} (${percentage}%)`}
                   >
                     {movementChartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
