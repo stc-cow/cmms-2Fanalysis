@@ -11,6 +11,32 @@ import {
   EventType,
 } from "@shared/models";
 
+// Warehouse Hub Time Analytics
+export interface WarehouseHubTimeData {
+  cowId: string;
+  warehouseName: string;
+  stayDays: number;
+  arrivalDate: string;
+  departureDate: string;
+}
+
+export interface COWStayDays {
+  cowId: string;
+  totalStayDays: number;
+}
+
+export interface WarehouseAvgStay {
+  warehouseName: string;
+  avgStayDays: number;
+  totalStayDays: number;
+  stayCount: number;
+}
+
+export interface WarehouseTotalStay {
+  warehouseName: string;
+  totalStayDays: number;
+}
+
 // Movement Classification Rule Engine
 export function classifyMovement(
   movement: CowMovementsFact,
