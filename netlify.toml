@@ -1,21 +1,3 @@
-[build]
-  command = "pnpm install && pnpm run build"
-  functions = "netlify/functions"
-  publish = "dist/spa"
-
-[functions]
-  node_bundler = "esbuild"
-  timeout = 30
-
-# API routes redirect to serverless functions (MUST come before SPA catch-all)
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
-
-# SPA routing - catch all other routes and redirect to index.html
-# Note: redirects are processed in order, so API routes above won't be caught by this
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# Netlify configuration has been removed
+# This project is now deployed using GitHub Pages only
+# See .github/workflows/deploy.yml for GitHub Pages deployment
