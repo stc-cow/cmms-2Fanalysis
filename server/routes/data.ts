@@ -781,6 +781,28 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       return res.json(cachedData);
     }
 
+    // Try Supabase first if configured
+    if (isSupabaseConfigured()) {
+      try {
+        console.log(`\n📥 Fetching Never Moved COWs from Supabase...`);
+        const supabaseData = await fetchFromSupabase();
+        const neverMovedData = {
+          cows: supabaseData.neverMoved || [],
+        };
+
+        // Cache the result
+        setCached(cacheKey, neverMovedData, CACHE_TTL);
+        console.log(`✓ Successfully served never-moved cows from Supabase (${neverMovedData.cows.length} cows)`);
+        return res.json(neverMovedData);
+      } catch (supabaseError) {
+        console.warn(`⚠️  Supabase fetch failed, falling back to Google Sheets:`);
+        console.warn(`   ${supabaseError instanceof Error ? supabaseError.message : String(supabaseError)}`);
+        // Fall through to Google Sheets fetch below
+      }
+    } else {
+      console.log(`ℹ️  Supabase not configured, using Google Sheets`);
+    }
+
     console.log(`📡 Fetching Never Moved COWs from Dashboard sheet CSV...`);
 
     // Create abort controller for timeout
