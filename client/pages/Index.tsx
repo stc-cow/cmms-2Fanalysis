@@ -36,18 +36,57 @@ export default function Dashboard() {
 
   // Fetch "Never Moved COWs" data
   useEffect(() => {
-    const fetchNeverMovedCows = async () => {
+    const fetchNeverMovedCows = async (attempt: number = 1, maxAttempts: number = 3) => {
       try {
         setNeverMovedLoading(true);
-        const response = await fetch("/api/data/never-moved-cows");
+
+        // Add delay before first attempt to let server settle
+        if (attempt === 1) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        let response: Response;
+        try {
+          response = await fetch("/api/data/never-moved-cows", {
+            signal: controller.signal,
+          });
+        } catch (fetchErr) {
+          clearTimeout(timeoutId);
+          // Try with absolute URL if relative URL fails
+          if (typeof window !== "undefined" && window.location.origin) {
+            response = await fetch(
+              window.location.origin + "/api/data/never-moved-cows"
+            );
+          } else {
+            throw fetchErr;
+          }
+        }
+
+        clearTimeout(timeoutId);
+
         if (!response.ok) throw new Error("Failed to fetch never-moved COWs");
         const result = await response.json();
         setNeverMovedCows(result.cows || []);
         console.log(`✓ Loaded ${result.cows?.length || 0} Never Moved COWs`);
+        setNeverMovedLoading(false);
       } catch (err) {
         console.error("Error fetching never-moved COWs:", err);
-      } finally {
-        setNeverMovedLoading(false);
+
+        // Retry on network errors
+        if (attempt < maxAttempts && err instanceof TypeError) {
+          const delayMs = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+          console.warn(
+            `⚠ Retrying never-moved COWs in ${delayMs}ms (${attempt}/${maxAttempts})`,
+          );
+          setTimeout(() => {
+            fetchNeverMovedCows(attempt + 1, maxAttempts);
+          }, delayMs);
+        } else {
+          setNeverMovedLoading(false);
+        }
       }
     };
 
