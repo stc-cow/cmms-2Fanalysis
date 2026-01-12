@@ -252,8 +252,8 @@ export function WarehouseIntelligenceCard({
       </div>
 
       {/* Legend */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 rounded-xl border border-gray-200/60 dark:border-gray-700/40 p-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 rounded-xl border border-gray-200/60 dark:border-gray-700/40 p-3 sm:p-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
           <div className="flex items-center gap-2">
             <div
               className="w-3 h-3 rounded-full"
