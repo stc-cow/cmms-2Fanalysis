@@ -618,7 +618,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
         "   3. Ensure the sheet contains data in the expected columns",
       );
       console.error(
-        "   4. If you see 'CSV_URLS is not defined', clear Netlify cache and redeploy",
+        "   4. Restart the server if there are environment variable issues",
       );
       console.error("");
       throw new Error(errorMsg);
