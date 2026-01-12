@@ -28,6 +28,23 @@ export interface TimelineMonth {
   vendorCounts: Record<string, number>;
 }
 
+// Month label cache to avoid repeated toLocaleString calls
+const monthLabelCache = new Map<string, string>();
+
+function getMonthLabel(year: number, month: number): string {
+  const key = `${year}-${String(month).padStart(2, "0")}`;
+  if (monthLabelCache.has(key)) {
+    return monthLabelCache.get(key)!;
+  }
+  const date = new Date(year, month - 1, 1);
+  const label = date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
+  monthLabelCache.set(key, label);
+  return label;
+}
+
 export function generateTimelineMonths(
   movements: CowMovementsFact[],
   cows: DimCow[],
@@ -36,7 +53,7 @@ export function generateTimelineMonths(
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
   const cowMap = new Map(cows.map((c) => [c.COW_ID, c]));
 
-  const monthsMap = new Map<string, TimelineMonth>();
+  const monthsMap = new Map<string, TimelineMonth & { sortKey: number }>();
 
   movements.forEach((mov) => {
     const fromLoc = locMap.get(mov.From_Location_ID);
@@ -46,20 +63,20 @@ export function generateTimelineMonths(
     if (!fromLoc || !toLoc || !cow) return;
 
     const date = new Date(mov.Moved_DateTime);
-    const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-    const monthLabel = date.toLocaleString("en-US", {
-      year: "numeric",
-      month: "short",
-    });
+    const year = date.getFullYear();
+    const monthNum = date.getMonth() + 1;
+    const monthKey = `${year}-${String(monthNum).padStart(2, "0")}`;
+    const sortKey = year * 12 + monthNum; // More efficient than parsing dates again
 
     if (!monthsMap.has(monthKey)) {
       monthsMap.set(monthKey, {
-        month: monthLabel,
-        year: date.getFullYear(),
+        month: getMonthLabel(year, monthNum),
+        year,
         movements: [],
         totalDistance: 0,
         movementCounts: { Full: 0, Half: 0, Zero: 0 },
         vendorCounts: {},
+        sortKey,
       });
     }
 
@@ -88,12 +105,10 @@ export function generateTimelineMonths(
       (timeline.vendorCounts[cow.Vendor] || 0) + 1;
   });
 
-  // Sort by date and convert to array
-  return Array.from(monthsMap.values()).sort(
-    (a, b) =>
-      new Date(`${a.year}-${a.month}`).getTime() -
-      new Date(`${b.year}-${b.month}`).getTime(),
-  );
+  // Sort by date using cached sort key (year*12 + month is more efficient than Date parsing)
+  return Array.from(monthsMap.values())
+    .sort((a, b) => a.sortKey - b.sortKey)
+    .map(({ sortKey, ...rest }) => rest); // Remove sortKey from result
 }
 
 export function getMapSeries(
