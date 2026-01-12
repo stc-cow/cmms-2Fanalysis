@@ -10,18 +10,20 @@ Exclude specific locations from the **Warehouse Intelligence Card** analysis tha
 
 ### Current Exclusions
 
-| Location Name | Reason | Notes |
-|---|---|---|
-| **Bajda** | Repeater for CWH036 | Not a primary warehouse, used as repeater/secondary equipment |
+| Location Name | Reason              | Notes                                                         |
+| ------------- | ------------------- | ------------------------------------------------------------- |
+| **Bajda**     | Repeater for CWH036 | Not a primary warehouse, used as repeater/secondary equipment |
 
 ---
 
 ## Configuration
 
 ### File
+
 **`client/components/dashboard/cards/WarehouseIntelligenceCard.tsx`**
 
 ### Code
+
 ```typescript
 // Warehouses to exclude from analysis (repeaters, non-warehouse locations, etc.)
 const excludedWarehouses = new Set([
@@ -49,6 +51,7 @@ const warehouses = useMemo(
 ### Filtering Logic
 
 1. **First Filter**: Identify locations that are warehouses
+
    ```
    (Location_Type === "Warehouse" OR Location_Name contains "WH")
    ```
@@ -59,7 +62,9 @@ const warehouses = useMemo(
    ```
 
 ### Result
+
 Only locations that are:
+
 - ✅ Actual warehouses (by type or name)
 - ✅ NOT in the exclusion list
 
@@ -72,16 +77,18 @@ Are shown in the warehouse analysis.
 To exclude additional locations, add them to the `excludedWarehouses` set:
 
 ### Example: Exclude Multiple Locations
+
 ```typescript
 const excludedWarehouses = new Set([
-  "Bajda",        // Repeater for CWH036
+  "Bajda", // Repeater for CWH036
   "TestWarehouse", // Temporary test location
-  "Demo WH",       // Demo/training warehouse
+  "Demo WH", // Demo/training warehouse
   "Old Riyadh WH", // Legacy/decommissioned warehouse
 ]);
 ```
 
 ### Important Notes
+
 - **Case-Sensitive**: "Bajda" ≠ "bajda" (matches exact name)
 - **Whitespace Matters**: "Bajda " ≠ "Bajda" (with trailing space)
 - **No Regex**: Use exact string matching only
@@ -92,12 +99,14 @@ const excludedWarehouses = new Set([
 ## Impact on Dashboard
 
 ### Warehouse Intelligence Card
+
 - **Charts**: Top Dispatch/Receiving charts exclude Bajda
 - **Table**: Warehouse Analytics table excludes Bajda
 - **Metrics**: Calculations don't include Bajda movements
 - **Filters**: Region filters unaffected
 
 ### Other Dashboard Cards
+
 - **Executive Overview**: No impact (doesn't use this filter)
 - **Saudi Map**: Still shows all locations (different component)
 - **Region Analysis**: No impact (uses different data source)
@@ -107,6 +116,7 @@ const excludedWarehouses = new Set([
 ## Data Flow
 
 ### Before Filtering (Raw Google Sheet)
+
 ```
 Locations:
 - stc Sharma WH → Warehouse ✓
@@ -116,6 +126,7 @@ Locations:
 ```
 
 ### After Filtering (Warehouse Analysis)
+
 ```
 Filtered Locations:
 - stc Sharma WH → SHOW ✓
@@ -125,6 +136,7 @@ Filtered Locations:
 ```
 
 ### Results in UI
+
 ```
 Warehouses shown: 18 (minus Bajda)
 Charts display: Only valid warehouses
@@ -136,6 +148,7 @@ Table displays: Only valid warehouses
 ## Testing the Change
 
 ### Verify Exclusion Works
+
 1. Open Warehouse Intelligence Card
 2. Look for "Top Dispatch Warehouses" chart
 3. Confirm "Bajda" does NOT appear
@@ -143,6 +156,7 @@ Table displays: Only valid warehouses
 5. Confirm "Bajda" does NOT appear in table
 
 ### Check Region Filters
+
 1. Select "All" region
 2. Count warehouses shown (should not include Bajda)
 3. Select each region (WEST/EAST/CENTRAL/SOUTH)
@@ -153,6 +167,7 @@ Table displays: Only valid warehouses
 ## Maintenance
 
 ### When to Add Exclusions
+
 - ✏️ Location is a repeater or secondary equipment
 - ✏️ Location is marked as non-warehouse
 - ✏️ Location is temporary/test/demo
@@ -160,6 +175,7 @@ Table displays: Only valid warehouses
 - ✏️ Location should not appear in warehouse metrics
 
 ### When NOT to Add Exclusions
+
 - ❌ Location is still active warehouse
 - ❌ Location is occasionally used
 - ❌ Location might be re-activated
@@ -174,9 +190,10 @@ Table displays: Only valid warehouses
 **Type**: Repeater equipment  
 **Primary Use**: Secondary/backup for CWH036  
 **Status**: Non-warehouse location  
-**Why Exclude**: Should not be included in warehouse dispatch/receiving analysis  
+**Why Exclude**: Should not be included in warehouse dispatch/receiving analysis
 
 **Alternatives if needed**:
+
 - View in "Saudi Map" card (shows all locations)
 - View in "Executive Overview" (different analytics)
 - Add specific filter in other dashboard cards
@@ -186,12 +203,16 @@ Table displays: Only valid warehouses
 ## Related Features
 
 ### Region Filtering
+
 Still available and works independently:
+
 - Select region → Shows warehouses in that region
 - Region filter respects exclusions
 
 ### Warehouse Analytics
+
 Shows detailed metrics for non-excluded warehouses:
+
 - Outgoing/Incoming movements
 - Average distances
 - Idle days
@@ -202,6 +223,7 @@ Shows detailed metrics for non-excluded warehouses:
 ## Future Enhancements
 
 If many exclusions are needed:
+
 1. **Move to server-side**: Add `is_warehouse_for_analysis` flag in Google Sheet
 2. **Add configuration file**: Create `warehouse-config.json` with exclusion rules
 3. **Add UI toggle**: Let users show/hide excluded items
@@ -213,7 +235,7 @@ If many exclusions are needed:
 
 ✅ **Built**: Successfully compiled  
 ✅ **Deployed**: Pushed to `docs/` folder  
-✅ **Live**: GitHub Pages serving updated version  
+✅ **Live**: GitHub Pages serving updated version
 
 ---
 
@@ -222,6 +244,6 @@ If many exclusions are needed:
 **What Changed**: Added Bajda to warehouse exclusion list  
 **Where**: `client/components/dashboard/cards/WarehouseIntelligenceCard.tsx`  
 **Impact**: Bajda no longer appears in warehouse analysis charts/tables  
-**How to Add More**: Add to `excludedWarehouses` Set with comment  
+**How to Add More**: Add to `excludedWarehouses` Set with comment
 
 ✅ Configuration is clean, maintainable, and easy to expand!
