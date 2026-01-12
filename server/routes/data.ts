@@ -232,7 +232,7 @@ function parseCSVData(csvText: string) {
       from_sub_location: cells[17]?.trim() || "", // Column R: From Sub Location (Event Type)
       from_latitude: cells[18]?.trim() || cells[16]?.trim() || "0",
       from_longitude: cells[19]?.trim() || cells[17]?.trim() || "0",
-      to_sub_location: cells[21]?.trim() || cells[19]?.trim() || "",
+      to_sub_location: cells[21]?.trim() || "", // Column V: To Sub Location (Event Type)
       to_latitude: cells[22]?.trim() || cells[20]?.trim() || "0",
       to_longitude: cells[23]?.trim() || cells[21]?.trim() || "0",
       distance_km: cells[24]?.trim() || cells[22]?.trim() || "0",
