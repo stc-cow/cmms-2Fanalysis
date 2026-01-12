@@ -616,6 +616,10 @@ export function ExecutiveOverviewCard({
                       outerRadius={55}
                       paddingAngle={1}
                       dataKey="value"
+                      labelLine={false}
+                      label={({ name, percentage }) =>
+                        `${name} (${percentage}%)`
+                      }
                     >
                       {movementChartData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
