@@ -217,9 +217,6 @@ export function WarehouseIntelligenceCard({
                 <TableHead className="text-left py-3">Owner</TableHead>
                 <TableHead className="text-right py-3">Outgoing</TableHead>
                 <TableHead className="text-right py-3">Incoming</TableHead>
-                <TableHead className="text-right py-3">Avg Out (KM)</TableHead>
-                <TableHead className="text-right py-3">Avg In (KM)</TableHead>
-                <TableHead className="text-right py-3">Idle Days</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
