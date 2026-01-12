@@ -51,6 +51,7 @@ export function ExecutiveOverviewCard({
   cows,
   locations,
   movements,
+  events,
   cowMetrics,
 }: ExecutiveOverviewCardProps) {
   const [showStaticCowsModal, setShowStaticCowsModal] = useState(false);
