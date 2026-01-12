@@ -1,9 +1,11 @@
-// Mapping of region names to Highcharts map region keys
+// Mapping of region/governorate names to Highcharts map region keys
+// Supports both old region names (WEST, EAST, etc.) and new Column AD governorate names
 export const regionToHcKey: Record<string, string> = {
+  // ===== COLUMN AD GOVERNORATE NAMES (PRIMARY) =====
   // Riyadh / Central
+  "Ar Riyad": "sa-ri",
   Riyadh: "sa-ri",
   RIYADH: "sa-ri",
-  "Ar Riyad": "sa-ri",
   "AR RIYAD": "sa-ri",
 
   // Makkah / Western
@@ -14,7 +16,9 @@ export const regionToHcKey: Record<string, string> = {
   Makka: "sa-mk",
   MAKKA: "sa-mk",
 
-  // Medina
+  // Medina / Al Madinah
+  "Al Madinah": "sa-md",
+  "AL MADINAH": "sa-md",
   Madinah: "sa-md",
   MADINAH: "sa-md",
   Medina: "sa-md",
@@ -22,13 +26,13 @@ export const regionToHcKey: Record<string, string> = {
   "Al Medina": "sa-md",
   "AL MEDINA": "sa-md",
 
-  // Eastern / Sharqiyah
+  // Eastern / Ash Sharqiyah
+  "Ash Sharqiyah": "sa-sh",
+  "ASH SHARQIYAH": "sa-sh",
   Eastern: "sa-sh",
   EASTERN: "sa-sh",
   "Eastern Province": "sa-sh",
   "EASTERN PROVINCE": "sa-sh",
-  "Ash Sharqiyah": "sa-sh",
-  "ASH SHARQIYAH": "sa-sh",
   "Al Sharqiyah": "sa-sh",
   "AL SHARQIYAH": "sa-sh",
 
@@ -44,25 +48,27 @@ export const regionToHcKey: Record<string, string> = {
   Tabouk: "sa-tb",
   TABOUK: "sa-tb",
 
-  // Ha'il
-  "Ha'il": "sa-ha",
-  "HA'IL": "sa-ha",
+  // Ha'il / Hail
   Hail: "sa-ha",
   HAIL: "sa-ha",
+  "Ha'il": "sa-ha",
+  "HA'IL": "sa-ha",
   "Ha'il Region": "sa-ha",
   "HA'IL REGION": "sa-ha",
 
-  // Northern Border
+  // Northern Border / Al Hudud ash Shamaliyah
+  "Al Hudud ash Shamaliyah": "sa-nb",
+  "AL HUDUD ASH SHAMALIYAH": "sa-nb",
   "Northern Border": "sa-nb",
   "NORTHERN BORDER": "sa-nb",
   "Northern Borders": "sa-nb",
   "NORTHERN BORDERS": "sa-nb",
 
-  // Jazan / Jizan
-  Jazan: "sa-jz",
-  JAZAN: "sa-jz",
+  // Jizan / Jazan
   Jizan: "sa-jz",
   JIZAN: "sa-jz",
+  Jazan: "sa-jz",
+  JAZAN: "sa-jz",
   Jazzan: "sa-jz",
   JAZZAN: "sa-jz",
 
@@ -78,13 +84,23 @@ export const regionToHcKey: Record<string, string> = {
   "Al Jouf": "sa-jf",
   "AL JOUF": "sa-jf",
 
-  // Qassim
+  // Al Qassim / Qassim
+  "Al Quassim": "sa-qs",
+  "AL QUASSIM": "sa-qs",
   Qassim: "sa-qs",
   QASSIM: "sa-qs",
   "Al Qassim": "sa-qs",
   "AL QASSIM": "sa-qs",
   Qasim: "sa-qs",
   QASIM: "sa-qs",
+
+  // Al Bahah / Baha
+  "Al Bahah": "sa-bh",
+  "AL BAHAH": "sa-bh",
+  "Al Baha": "sa-bh",
+  "AL BAHA": "sa-bh",
+  Bahah: "sa-bh",
+  BAHAH: "sa-bh",
 };
 
 // Inverse mapping for display purposes
