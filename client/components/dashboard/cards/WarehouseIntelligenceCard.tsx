@@ -254,15 +254,6 @@ export function WarehouseIntelligenceCard({
                     <TableCell className="text-right py-3 font-semibold text-amber-600 dark:text-amber-400">
                       {m!.Incoming_Movements}
                     </TableCell>
-                    <TableCell className="text-right py-3">
-                      {m!.Avg_Outgoing_Distance.toFixed(0)} km
-                    </TableCell>
-                    <TableCell className="text-right py-3">
-                      {m!.Avg_Incoming_Distance.toFixed(0)} km
-                    </TableCell>
-                    <TableCell className="text-right py-3">
-                      {m!.Idle_Accumulation_Days.toFixed(1)}
-                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
