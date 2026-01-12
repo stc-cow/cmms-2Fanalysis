@@ -29,7 +29,7 @@ const createIcon = (status: "ON-AIR" | "OFF-AIR") => {
   });
 };
 
-export function NeverMovedCowMap({ cows }: NeverMovedCowMapProps) {
+export function NeverMovedCowMap({ cows, onCowSelected }: NeverMovedCowMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const markersRef = useRef<L.Marker[]>([]);
