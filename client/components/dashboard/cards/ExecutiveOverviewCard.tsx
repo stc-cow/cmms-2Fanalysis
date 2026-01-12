@@ -200,21 +200,35 @@ export function ExecutiveOverviewCard({
   };
 
   // Donut chart data for Movement Classification
+  const totalMovementClassifications =
+    movementsByType.full + movementsByType.half + movementsByType.zero;
   const movementChartData = [
     {
       name: "Full",
       value: movementsByType.full,
       color: "#3B82F6",
+      percentage: (
+        (movementsByType.full / (totalMovementClassifications || 1)) *
+        100
+      ).toFixed(1),
     },
     {
       name: "Half",
       value: movementsByType.half,
       color: "#A855F7",
+      percentage: (
+        (movementsByType.half / (totalMovementClassifications || 1)) *
+        100
+      ).toFixed(1),
     },
     {
       name: "Zero",
       value: movementsByType.zero,
       color: "#6B7280",
+      percentage: (
+        (movementsByType.zero / (totalMovementClassifications || 1)) *
+        100
+      ).toFixed(1),
     },
   ];
 
