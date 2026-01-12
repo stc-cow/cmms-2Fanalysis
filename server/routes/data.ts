@@ -762,108 +762,13 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       return res.json(cachedData);
     }
 
-    console.log(`ℹ️  Fetching Never Moved COWs from Google Sheets...`);
-    console.log(`📡 CSV URL: ${NEVER_MOVED_COW_CSV_URL}`);
+    console.log(`ℹ️  Never Moved COWs endpoint - returning empty data (single sheet mode)`);
 
-    // Create abort controller for timeout
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-
-    const response = await fetch(NEVER_MOVED_COW_CSV_URL, {
-      method: "GET",
-      headers: {
-        "User-Agent": "Mozilla/5.0",
-      },
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      console.error(`❌ Failed to fetch Never Moved COWs CSV`);
-      console.error(`   Status: ${response.status}`);
-      console.error(`   URL: ${NEVER_MOVED_COW_CSV_URL}`);
-      throw new Error(`HTTP ${response.status}: Failed to fetch Never Moved COWs CSV`);
-    }
-
-    console.log(`✓ Successfully fetched Never Moved COWs CSV`);
-
-    const csvText = await response.text();
-    const lines = csvText.trim().split("\n");
-
-    if (lines.length < 2) {
-      throw new Error("No data found in Dashboard CSV");
-    }
-
-    const neverMovedCows: any[] = [];
-
-    // Parse CSV (skip header row)
-    for (let i = 1; i < lines.length; i++) {
-      const cells = parseCSVLine(lines[i]);
-
-      // Skip empty rows
-      if (!cells[0]?.trim()) continue;
-
-      // Column mapping from Dashboard sheet:
-      const cowId = cells[0]?.trim() || ""; // A: COW ID
-      const region = cells[1]?.trim() || ""; // B: Region
-      const district = cells[2]?.trim() || ""; // C: District
-      const city = cells[3]?.trim() || ""; // D: City
-      const location = cells[4]?.trim() || ""; // E: Location
-      const latitude = parseFloat(cells[5]?.trim() || "0"); // F: Latitude
-      const longitude = parseFloat(cells[6]?.trim() || "0"); // G: Longitude
-      const status = (cells[7]?.trim() || "OFF-AIR").toUpperCase(); // H: Status
-      const lastDeployDate = cells[8]?.trim() || ""; // I: Last Deploying Date
-      const firstDeployDate = cells[9]?.trim() || ""; // J: First Deploying Date
-
-      // Skip rows with missing critical fields
-      if (!cowId || latitude === 0 || longitude === 0) continue;
-
-      // Calculate days on air (from initial deployment date)
-      let daysOnAir = 0;
-      if (firstDeployDate) {
-        try {
-          const deployDate = new Date(firstDeployDate);
-          const today = new Date();
-          daysOnAir = Math.floor(
-            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
-          );
-        } catch (e) {
-          daysOnAir = 0;
-        }
-      }
-
-      neverMovedCows.push({
-        COW_ID: cowId,
-        Region: region,
-        District: district,
-        City: city,
-        Location: location,
-        Latitude: latitude,
-        Longitude: longitude,
-        Status: status === "ON-AIR" ? "ON-AIR" : "OFF-AIR",
-        Last_Deploy_Date: lastDeployDate,
-        First_Deploy_Date: firstDeployDate,
-        Days_On_Air: daysOnAir,
-      });
-    }
-
-    console.log(
-      `✓ Fetched ${neverMovedCows.length} Never Moved COWs from Dashboard sheet`,
-    );
-
-    const stats = {
-      total: neverMovedCows.length,
-      onAir: neverMovedCows.filter((c) => c.Status === "ON-AIR").length,
-      offAir: neverMovedCows.filter((c) => c.Status === "OFF-AIR").length,
-    };
-
-    console.log(`  ├─ ON-AIR: ${stats.onAir}, OFF-AIR: ${stats.offAir}`);
-
+    // Return empty data by default (not fetching a separate sheet)
     const responseData = {
-      cows: neverMovedCows,
-      stats,
-      source: "Dashboard Sheet (CSV)",
+      cows: [],
+      stats: { total: 0, onAir: 0, offAir: 0 },
+      source: "Single Sheet Mode - No separate never-moved data",
     };
 
     // Cache the result
@@ -872,26 +777,13 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     res.json(responseData);
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : "Unknown error";
+    console.error("Error in never-moved handler:", errorMsg);
 
-    // Check if it's a timeout error
-    const isTimeout =
-      errorMsg.includes("abort") ||
-      errorMsg.includes("timeout") ||
-      errorMsg.includes("timed out");
-
-    if (isTimeout) {
-      console.warn(
-        `⏱️  Timeout fetching Never Moved COW data (${FETCH_TIMEOUT}ms)`,
-      );
-    } else {
-      console.error("❌ Error fetching Never Moved COW data:", errorMsg);
-    }
-
-    // Return empty data instead of error to prevent app crash
+    // Return empty data to prevent app crash
     const responseData = {
       cows: [],
       stats: { total: 0, onAir: 0, offAir: 0 },
-      source: "Dashboard Sheet (CSV) - Empty due to fetch error",
+      source: "Error - returning empty data",
     };
 
     res.json(responseData);
