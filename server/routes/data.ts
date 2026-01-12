@@ -440,6 +440,7 @@ function processData(rows: any[]) {
     const { isRoyal, isEBU, category } = classifyEbuRoyal(row.ebu_royal_flag);
 
     // Add movement with standard field names
+    const distanceValue = parseFloat(row.distance_km) || 0;
     movements.push({
       SN: idx + 1,
       COW_ID: row.cow_id,
@@ -454,7 +455,7 @@ function processData(rows: any[]) {
         : row.movement_type?.includes("Half")
           ? "Half"
           : "Zero",
-      Distance_KM: parseFloat(row.distance_km) || 0,
+      Distance_KM: distanceValue, // Read from Column Y (cells[24])
       Is_Royal: isRoyal,
       Is_EBU: isEBU,
       EbuRoyalCategory: category,
