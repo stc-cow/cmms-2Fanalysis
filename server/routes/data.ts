@@ -503,6 +503,7 @@ function processData(rows: any[]) {
         Latitude: parseFloat(row.from_latitude) || 0,
         Longitude: parseFloat(row.from_longitude) || 0,
         Region: normalizeRegion(row.region_from),
+        Governorate: row.governorate || "", // Column AD: Official governorate
         Location_Type: isFromWarehouse ? "Warehouse" : "Site",
         Owner: row.vendor || "STC",
       });
@@ -520,6 +521,7 @@ function processData(rows: any[]) {
         Latitude: parseFloat(row.to_latitude) || 0,
         Longitude: parseFloat(row.to_longitude) || 0,
         Region: normalizeRegion(row.region_to),
+        Governorate: row.governorate || "", // Column AD: Official governorate
         Location_Type: isToWarehouse ? "Warehouse" : "Site",
         Owner: row.vendor || "STC",
       });
