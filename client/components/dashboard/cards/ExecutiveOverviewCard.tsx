@@ -278,11 +278,11 @@ export function ExecutiveOverviewCard({
   // Vendor logos and branding
   const VENDOR_LOGOS: Record<string, string> = {
     Ericsson:
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23002E5C' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' fill='white' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='white' width='200' height='100'/%3E%3Ctext x='50' y='65' font-family='Arial, sans-serif' font-size='48' font-weight='bold' fill='%23002E5C' text-anchor='middle'%3EE%3C/text%3E%3Ctext x='130' y='65' font-family='Arial, sans-serif' font-size='32' font-weight='600' fill='%23666' text-anchor='middle'%3ERICSSON%3C/text%3E%3C/svg%3E",
     Nokia:
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23124191' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' fill='white' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='white' width='200' height='100'/%3E%3Ctext x='50' y='65' font-family='Arial, sans-serif' font-size='48' font-weight='bold' fill='%23124191' text-anchor='middle'%3EN%3C/text%3E%3Ctext x='130' y='65' font-family='Arial, sans-serif' font-size='32' font-weight='600' fill='%23666' text-anchor='middle'%3EOKIA%3C/text%3E%3C/svg%3E",
     Huawei:
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%23FF0000' width='100' height='100'/%3E%3Ctext x='50' y='60' font-size='60' font-weight='bold' fill='white' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='white' width='200' height='100'/%3E%3Ctext x='50' y='65' font-family='Arial, sans-serif' font-size='48' font-weight='bold' fill='%23FF0000' text-anchor='middle'%3EH%3C/text%3E%3Ctext x='130' y='65' font-family='Arial, sans-serif' font-size='32' font-weight='600' fill='%23666' text-anchor='middle'%3EUAWEI%3C/text%3E%3C/svg%3E",
   };
 
   // Vendor branding colors
