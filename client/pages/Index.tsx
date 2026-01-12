@@ -278,6 +278,12 @@ export default function Dashboard() {
             />
           </div>
         </div>
+        {/* Data Range Info */}
+        <div className="w-full border-t border-purple-600/30 px-3 sm:px-4 md:px-6 py-2">
+          <p className="text-xs text-purple-100 font-medium">
+            Analysis applied on Movement data from Jan 2021 to Oct 2025
+          </p>
+        </div>
       </header>
 
       {/* Card Navigation Tabs */}
