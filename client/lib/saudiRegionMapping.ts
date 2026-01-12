@@ -103,20 +103,21 @@ export const regionToHcKey: Record<string, string> = {
   BAHAH: "sa-bh",
 };
 
-// Inverse mapping for display purposes
+// Inverse mapping for display purposes (using official Column AD names)
 export const hcKeyToRegionName: Record<string, string> = {
-  "sa-ri": "Riyadh",
+  "sa-ri": "Ar Riyad",
   "sa-mk": "Makkah",
-  "sa-md": "Madinah",
-  "sa-sh": "Eastern Province",
+  "sa-md": "Al Madinah",
+  "sa-sh": "Ash Sharqiyah",
   "sa-as": "Asir",
   "sa-tb": "Tabuk",
-  "sa-ha": "Ha'il",
-  "sa-nb": "Northern Border",
-  "sa-jz": "Jazan",
+  "sa-ha": "Hail",
+  "sa-nb": "Al Hudud ash Shamaliyah",
+  "sa-jz": "Jizan",
   "sa-nj": "Najran",
   "sa-jf": "Al Jawf",
-  "sa-qs": "Qassim",
+  "sa-qs": "Al Quassim",
+  "sa-bh": "Al Bahah",
 };
 
 // Map region/governorate names to hc-key format for Highcharts
