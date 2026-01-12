@@ -746,7 +746,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       );
     }
 
-    // Cache the result to reduce API calls on Netlify
+    // Cache the result to reduce API calls to Google Sheets
     setCached(cacheKey, responseData, CACHE_TTL);
 
     res.json(responseData);
