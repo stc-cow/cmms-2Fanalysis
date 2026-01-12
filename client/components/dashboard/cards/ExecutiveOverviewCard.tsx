@@ -243,12 +243,6 @@ export function ExecutiveOverviewCard({
       value: monthlyKpis.totalMovements,
     },
     {
-      label: "Total Distance (KM)",
-      value: monthlyKpis.totalDistanceKM.toLocaleString("en-US", {
-        maximumFractionDigits: 0,
-      }),
-    },
-    {
       label: "More Than Two Times Move",
       value: monthlyKpis.highMovedCows,
     },
