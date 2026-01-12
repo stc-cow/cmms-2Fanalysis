@@ -120,22 +120,15 @@ export function ExecutiveOverviewCard({
     );
   }, [currentMonthIndex, timelineMonths]);
 
-  // Calculate region metrics for the map
+  // Calculate governorate metrics for the map (using Column AD data)
   const regionMetrics = useMemo(() => {
     const metrics: Record<string, number> = {};
-    const regionMap: Record<string, string> = {
-      WEST: "Western Province",
-      EAST: "Eastern Province",
-      CENTRAL: "Riyadh",
-      SOUTH: "Asir",
-    };
 
     currentMonth.movements.forEach((movement) => {
-      const regionName =
-        regionMap[movement.toRegion as keyof typeof regionMap] ||
-        movement.toRegion;
-      if (regionName) {
-        metrics[regionName] = (metrics[regionName] || 0) + 1;
+      // Use governorate (Column AD) if available, otherwise fall back to region
+      const governorateName = movement.toGovernorate || movement.toRegion;
+      if (governorateName) {
+        metrics[governorateName] = (metrics[governorateName] || 0) + 1;
       }
     });
 
