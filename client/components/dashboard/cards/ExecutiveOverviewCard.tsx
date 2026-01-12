@@ -644,6 +644,11 @@ export function ExecutiveOverviewCard({
                           `${value} movements (${props.payload.percentage}%)`
                         }
                       />
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        wrapperStyle={{ fontSize: "10px", paddingTop: "8px" }}
+                      />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
