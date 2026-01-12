@@ -64,6 +64,7 @@ export interface CowMovementsFact {
   Is_EBU?: boolean; // Derived from Column E (ebu_royal_flag) - true if contains "EBU"
   EbuRoyalCategory?: "ROYAL" | "EBU" | "NON EBU"; // Mutually exclusive category from Column E
   Vendor?: string; // Column AC - Vendor name (Nokia, Ericsson, Huawei, etc.)
+  Governorate?: string; // Column AD - Official governorate administrative region
 }
 
 // Analytics: COW aggregated metrics
