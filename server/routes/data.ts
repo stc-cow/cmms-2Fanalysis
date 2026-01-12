@@ -726,6 +726,12 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       totalDistanceKM: totalDistance,
     };
 
+    // Log the exact value being returned
+    console.log(`\n🎯 FINAL RESPONSE DATA:`);
+    console.log(`   ✓ totalDistanceKM: ${totalDistance}`);
+    console.log(`   ✓ movements.length: ${processedData.movements.length}`);
+    console.log(`   ✓ Cache key: ${cacheKey}`);
+
     // Cache the result to reduce API calls on Netlify
     setCached(cacheKey, responseData, CACHE_TTL);
 
