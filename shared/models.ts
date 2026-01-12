@@ -131,8 +131,8 @@ export interface DashboardData {
 export interface NeverMovedCow {
   COW_ID: string; // Column A
   Region: string; // Column AI
-  District: string; // Column E
-  City: string; // Column F
+  District: string; // Column AJ
+  City: string; // Column AK
   Location: string; // Column AM
   Latitude: number; // Column I
   Longitude: number; // Column J
