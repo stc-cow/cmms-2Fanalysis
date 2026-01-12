@@ -6,7 +6,6 @@ import { SaudiMapCard } from "@/components/dashboard/cards/SaudiMapCard";
 import { MovementHeatMapCard } from "@/components/dashboard/cards/MovementHeatMapCard";
 import { StaticCowMapCard } from "@/components/dashboard/cards/StaticCowMapCard";
 import { NeverMovedCowCard } from "@/components/dashboard/cards/NeverMovedCowCard";
-import { RegionAnalysisCard } from "@/components/dashboard/cards/RegionAnalysisCard";
 import { WarehouseIntelligenceCard } from "@/components/dashboard/cards/WarehouseIntelligenceCard";
 import { WarehouseHubTimeCard } from "@/components/dashboard/cards/WarehouseHubTimeCard";
 import { COWUtilizationCard } from "@/components/dashboard/cards/COWUtilizationCard";
@@ -298,15 +297,6 @@ export default function Dashboard() {
             locations={locations}
             movements={filteredMovements}
             cowMetrics={cowMetrics}
-          />
-        )}
-
-        {/* Region Analysis */}
-        {activeCard === "regions" && (
-          <RegionAnalysisCard
-            movements={filteredMovements}
-            locations={locations}
-            regionMetrics={regionMetrics}
           />
         )}
 
