@@ -551,114 +551,312 @@ export function getWarehousesHighestTotalStay(
     .slice(0, limit);
 }
 
-// Calculate off-air warehouse stays (Half + Zero movements only)
-export function calculateOffAirWarehouseStays(
+// ============================================================================
+// OFF-AIR WAREHOUSE AGING ANALYTICS (HARD DELETE + REBUILD)
+// ============================================================================
+// This section implements the "Off-Air Warehouse Aging" dashboard.
+// ABSOLUTE RULES:
+// 1. Only include movements where Column Z = "Half" OR "Zero"
+// 2. Calculate idle time between consecutive movements
+// 3. Count idle time ONLY when:
+//    - COW is off-air (Column Z = Half or Zero)
+//    - To Location (Column U) is a warehouse
+// 4. Bucket by months (0-3, 4-6, 7-9, 10-12, >12)
+// ============================================================================
+
+export interface OffAirAgingBucket {
+  bucket: "0-3 Months" | "4-6 Months" | "7-9 Months" | "10-12 Months" | "More than 12 Months";
+  count: number; // Count of unique COW IDs
+}
+
+export interface OffAirAgingTableRow {
+  cowId: string;
+  totalMovementTimes: number;
+  avgOffAirIdleDays: number;
+  topOffAirWarehouse: string;
+}
+
+export interface OffAirStayDetails {
+  fromLocation: string;
+  toWarehouse: string;
+  idleStartDate: string;
+  idleEndDate: string;
+  idleDays: number;
+}
+
+// Calculate OFF-AIR warehouse aging (STRICT: Column Z = Half/Zero only)
+export function calculateOffAirWarehouseAging(
   movements: CowMovementsFact[],
   locations: DimLocation[],
-): OffAirStay[] {
-  const offAirStays: OffAirStay[] = [];
+): {
+  buckets: OffAirAgingBucket[];
+  tableData: OffAirAgingTableRow[];
+  cowAgingMap: Map<string, number>; // cowId -> total idle months
+} {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
 
-  // Group movements by COW ID
+  // STEP 1: Filter ONLY rows where Column Z = "Half" OR "Zero"
+  const offAirMovements = movements.filter(
+    (mov) => mov.Movement_Type === "Half" || mov.Movement_Type === "Zero",
+  );
+
+  // STEP 2: Group movements by COW ID and sort by Moved_DateTime
   const movementsByCow = new Map<string, CowMovementsFact[]>();
-  movements.forEach((mov) => {
-    // Only include Half + Zero movements (off-air)
-    if (mov.Movement_Type === "Half" || mov.Movement_Type === "Zero") {
-      if (!movementsByCow.has(mov.COW_ID)) {
-        movementsByCow.set(mov.COW_ID, []);
+  offAirMovements.forEach((mov) => {
+    if (!movementsByCow.has(mov.COW_ID)) {
+      movementsByCow.set(mov.COW_ID, []);
+    }
+    movementsByCow.get(mov.COW_ID)!.push(mov);
+  });
+
+  // Sort each COW's movements by Moved_DateTime
+  movementsByCow.forEach((movements) => {
+    movements.sort(
+      (a, b) =>
+        new Date(a.Moved_DateTime).getTime() -
+        new Date(b.Moved_DateTime).getTime(),
+    );
+  });
+
+  // STEP 3: Calculate idle days per COW
+  const cowIdleTotals = new Map<string, number>(); // cowId -> total idle days
+  const cowMovementCounts = new Map<string, number>(); // cowId -> movement count
+  const cowWarehouseBreakdown = new Map<string, Map<string, number>>(); // cowId -> (warehouse -> idle days)
+  const cowStayDetails = new Map<string, OffAirStayDetails[]>(); // cowId -> stay details
+
+  movementsByCow.forEach((movements, cowId) => {
+    let totalIdleDays = 0;
+    const warehouseMap = new Map<string, number>();
+    const stayDetails: OffAirStayDetails[] = [];
+
+    // Calculate idle time between consecutive movements
+    for (let i = 0; i < movements.length - 1; i++) {
+      const currentMov = movements[i];
+      const nextMov = movements[i + 1];
+
+      // Get the warehouse (To_Location of current movement)
+      const warehouse = locMap.get(currentMov.To_Location_ID);
+
+      // CRITICAL: Only count idle time if To Location is a warehouse
+      if (!warehouse) continue;
+
+      // Verify it's actually a warehouse
+      const isWarehouse =
+        warehouse.Location_Type === "Warehouse" ||
+        warehouse.Location_Name.toUpperCase().includes("WH");
+
+      if (!isWarehouse) continue;
+
+      // Calculate idle days: Reached_DateTime of current to Moved_DateTime of next
+      const idleStart = new Date(currentMov.Reached_DateTime).getTime();
+      const idleEnd = new Date(nextMov.Moved_DateTime).getTime();
+      const idleDays = (idleEnd - idleStart) / (1000 * 60 * 60 * 24);
+
+      if (idleDays > 0) {
+        totalIdleDays += idleDays;
+
+        // Track warehouse breakdown
+        warehouseMap.set(
+          warehouse.Location_Name,
+          (warehouseMap.get(warehouse.Location_Name) || 0) + idleDays,
+        );
+
+        // Store stay details
+        stayDetails.push({
+          fromLocation: currentMov.From_Sub_Location || "Unknown",
+          toWarehouse: warehouse.Location_Name,
+          idleStartDate: currentMov.Reached_DateTime.split("T")[0],
+          idleEndDate: nextMov.Moved_DateTime.split("T")[0],
+          idleDays: Math.round(idleDays * 100) / 100,
+        });
       }
-      movementsByCow.get(mov.COW_ID)!.push(mov);
+    }
+
+    // Store results
+    if (totalIdleDays > 0) {
+      cowIdleTotals.set(cowId, totalIdleDays);
+      cowMovementCounts.set(cowId, movements.length);
+      cowWarehouseBreakdown.set(cowId, warehouseMap);
+      cowStayDetails.set(cowId, stayDetails);
     }
   });
 
-  // For each COW, calculate off-air warehouse stays
-  movementsByCow.forEach((cowMovements, cowId) => {
-    const sorted = [...cowMovements].sort(
+  // STEP 4: Create aging buckets (convert days to months: ÷ 30)
+  const bucketCounts = new Map<
+    "0-3 Months" | "4-6 Months" | "7-9 Months" | "10-12 Months" | "More than 12 Months",
+    Set<string>
+  >();
+  bucketCounts.set("0-3 Months", new Set());
+  bucketCounts.set("4-6 Months", new Set());
+  bucketCounts.set("7-9 Months", new Set());
+  bucketCounts.set("10-12 Months", new Set());
+  bucketCounts.set("More than 12 Months", new Set());
+
+  const cowAgingMap = new Map<string, number>();
+
+  cowIdleTotals.forEach((idleDays, cowId) => {
+    const months = idleDays / 30;
+    cowAgingMap.set(cowId, months);
+
+    // Assign to bucket
+    if (months <= 3) {
+      bucketCounts.get("0-3 Months")!.add(cowId);
+    } else if (months <= 6) {
+      bucketCounts.get("4-6 Months")!.add(cowId);
+    } else if (months <= 9) {
+      bucketCounts.get("7-9 Months")!.add(cowId);
+    } else if (months <= 12) {
+      bucketCounts.get("10-12 Months")!.add(cowId);
+    } else {
+      bucketCounts.get("More than 12 Months")!.add(cowId);
+    }
+  });
+
+  // STEP 5: Build bucket array for chart
+  const buckets: OffAirAgingBucket[] = [
+    {
+      bucket: "0-3 Months",
+      count: bucketCounts.get("0-3 Months")!.size,
+    },
+    {
+      bucket: "4-6 Months",
+      count: bucketCounts.get("4-6 Months")!.size,
+    },
+    {
+      bucket: "7-9 Months",
+      count: bucketCounts.get("7-9 Months")!.size,
+    },
+    {
+      bucket: "10-12 Months",
+      count: bucketCounts.get("10-12 Months")!.size,
+    },
+    {
+      bucket: "More than 12 Months",
+      count: bucketCounts.get("More than 12 Months")!.size,
+    },
+  ];
+
+  // STEP 6: Build table data
+  const tableData: OffAirAgingTableRow[] = Array.from(cowIdleTotals.entries())
+    .map(([cowId, totalIdleDays]) => {
+      const movements = movementsByCow.get(cowId) || [];
+      const avgIdleDays =
+        movements.length > 1
+          ? Math.round((totalIdleDays / (movements.length - 1)) * 100) / 100
+          : 0;
+
+      // Find top warehouse
+      const warehouseMap = cowWarehouseBreakdown.get(cowId) || new Map();
+      let topWarehouse = "N/A";
+      let maxDays = 0;
+      warehouseMap.forEach((days, warehouse) => {
+        if (days > maxDays) {
+          maxDays = days;
+          topWarehouse = warehouse;
+        }
+      });
+
+      return {
+        cowId,
+        totalMovementTimes: movements.length,
+        avgOffAirIdleDays: avgIdleDays,
+        topOffAirWarehouse: topWarehouse,
+      };
+    })
+    .sort((a, b) => b.avgOffAirIdleDays - a.avgOffAirIdleDays);
+
+  return {
+    buckets,
+    tableData,
+    cowAgingMap,
+  };
+}
+
+// Get detailed stay information for a specific COW
+export function getCOWOffAirAgingDetails(
+  cowId: string,
+  movements: CowMovementsFact[],
+  locations: DimLocation[],
+): {
+  totalMovements: number;
+  totalOffAirIdleDays: number;
+  avgOffAirIdleDays: number;
+  topOffAirWarehouse: string;
+  stays: OffAirStayDetails[];
+} {
+  const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
+
+  // Filter movements for this COW where Column Z = Half/Zero
+  const cowOffAirMovements = movements
+    .filter(
+      (m) =>
+        m.COW_ID === cowId &&
+        (m.Movement_Type === "Half" || m.Movement_Type === "Zero"),
+    )
+    .sort(
       (a, b) =>
         new Date(a.Moved_DateTime).getTime() -
         new Date(b.Moved_DateTime).getTime(),
     );
 
-    // Calculate stay duration for each movement (except the last)
-    for (let i = 0; i < sorted.length - 1; i++) {
-      const currentMovement = sorted[i];
-      const nextMovement = sorted[i + 1];
+  let totalIdleDays = 0;
+  const warehouseMap = new Map<string, number>();
+  const stays: OffAirStayDetails[] = [];
 
-      const toWarehouse = locMap.get(currentMovement.To_Location_ID);
+  // Calculate idle days
+  for (let i = 0; i < cowOffAirMovements.length - 1; i++) {
+    const currentMov = cowOffAirMovements[i];
+    const nextMov = cowOffAirMovements[i + 1];
 
-      if (toWarehouse) {
-        const idleStartTime = new Date(
-          currentMovement.Reached_DateTime,
-        ).getTime();
-        const idleEndTime = new Date(nextMovement.Moved_DateTime).getTime();
-        const idleDays = (idleEndTime - idleStartTime) / (1000 * 60 * 60 * 24);
+    const warehouse = locMap.get(currentMov.To_Location_ID);
+    if (!warehouse) continue;
 
-        if (idleDays > 0) {
-          offAirStays.push({
-            cowId,
-            fromLocation: currentMovement.From_Sub_Location || "Unknown",
-            toWarehouse: toWarehouse.Location_Name,
-            idleStartDate: currentMovement.Reached_DateTime.split("T")[0],
-            idleEndDate: nextMovement.Moved_DateTime.split("T")[0],
-            idleDays: Math.round(idleDays * 100) / 100,
-            offAirStatus: "Yes",
-          });
-        }
-      }
+    const isWarehouse =
+      warehouse.Location_Type === "Warehouse" ||
+      warehouse.Location_Name.toUpperCase().includes("WH");
+    if (!isWarehouse) continue;
+
+    const idleStart = new Date(currentMov.Reached_DateTime).getTime();
+    const idleEnd = new Date(nextMov.Moved_DateTime).getTime();
+    const idleDays = (idleEnd - idleStart) / (1000 * 60 * 60 * 24);
+
+    if (idleDays > 0) {
+      totalIdleDays += idleDays;
+      warehouseMap.set(
+        warehouse.Location_Name,
+        (warehouseMap.get(warehouse.Location_Name) || 0) + idleDays,
+      );
+
+      stays.push({
+        fromLocation: currentMov.From_Sub_Location || "Unknown",
+        toWarehouse: warehouse.Location_Name,
+        idleStartDate: currentMov.Reached_DateTime.split("T")[0],
+        idleEndDate: nextMov.Moved_DateTime.split("T")[0],
+        idleDays: Math.round(idleDays * 100) / 100,
+      });
     }
-  });
+  }
 
-  return offAirStays;
-}
-
-// Get off-air details for a specific COW
-export function getCOWOffAirDetails(
-  cowId: string,
-  offAirStays: OffAirStay[],
-): {
-  totalMovements: number;
-  totalIdleDays: number;
-  avgIdleDays: number;
-  topWarehouse: string;
-  stays: OffAirStay[];
-} {
-  const cowStays = offAirStays
-    .filter((stay) => stay.cowId === cowId)
-    .sort(
-      (a, b) =>
-        new Date(a.idleStartDate).getTime() -
-        new Date(b.idleStartDate).getTime(),
-    );
-
-  const totalIdleDays = cowStays.reduce((sum, stay) => sum + stay.idleDays, 0);
-  const avgIdleDays =
-    cowStays.length > 0
-      ? Math.round((totalIdleDays / cowStays.length) * 100) / 100
-      : 0;
-
-  // Find top warehouse by total stay days
-  const warehouseStats = new Map<string, number>();
-  cowStays.forEach((stay) => {
-    warehouseStats.set(
-      stay.toWarehouse,
-      (warehouseStats.get(stay.toWarehouse) || 0) + stay.idleDays,
-    );
-  });
-
+  // Find top warehouse
   let topWarehouse = "N/A";
   let maxDays = 0;
-  warehouseStats.forEach((days, warehouse) => {
+  warehouseMap.forEach((days, warehouse) => {
     if (days > maxDays) {
       maxDays = days;
       topWarehouse = warehouse;
     }
   });
 
+  const avgIdleDays =
+    cowOffAirMovements.length > 1
+      ? Math.round((totalIdleDays / (cowOffAirMovements.length - 1)) * 100) / 100
+      : 0;
+
   return {
-    totalMovements: cowStays.length,
-    totalIdleDays: Math.round(totalIdleDays * 100) / 100,
-    avgIdleDays,
-    topWarehouse,
-    stays: cowStays,
+    totalMovements: cowOffAirMovements.length,
+    totalOffAirIdleDays: Math.round(totalIdleDays * 100) / 100,
+    avgOffAirIdleDays: avgIdleDays,
+    topOffAirWarehouse: topWarehouse,
+    stays,
   };
 }
