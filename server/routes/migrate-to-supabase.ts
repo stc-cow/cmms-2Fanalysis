@@ -68,6 +68,8 @@ router.post("/import-google-sheets", async (req: Request, res: Response) => {
 
     // Import cows
     if (cows.length > 0) {
+      const supabase = getSupabaseClient();
+      if (!supabase) throw new Error("Supabase client not configured");
       const { error: cowError } = await supabase
         .from("dim_cow")
         .upsert(cows, { onConflict: "cow_id" });
@@ -81,6 +83,8 @@ router.post("/import-google-sheets", async (req: Request, res: Response) => {
 
     // Import locations
     if (locations.length > 0) {
+      const supabase = getSupabaseClient();
+      if (!supabase) throw new Error("Supabase client not configured");
       const { error: locError } = await supabase
         .from("dim_location")
         .upsert(locations, { onConflict: "location_id" });
@@ -94,6 +98,8 @@ router.post("/import-google-sheets", async (req: Request, res: Response) => {
 
     // Import movements in batches
     if (movements.length > 0) {
+      const supabase = getSupabaseClient();
+      if (!supabase) throw new Error("Supabase client not configured");
       const batchSize = 1000;
       for (let i = 0; i < movements.length; i += batchSize) {
         const batch = movements.slice(i, i + batchSize);
@@ -120,6 +126,8 @@ router.post("/import-google-sheets", async (req: Request, res: Response) => {
       const neverMovedRows = parseCSV(neverMovedCsv);
 
       if (neverMovedRows.length > 0) {
+        const supabase = getSupabaseClient();
+        if (!supabase) throw new Error("Supabase client not configured");
         const neverMovedData = neverMovedRows.map((row: any) => ({
           cow_id: row.cow_id || row[0],
           region: row.region || row[1] || "",
