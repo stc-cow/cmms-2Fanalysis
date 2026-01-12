@@ -383,9 +383,19 @@ function processData(rows: any[]) {
       cow_id: rows[0].cow_id,
       from_location: rows[0].from_location,
       to_location: rows[0].to_location,
+      from_sub_location: rows[0].from_sub_location,
+      to_sub_location: rows[0].to_sub_location,
       movement_type: rows[0].movement_type,
       distance_km: rows[0].distance_km,
     });
+
+    // Check event type distribution
+    const eventTypes: Record<string, number> = {};
+    rows.slice(0, 100).forEach(row => {
+      const type = row.from_sub_location?.trim() || row.to_sub_location?.trim() || "EMPTY";
+      eventTypes[type] = (eventTypes[type] || 0) + 1;
+    });
+    console.log(`📊 Event Type sample (first 100 rows):`, eventTypes);
   }
 
   rows.forEach((row, idx) => {
