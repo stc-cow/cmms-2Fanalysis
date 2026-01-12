@@ -1133,9 +1133,66 @@ const csvViewerHandler: RequestHandler = async (req, res) => {
   }
 };
 
+/**
+ * Verification endpoint to check raw distance data
+ */
+const verifyDistanceHandler: RequestHandler = async (req, res) => {
+  try {
+    console.log(`\n🔍 VERIFY DISTANCE ENDPOINT`);
+
+    const response = await fetch(MOVEMENT_DATA_CSV_URL);
+    const csvText = await response.text();
+    const lines = csvText.trim().split("\n");
+
+    console.log(`📊 CSV Lines: ${lines.length}`);
+
+    // Parse header
+    const headerCells = parseCSVLine(lines[0]);
+    const DISTANCE_INDEX = 24; // Column Y
+
+    console.log(`🎯 Distance column index: ${DISTANCE_INDEX}`);
+    console.log(`   Column name: "${headerCells[DISTANCE_INDEX]}"`);
+
+    // Sum all distances
+    let totalDistance = 0;
+    let rowCount = 0;
+
+    for (let i = 1; i < Math.min(lines.length, 100); i++) {
+      const cells = parseCSVLine(lines[i]);
+      const distance = parseFloat(cells[DISTANCE_INDEX] || "0") || 0;
+      totalDistance += distance;
+      rowCount++;
+
+      if (i <= 3) {
+        console.log(`   Row ${i}: distance = ${distance}`);
+      }
+    }
+
+    // Calculate average to estimate total
+    const avgDistance = totalDistance / rowCount;
+    const estimatedTotal = avgDistance * (lines.length - 1);
+
+    res.json({
+      csvLines: lines.length,
+      dataRows: lines.length - 1,
+      sampleRows: rowCount,
+      sampleTotal: totalDistance,
+      avgDistance: avgDistance.toFixed(2),
+      estimatedTotal: estimatedTotal.toFixed(2),
+      distanceColumnIndex: DISTANCE_INDEX,
+      distanceColumnName: headerCells[DISTANCE_INDEX],
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+};
+
 router.get("/processed-data", processedDataHandler);
 router.get("/never-moved-cows", neverMovedCowHandler);
 router.get("/diagnostic", diagnosticHandler);
 router.get("/csv-viewer", csvViewerHandler);
+router.get("/verify-distance", verifyDistanceHandler);
 
 export default router;
