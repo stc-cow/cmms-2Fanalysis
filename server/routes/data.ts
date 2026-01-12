@@ -725,8 +725,14 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       (m) => m.EbuRoyalCategory === "NON EBU",
     ).length;
 
+    // Calculate total distance from Column Y
+    const totalDistance = processedData.movements.reduce((sum, mov) => sum + (mov.Distance_KM || 0), 0);
+
     console.log(
       `✓ Processed ${processedData.movements.length} movements, ${processedData.cows.length} cows, ${processedData.locations.length} locations`,
+    );
+    console.log(
+      `  ├─ Total Distance (Column Y): ${totalDistance.toLocaleString("en-US", { maximumFractionDigits: 2 })} KM`,
     );
     console.log(
       `  ├─ ROYAL movements: ${royalCount} (${((royalCount / processedData.movements.length) * 100).toFixed(1)}%)`,
