@@ -42,9 +42,11 @@ export function WarehouseHubTimeCard({
     null,
   );
 
-  // Calculate off-air warehouse aging data
-  const { buckets, tableData, cowAgingMap } =
-    calculateOffAirWarehouseAging(movements, locations);
+  // Calculate off-air warehouse aging data (memoized to prevent unnecessary recalculations)
+  const { buckets, tableData, cowAgingMap } = useMemo(
+    () => calculateOffAirWarehouseAging(movements, locations),
+    [movements, locations],
+  );
 
 
   // Filter table data by COW ID search
