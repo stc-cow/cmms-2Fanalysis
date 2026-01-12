@@ -336,22 +336,22 @@ export function ExecutiveOverviewCard({
     const { x, y, payload } = props;
     const vendorName = payload.value;
     const logoUrl = VENDOR_LOGOS[vendorName];
+    const vendorColor = VENDOR_COLORS[vendorName];
+    const bgColor = vendorColor?.bgColor || "#f0f0f0";
 
     if (!logoUrl) return null;
 
     return (
-      <foreignObject x={x - 25} y={y} width="50" height="24">
-        <img
-          src={logoUrl}
-          alt={vendorName}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            borderRadius: "2px",
-          }}
+      <g transform={`translate(${x},${y})`}>
+        <image
+          x="-24"
+          y="-10"
+          width="48"
+          height="20"
+          href={logoUrl}
+          preserveAspectRatio="xMidYMid slice"
         />
-      </foreignObject>
+      </g>
     );
   };
 
