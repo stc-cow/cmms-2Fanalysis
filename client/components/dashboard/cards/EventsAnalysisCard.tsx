@@ -239,14 +239,14 @@ export function EventsAnalysisCard({
               </div>
             </div>
           )}
-          <div className="p-3 sm:p-4 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700 min-h-20 sm:min-h-24">
-            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+          <div className="p-2 sm:p-3 bg-gray-50 dark:bg-gray-900 rounded border border-gray-200 dark:border-gray-700">
+            <div className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
               Total Movements
             </div>
-            <div className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-lg sm:text-xl font-bold text-gray-900 dark:text-gray-100">
               {totalMovements}
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
               movements analyzed
             </div>
           </div>
