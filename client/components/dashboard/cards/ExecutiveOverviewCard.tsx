@@ -261,10 +261,6 @@ export function ExecutiveOverviewCard({
       label: "Active Warehouses",
       value: 10,
     },
-    {
-      label: "Deployment Sites",
-      value: sites.length,
-    },
   ];
 
   // Calculate event type data from current month movements
