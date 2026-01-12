@@ -595,14 +595,53 @@ export function ExecutiveOverviewCard({
               </div>
             </div>
 
-            {/* Movement Type Distribution - Cleared */}
+            {/* Movement by Events - COW IDs vs Movement Types (Column A vs Column R) */}
             <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
-                Movements by Type
+                Movement by Events
               </h3>
-              <div className="flex-1 flex items-center justify-center text-gray-400 text-xs">
-                (Cleared)
-              </div>
+              {movementByEventsData.length > 0 ? (
+                <div className="flex-1 min-h-0 flex items-center justify-center">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={movementByEventsData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percentage }) =>
+                          `${name} (${percentage}%)`
+                        }
+                        innerRadius={40}
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        {movementByEventsData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={EVENT_COLORS[entry.name] || "#6b7280"}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "#ffffff",
+                          border: "1px solid #e5e7eb",
+                          borderRadius: "8px",
+                        }}
+                        formatter={(value: number) =>
+                          `${value} COWs with this movement type`
+                        }
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="flex-1 flex items-center justify-center text-gray-400 text-xs">
+                  No event data
+                </div>
+              )}
             </div>
           </div>
         </div>
