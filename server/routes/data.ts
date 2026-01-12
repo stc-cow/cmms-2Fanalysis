@@ -891,9 +891,8 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       error: "Failed to fetch Never Moved COW data",
       details: errorMsg,
       hint: "The data service is temporarily unavailable. Try again in a moment.",
-      csvUrl:
-        process.env.NEVER_MOVED_COW_CSV_URL ||
-        "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1464106304&single=true&output=csv",
+      cows: [],
+      stats: { total: 0, onAir: 0, offAir: 0 },
     });
   }
 };
