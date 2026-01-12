@@ -336,14 +336,3 @@ export function SaudiHighchartsMap({
     </div>
   );
 }
-
-// Export memoized version to prevent unnecessary re-renders
-export const SaudiHighchartsMap = memo(SaudiHighchartsMapComponent, (prev, next) => {
-  // Custom comparison: only re-render if region metrics or max metric actually changed
-  const regionsEqual = JSON.stringify(prev.regionMetrics) === JSON.stringify(next.regionMetrics);
-  const maxEqual = prev.maxMetric === next.maxMetric;
-  const titleEqual = prev.title === next.title;
-
-  // Return true if all props are equal (don't re-render), false if they changed (do re-render)
-  return regionsEqual && maxEqual && titleEqual;
-});
