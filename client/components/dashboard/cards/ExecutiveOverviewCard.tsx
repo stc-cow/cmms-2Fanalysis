@@ -334,21 +334,7 @@ export function ExecutiveOverviewCard({
     );
   };
 
-  function normalizeEventType(type: string | undefined): string {
-    if (!type) return "Normal Coverage";
-    const normalized = type.trim().toLowerCase();
-    if (normalized.includes("hajj")) return "Hajj";
-    if (normalized.includes("umrah")) return "Umrah";
-    if (normalized.includes("royal")) return "Royal";
-    if (normalized.includes("mega")) return "Mega Project";
-    if (normalized.includes("national")) return "National Event";
-    if (normalized.includes("seasonal")) return "Seasonal";
-    if (normalized.includes("event")) return "Event";
-    if (normalized.includes("normal")) return "Normal Coverage";
-    return type;
-  }
-
-  // Count movements by Movement Type (column R)
+  // Count movements by Movement Type (column R - Full/Half/Zero)
   const movementTypeCounts: Record<string, number> = {};
   currentMonth.movements.forEach((mov) => {
     const movType = mov.Movement_Type || "Unknown";
