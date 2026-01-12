@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, useRef, memo } from "react";
 import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { regionToHcKey } from "@/lib/saudiRegionMapping";
+import { normalizeRegionName } from "@/lib/saudiRegionMapping";
 
 interface SaudiHighchartsMapProps {
   regionMetrics: Record<string, number>;
