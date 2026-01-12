@@ -5,6 +5,7 @@ import { NeverMovedCow } from "@shared/models";
 
 interface NeverMovedCowMapProps {
   cows: NeverMovedCow[];
+  onCowSelected?: (cow: NeverMovedCow) => void;
 }
 
 // Create custom icons for ON-AIR and OFF-AIR markers
