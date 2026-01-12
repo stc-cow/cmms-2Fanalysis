@@ -214,7 +214,6 @@ export function WarehouseIntelligenceCard({
               <TableRow className="border-b border-gray-200 dark:border-gray-700">
                 <TableHead className="text-left py-3">Warehouse</TableHead>
                 <TableHead className="text-left py-3">Region</TableHead>
-                <TableHead className="text-left py-3">Owner</TableHead>
                 <TableHead className="text-right py-3">Outgoing</TableHead>
                 <TableHead className="text-right py-3">Incoming</TableHead>
               </TableRow>
@@ -236,15 +235,6 @@ export function WarehouseIntelligenceCard({
                           warehouses.find(
                             (w) => w.Location_ID === m!.Location_ID,
                           )?.Region
-                        }
-                      </span>
-                    </TableCell>
-                    <TableCell className="py-3 text-gray-600 dark:text-gray-400">
-                      <span className="inline-block px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold">
-                        {
-                          warehouses.find(
-                            (w) => w.Location_ID === m!.Location_ID,
-                          )?.Owner
                         }
                       </span>
                     </TableCell>
