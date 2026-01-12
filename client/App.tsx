@@ -27,4 +27,13 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Ensure we don't call createRoot multiple times (can happen during HMR in dev)
+const rootElement = document.getElementById("root");
+if (rootElement && !rootElement._reactRootContainer) {
+  const root = createRoot(rootElement);
+  root.render(<App />);
+} else if (rootElement) {
+  // Root already exists, just render (for HMR updates)
+  const root = createRoot(rootElement);
+  root.render(<App />);
+}
