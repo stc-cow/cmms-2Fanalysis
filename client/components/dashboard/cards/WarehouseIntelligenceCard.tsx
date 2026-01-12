@@ -52,20 +52,34 @@ export function WarehouseIntelligenceCard({
     [warehouses, movements, locations],
   );
 
+  // Filter metrics by selected region for dispatch/receiving analysis
+  const filteredMetrics = useMemo(
+    () =>
+      selectedRegion
+        ? warehouseMetrics.filter((m) => {
+            const warehouse = warehouses.find(
+              (w) => w.Location_ID === m?.Location_ID,
+            );
+            return warehouse?.Region === selectedRegion;
+          })
+        : warehouseMetrics,
+    [warehouseMetrics, warehouses, selectedRegion],
+  );
+
   const topOutgoing = useMemo(
     () =>
-      warehouseMetrics
+      filteredMetrics
         .sort((a, b) => b!.Outgoing_Movements - a!.Outgoing_Movements)
         .slice(0, 6),
-    [warehouseMetrics],
+    [filteredMetrics],
   );
 
   const topIncoming = useMemo(
     () =>
-      warehouseMetrics
+      filteredMetrics
         .sort((a, b) => b!.Incoming_Movements - a!.Incoming_Movements)
         .slice(0, 6),
-    [warehouseMetrics],
+    [filteredMetrics],
   );
 
   const regions = useMemo(
