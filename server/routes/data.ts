@@ -554,7 +554,8 @@ function processData(rows: any[]) {
 const processedDataHandler: RequestHandler = async (req, res) => {
   try {
     // Check cache first - reduces load on APIs (skip in dev to ensure fresh data)
-    const cacheKey = "processed-data";
+    // Add version to cache key to bust old cached values
+    const cacheKey = "processed-data-v2";
     const shouldUseCache = process.env.NODE_ENV === "production";
     const cachedData = shouldUseCache ? getCached(cacheKey) : null;
     if (cachedData) {
