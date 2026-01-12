@@ -75,15 +75,19 @@ export function enrichMovements(
     // Otherwise, classify based on location types
     const movementType = mov.Movement_Type || classifyMovement(mov, locMap);
 
+    // Use the Distance_KM from Column Y (Google Sheet) - this is the source of truth
+    // Only calculate from coordinates if Distance_KM is missing (0 or undefined)
     const distance =
-      fromLoc && toLoc
-        ? calculateDistance(
-            fromLoc.Latitude,
-            fromLoc.Longitude,
-            toLoc.Latitude,
-            toLoc.Longitude,
-          )
-        : 0;
+      mov.Distance_KM && mov.Distance_KM > 0
+        ? mov.Distance_KM
+        : fromLoc && toLoc
+          ? calculateDistance(
+              fromLoc.Latitude,
+              fromLoc.Longitude,
+              toLoc.Latitude,
+              toLoc.Longitude,
+            )
+          : 0;
 
     return {
       ...mov,
