@@ -152,7 +152,9 @@ export function ExecutiveOverviewCard({
     // Use API's totalDistanceKM for "All" view (currentMonthIndex === -1) which is the accurate sum of Column Y
     // For individual months, use the timeline's aggregated distance
     const totalDistanceForDisplay =
-      currentMonthIndex === -1 ? kpis.totalDistanceKM : currentMonth.totalDistance;
+      currentMonthIndex === -1
+        ? kpis.totalDistanceKM
+        : currentMonth.totalDistance;
 
     return {
       totalCOWs: Math.max(kpis.totalCOWs, uniqueCows.size || kpis.totalCOWs),

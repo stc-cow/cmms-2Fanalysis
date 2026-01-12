@@ -78,7 +78,9 @@ export class ErrorBoundary extends Component<Props, State> {
                 💡 Troubleshooting:
               </p>
               <ol className="text-xs text-blue-100 space-y-2 list-decimal list-inside">
-                <li>Check the browser console for detailed error information</li>
+                <li>
+                  Check the browser console for detailed error information
+                </li>
                 <li>Try refreshing the page</li>
                 <li>Clear browser cache if the error persists</li>
                 <li>Check that all API endpoints are responding</li>

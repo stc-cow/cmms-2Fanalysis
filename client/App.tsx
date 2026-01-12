@@ -40,7 +40,7 @@ const rootElement = document.getElementById("root");
 if (!rootElement) {
   // Critical: Root element is missing from HTML
   console.error(
-    "❌ CRITICAL ERROR: #root element not found in HTML. The app cannot mount."
+    "❌ CRITICAL ERROR: #root element not found in HTML. The app cannot mount.",
   );
   document.body.innerHTML = `
     <div style="display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(to bottom right, #1e293b, #0f172a); color: white; font-family: sans-serif;">
