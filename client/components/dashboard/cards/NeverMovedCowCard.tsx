@@ -19,6 +19,7 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
   const [selectedStatus, setSelectedStatus] = useState<
     "ALL" | "ON-AIR" | "OFF-AIR"
   >("ALL");
+  const [selectedCow, setSelectedCow] = useState<NeverMovedCow | null>(null);
 
   const stats = useMemo(() => {
     const onAir = neverMovedCows.filter((c) => c.Status === "ON-AIR");
