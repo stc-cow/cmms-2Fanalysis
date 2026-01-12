@@ -12,7 +12,6 @@ import { CowMovementsFact, DimLocation } from "@shared/models";
 import {
   calculateWarehouseHubTime,
   getTopCowsByStayDays,
-  getAverageStayPerWarehouse,
   getWarehousesHighestTotalStay,
 } from "@/lib/analytics";
 
