@@ -22,6 +22,7 @@ export interface DimLocation {
   Latitude: number;
   Longitude: number;
   Region: "WEST" | "EAST" | "CENTRAL" | "SOUTH";
+  Governorate?: string; // Column AD: Official governorate administrative region (e.g., "Riyadh", "Makkah", "Asir")
   Location_Type: "Site" | "Warehouse";
   Owner: "STC" | "ACES";
 }
