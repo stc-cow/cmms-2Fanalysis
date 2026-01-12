@@ -24,5 +24,8 @@ export function createServer() {
   // Data import routes
   app.use("/api/data", dataRoutes);
 
+  // Migration routes (one-time use)
+  app.use("/api/migrate", migrateRoutes);
+
   return app;
 }
