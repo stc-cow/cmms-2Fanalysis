@@ -238,68 +238,6 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
         </div>
         <NeverMovedCowMap cows={filteredCows} />
       </div>
-
-      {/* Details Panel - Shows selected COW info from map click */}
-      {selectedStatus === "ALL" && filteredCows.length > 0 && (
-        <div className="rounded-lg overflow-hidden border bg-white">
-          <div className="p-4 border-b bg-gray-50">
-            <h3 className="font-semibold text-gray-900">COW Details Table</h3>
-            <p className="text-xs text-gray-600 mt-1">
-              All {filteredCows.length} COWs information
-            </p>
-          </div>
-          <div className="overflow-auto max-h-96">
-            <Table className="text-sm">
-              <TableHeader className="sticky top-0 bg-gray-50">
-                <TableRow>
-                  <TableHead className="font-semibold">COW ID</TableHead>
-                  <TableHead className="font-semibold">1st Deploy</TableHead>
-                  <TableHead className="font-semibold">Last Deploy</TableHead>
-                  <TableHead className="font-semibold">Vendor</TableHead>
-                  <TableHead className="font-semibold">Region</TableHead>
-                  <TableHead className="font-semibold">Location</TableHead>
-                  <TableHead className="font-semibold">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredCows.map((cow) => (
-                  <TableRow key={cow.COW_ID} className="hover:bg-gray-50">
-                    <TableCell className="font-medium text-blue-600">
-                      {cow.COW_ID}
-                    </TableCell>
-                    <TableCell className="text-xs">
-                      {cow.First_Deploy_Date
-                        ? new Date(cow.First_Deploy_Date).toLocaleDateString()
-                        : "N/A"}
-                    </TableCell>
-                    <TableCell className="text-xs">
-                      {cow.Last_Deploy_Date
-                        ? new Date(cow.Last_Deploy_Date).toLocaleDateString()
-                        : "N/A"}
-                    </TableCell>
-                    <TableCell className="text-xs">{cow.Vendor || "N/A"}</TableCell>
-                    <TableCell className="text-xs">{cow.Region}</TableCell>
-                    <TableCell className="text-xs truncate max-w-xs">
-                      {cow.Location}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        className={
-                          cow.Status === "ON-AIR"
-                            ? "bg-green-600 hover:bg-green-700"
-                            : "bg-red-600 hover:bg-red-700"
-                        }
-                      >
-                        {cow.Status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
