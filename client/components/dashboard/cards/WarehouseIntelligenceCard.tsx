@@ -30,13 +30,20 @@ export function WarehouseIntelligenceCard({
 }: WarehouseIntelligenceCardProps) {
   const [selectedRegion, setSelectedRegion] = useState<string | undefined>();
 
+  // Warehouses to exclude from analysis (repeaters, non-warehouse locations, etc.)
+  const excludedWarehouses = new Set([
+    "Bajda", // Repeater for CWH036
+  ]);
+
   // Filter to include both warehouse types and locations with "WH" in their name
+  // Exclude specific warehouses marked as repeaters or non-warehouse items
   const warehouses = useMemo(
     () =>
       locations.filter(
         (l) =>
-          l.Location_Type === "Warehouse" ||
-          l.Location_Name.toUpperCase().includes("WH"),
+          (l.Location_Type === "Warehouse" ||
+            l.Location_Name.toUpperCase().includes("WH")) &&
+          !excludedWarehouses.has(l.Location_Name),
       ),
     [locations],
   );
