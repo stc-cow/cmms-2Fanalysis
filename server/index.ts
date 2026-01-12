@@ -13,7 +13,11 @@ export function createServer() {
 
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
-    res.json({ status: "ok", message: "API is running" });
+    res.json({
+      status: "ok",
+      message: "API is running",
+      deploymentMode: "GitHub Pages with Google Sheets",
+    });
   });
 
   // Data routes - Single source of truth: Google Sheets
