@@ -5,8 +5,7 @@ import { createServer } from "./server";
 
 // https://vitejs.dev/config/
 const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
-const base =
-  process.env.GITHUB_PAGES && repoName ? `/${repoName}/` : "/";
+const base = process.env.GITHUB_PAGES && repoName ? `/${repoName}/` : "/";
 
 export default defineConfig(({ mode }) => ({
   // For GitHub Pages: if deployed to https://username.github.io/repo-name/
@@ -18,6 +17,12 @@ export default defineConfig(({ mode }) => ({
     fs: {
       allow: ["./client", "./shared", "./node_modules"],
       deny: [".env", ".env.*", "*.{crt,pem}", "**/.git/**", "server/**"],
+    },
+    // HMR configuration to prevent "send was called before connect" errors
+    hmr: {
+      protocol: "ws",
+      host: "localhost",
+      port: 8080,
     },
   },
   build: {

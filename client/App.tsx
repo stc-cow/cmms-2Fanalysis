@@ -27,4 +27,15 @@ const App = () => (
   </QueryClientProvider>
 );
 
-createRoot(document.getElementById("root")!).render(<App />);
+// Track root creation to prevent duplicate createRoot calls during HMR
+declare global {
+  var __APP_ROOT__: any;
+}
+
+const rootElement = document.getElementById("root");
+if (rootElement) {
+  if (!globalThis.__APP_ROOT__) {
+    globalThis.__APP_ROOT__ = createRoot(rootElement);
+  }
+  globalThis.__APP_ROOT__.render(<App />);
+}

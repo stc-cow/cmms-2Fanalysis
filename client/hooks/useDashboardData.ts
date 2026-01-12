@@ -43,7 +43,9 @@ export function useDashboardData(): UseDashboardDataResult {
         setLoading(true);
         setError(null);
 
-        console.log(`[Attempt ${attempt}/${maxAttempts}] Loading dashboard data from Google Sheets...`);
+        console.log(
+          `[Attempt ${attempt}/${maxAttempts}] Loading dashboard data from Google Sheets...`,
+        );
 
         // Add initial delay to allow server to be ready
         if (attempt === 1) {
@@ -51,15 +53,39 @@ export function useDashboardData(): UseDashboardDataResult {
         }
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
 
-        const response = await fetch("/api/data/processed-data", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          signal: controller.signal,
-        });
+        // Try with relative URL first (works in dev with Express middleware)
+        let response: Response;
+        try {
+          response = await fetch("/api/data/processed-data", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            signal: controller.signal,
+          });
+        } catch (fetchErr) {
+          clearTimeout(timeoutId);
+          // If fetch fails, try with absolute URL (in case we're behind a proxy)
+          if (typeof window !== "undefined" && window.location.origin) {
+            console.warn(
+              "Retrying with absolute URL:",
+              window.location.origin + "/api/data/processed-data",
+            );
+            response = await fetch(
+              window.location.origin + "/api/data/processed-data",
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              },
+            );
+          } else {
+            throw fetchErr;
+          }
+        }
 
         clearTimeout(timeoutId);
 
@@ -100,9 +126,9 @@ export function useDashboardData(): UseDashboardDataResult {
           err instanceof TypeError ||
           (err instanceof Error &&
             (err.message.includes("fetch") ||
-             err.message.includes("timeout") ||
-             err.message.includes("net::") ||
-             err.message.includes("Failed to fetch")));
+              err.message.includes("timeout") ||
+              err.message.includes("net::") ||
+              err.message.includes("Failed to fetch")));
 
         if (isRetryableError && attempt < maxAttempts) {
           const delayMs = Math.min(1000 * Math.pow(2, attempt - 1), 5000); // Exponential backoff
