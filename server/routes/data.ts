@@ -884,16 +884,17 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
         `⏱️  Timeout fetching Never Moved COW data (${FETCH_TIMEOUT}ms)`,
       );
     } else {
-      console.error("Error fetching Never Moved COW data:", errorMsg);
+      console.error("❌ Error fetching Never Moved COW data:", errorMsg);
     }
 
-    res.status(502).json({
-      error: "Failed to fetch Never Moved COW data",
-      details: errorMsg,
-      hint: "The data service is temporarily unavailable. Try again in a moment.",
+    // Return empty data instead of error to prevent app crash
+    const responseData = {
       cows: [],
       stats: { total: 0, onAir: 0, offAir: 0 },
-    });
+      source: "Dashboard Sheet (CSV) - Empty due to fetch error",
+    };
+
+    res.json(responseData);
   }
 };
 
