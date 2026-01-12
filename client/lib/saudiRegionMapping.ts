@@ -122,13 +122,17 @@ export const hcKeyToRegionName: Record<string, string> = {
 
 // Map region/governorate names to hc-key format for Highcharts
 export function normalizeRegionName(region: string): string {
-  // Trim whitespace and try to find exact match first
-  const trimmed = region?.trim() || "";
+  if (!region) return "sa-ri"; // Default to Riyadh if empty
+
+  // Trim whitespace
+  const trimmed = region.trim();
+
+  // Try exact match first
   if (regionToHcKey[trimmed]) {
     return regionToHcKey[trimmed];
   }
 
-  // Try case-insensitive match if exact match failed
+  // Try case-insensitive exact match
   const uppercase = trimmed.toUpperCase();
   for (const [key, value] of Object.entries(regionToHcKey)) {
     if (key.toUpperCase() === uppercase) {
@@ -136,5 +140,14 @@ export function normalizeRegionName(region: string): string {
     }
   }
 
+  // Try partial matching for governorates (e.g., "Asir " -> "Asir")
+  const normalized = trimmed.toLowerCase().replace(/\s+$/, ""); // Remove trailing spaces
+  for (const [key, value] of Object.entries(regionToHcKey)) {
+    if (key.toLowerCase().replace(/\s+$/, "") === normalized) {
+      return value;
+    }
+  }
+
+  console.warn(`[normalizeRegionName] No mapping found for: "${region}", defaulting to Riyadh`);
   return "sa-ri"; // Default to Riyadh if not found
 }
