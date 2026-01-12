@@ -565,24 +565,7 @@ const processedDataHandler: RequestHandler = async (req, res) => {
       return res.json(cachedData);
     }
 
-    // Try Supabase first if configured
-    if (isSupabaseConfigured()) {
-      try {
-        console.log(`\n🚀 ATTEMPTING TO USE SUPABASE DATA`);
-        const supabaseData = await fetchFromSupabase();
-
-        // Cache the result
-        setCached(cacheKey, supabaseData, CACHE_TTL);
-        console.log(`✓ Successfully served data from Supabase`);
-        return res.json(supabaseData);
-      } catch (supabaseError) {
-        console.warn(`⚠️  Supabase fetch failed, falling back to Google Sheets:`);
-        console.warn(`   ${supabaseError instanceof Error ? supabaseError.message : String(supabaseError)}`);
-        // Fall through to Google Sheets fetch below
-      }
-    } else {
-      console.log(`ℹ️  Supabase not configured, using Google Sheets`);
-    }
+    console.log(`ℹ️  Using Google Sheets as data source`);
 
     let csvData: string | null = null;
     let fetchError: Error | null = null;
