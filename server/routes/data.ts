@@ -763,8 +763,7 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     }
 
     console.log(`ℹ️  Fetching Never Moved COWs from Google Sheets...`);
-
-    console.log(`📡 Fetching Never Moved COWs from Dashboard sheet CSV...`);
+    console.log(`📡 CSV URL: ${NEVER_MOVED_COW_CSV_URL}`);
 
     // Create abort controller for timeout
     const controller = new AbortController();
@@ -781,8 +780,13 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: Failed to fetch Dashboard CSV`);
+      console.error(`❌ Failed to fetch Never Moved COWs CSV`);
+      console.error(`   Status: ${response.status}`);
+      console.error(`   URL: ${NEVER_MOVED_COW_CSV_URL}`);
+      throw new Error(`HTTP ${response.status}: Failed to fetch Never Moved COWs CSV`);
     }
+
+    console.log(`✓ Successfully fetched Never Moved COWs CSV`);
 
     const csvText = await response.text();
     const lines = csvText.trim().split("\n");
