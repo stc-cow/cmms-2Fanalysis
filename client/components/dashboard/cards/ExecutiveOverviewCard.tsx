@@ -231,10 +231,23 @@ export function ExecutiveOverviewCard({
 
   // Calculate Movement by Event Type data from Column R (From_Sub_Location)
   const eventTypeCounts: Record<string, number> = {};
+  const debugEventTypes: Set<string> = new Set();
   currentMonth.movements.forEach((mov) => {
-    const eventType = (mov.From_Sub_Location || "Other").trim();
+    const rawValue = mov.From_Sub_Location;
+    const eventType = (rawValue && rawValue.trim()) || "Other";
+    debugEventTypes.add(`${rawValue}|${eventType}`);
     eventTypeCounts[eventType] = (eventTypeCounts[eventType] || 0) + 1;
   });
+
+  // Debug log for first render of the month
+  if (currentMonthIndex >= 0 && currentMonth.movements.length > 0) {
+    console.debug(`[ExecutiveOverviewCard] Month ${currentMonthIndex}:`, {
+      totalMovements: currentMonth.movements.length,
+      eventTypeCounts,
+      debugSample: Array.from(debugEventTypes).slice(0, 20),
+      firstMovementFromSubLoc: currentMonth.movements[0]?.From_Sub_Location,
+    });
+  }
 
   const totalEventTypeMovements = currentMonth.movements.length;
   const movementByEventTypeData = Object.entries(eventTypeCounts)
