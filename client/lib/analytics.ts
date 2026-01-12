@@ -66,8 +66,10 @@ export function enrichMovements(
   locations: DimLocation[],
 ): CowMovementsFact[] {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
+  let preservedCount = 0;
+  let calculatedCount = 0;
 
-  return movements.map((mov) => {
+  const enriched = movements.map((mov) => {
     const fromLoc = locMap.get(mov.From_Location_ID);
     const toLoc = locMap.get(mov.To_Location_ID);
 
@@ -77,17 +79,21 @@ export function enrichMovements(
 
     // Use the Distance_KM from Column Y (Google Sheet) - this is the source of truth
     // Only calculate from coordinates if Distance_KM is missing (0 or undefined)
-    const distance =
-      mov.Distance_KM && mov.Distance_KM > 0
-        ? mov.Distance_KM
-        : fromLoc && toLoc
-          ? calculateDistance(
-              fromLoc.Latitude,
-              fromLoc.Longitude,
-              toLoc.Latitude,
-              toLoc.Longitude,
-            )
-          : 0;
+    let distance: number;
+    if (mov.Distance_KM && mov.Distance_KM > 0) {
+      distance = mov.Distance_KM;
+      preservedCount++;
+    } else if (fromLoc && toLoc) {
+      distance = calculateDistance(
+        fromLoc.Latitude,
+        fromLoc.Longitude,
+        toLoc.Latitude,
+        toLoc.Longitude,
+      );
+      calculatedCount++;
+    } else {
+      distance = 0;
+    }
 
     return {
       ...mov,
@@ -95,6 +101,14 @@ export function enrichMovements(
       Distance_KM: distance,
     };
   });
+
+  if (enriched.length > 0 && preservedCount + calculatedCount > 0) {
+    console.debug(
+      `[enrichMovements] Processed ${enriched.length} movements: ${preservedCount} preserved from API, ${calculatedCount} calculated from coordinates`,
+    );
+  }
+
+  return enriched;
 }
 
 // Calculate COW metrics
