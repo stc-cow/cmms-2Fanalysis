@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useRef, memo } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { normalizeRegionName } from "@/lib/saudiRegionMapping";
