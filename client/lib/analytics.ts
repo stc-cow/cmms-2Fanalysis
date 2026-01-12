@@ -20,6 +20,16 @@ export interface WarehouseHubTimeData {
   departureDate: string;
 }
 
+export interface OffAirStay {
+  cowId: string;
+  fromLocation: string;
+  toWarehouse: string;
+  idleStartDate: string;
+  idleEndDate: string;
+  idleDays: number;
+  offAirStatus: "Yes";
+}
+
 export interface COWStayDays {
   cowId: string;
   totalStayDays: number;
