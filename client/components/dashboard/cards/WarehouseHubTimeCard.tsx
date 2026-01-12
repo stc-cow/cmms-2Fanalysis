@@ -59,13 +59,16 @@ export function WarehouseHubTimeCard({
   }, [tableData, cowIdFilter]);
 
   // Chart data - ALWAYS shows ALL COWs in their buckets (never filtered)
-  // Ensure we have valid data with at least one non-zero bucket
   const chartData = useMemo(() => {
-    const data = buckets.map((b) => ({
+    return buckets.map((b) => ({
       name: b.bucket,
       count: b.count,
     }));
-    return data;
+  }, [buckets]);
+
+  // Check if there's any data in the buckets
+  const hasChartData = useMemo(() => {
+    return buckets.some((b) => b.count > 0);
   }, [buckets]);
 
   // Handle chart bar click - finds first COW in bucket from ALL COWs
