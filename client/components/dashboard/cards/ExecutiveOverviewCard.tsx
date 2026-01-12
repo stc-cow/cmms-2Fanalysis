@@ -310,41 +310,32 @@ export function ExecutiveOverviewCard({
   const VendorXAxisTick = (props: any) => {
     const { x, y, payload } = props;
     const vendorName = payload.value;
-    const vendorLogo = VENDOR_LOGOS[vendorName];
+    const vendorColor = VENDOR_COLORS[vendorName];
+    const bgColor = vendorColor?.bgColor || "#f0f0f0";
+    const textColor = vendorColor?.color || "#666";
 
     return (
       <g transform={`translate(${x},${y})`}>
-        {vendorLogo ? (
-          <image
-            x="-8"
-            y="-8"
-            width="16"
-            height="16"
-            href={vendorLogo}
-            preserveAspectRatio="xMidYMid slice"
-          />
-        ) : (
-          <>
-            <circle
-              cx="0"
-              cy="0"
-              r="8"
-              fill="#f0f0f0"
-              stroke="#999"
-              strokeWidth="1"
-            />
-            <text
-              x="0"
-              y="3"
-              textAnchor="middle"
-              fontSize="7"
-              fontWeight="bold"
-              fill="#666"
-            >
-              {vendorName.substring(0, 1)}
-            </text>
-          </>
-        )}
+        <rect
+          x="-10"
+          y="-10"
+          width="20"
+          height="20"
+          rx="3"
+          fill={bgColor}
+          stroke={textColor}
+          strokeWidth="1.5"
+        />
+        <text
+          x="0"
+          y="5"
+          textAnchor="middle"
+          fontSize="10"
+          fontWeight="bold"
+          fill={textColor}
+        >
+          {vendorName.substring(0, 1).toUpperCase()}
+        </text>
       </g>
     );
   };
