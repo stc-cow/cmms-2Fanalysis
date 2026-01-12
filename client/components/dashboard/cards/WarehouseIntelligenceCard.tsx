@@ -230,47 +230,51 @@ export function WarehouseIntelligenceCard({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {warehouseMetrics.slice(0, 12).map((m) => (
-                <TableRow
-                  key={m!.Location_ID}
-                  className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30"
-                >
-                  <TableCell className="font-medium py-3">
-                    {m!.Location_Name}
-                  </TableCell>
-                  <TableCell className="py-3 text-gray-600 dark:text-gray-400">
-                    <span className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold">
-                      {
-                        warehouses.find((w) => w.Location_ID === m!.Location_ID)
-                          ?.Region
-                      }
-                    </span>
-                  </TableCell>
-                  <TableCell className="py-3 text-gray-600 dark:text-gray-400">
-                    <span className="inline-block px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold">
-                      {
-                        warehouses.find((w) => w.Location_ID === m!.Location_ID)
-                          ?.Owner
-                      }
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right py-3 font-semibold text-green-600 dark:text-green-400">
-                    {m!.Outgoing_Movements}
-                  </TableCell>
-                  <TableCell className="text-right py-3 font-semibold text-amber-600 dark:text-amber-400">
-                    {m!.Incoming_Movements}
-                  </TableCell>
-                  <TableCell className="text-right py-3">
-                    {m!.Avg_Outgoing_Distance.toFixed(0)} km
-                  </TableCell>
-                  <TableCell className="text-right py-3">
-                    {m!.Avg_Incoming_Distance.toFixed(0)} km
-                  </TableCell>
-                  <TableCell className="text-right py-3">
-                    {m!.Idle_Accumulation_Days.toFixed(1)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {(selectedRegion ? filteredMetrics : warehouseMetrics)
+                .slice(0, 12)
+                .map((m) => (
+                  <TableRow
+                    key={m!.Location_ID}
+                    className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30"
+                  >
+                    <TableCell className="font-medium py-3">
+                      {m!.Location_Name}
+                    </TableCell>
+                    <TableCell className="py-3 text-gray-600 dark:text-gray-400">
+                      <span className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold">
+                        {
+                          warehouses.find(
+                            (w) => w.Location_ID === m!.Location_ID,
+                          )?.Region
+                        }
+                      </span>
+                    </TableCell>
+                    <TableCell className="py-3 text-gray-600 dark:text-gray-400">
+                      <span className="inline-block px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs font-semibold">
+                        {
+                          warehouses.find(
+                            (w) => w.Location_ID === m!.Location_ID,
+                          )?.Owner
+                        }
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right py-3 font-semibold text-green-600 dark:text-green-400">
+                      {m!.Outgoing_Movements}
+                    </TableCell>
+                    <TableCell className="text-right py-3 font-semibold text-amber-600 dark:text-amber-400">
+                      {m!.Incoming_Movements}
+                    </TableCell>
+                    <TableCell className="text-right py-3">
+                      {m!.Avg_Outgoing_Distance.toFixed(0)} km
+                    </TableCell>
+                    <TableCell className="text-right py-3">
+                      {m!.Avg_Incoming_Distance.toFixed(0)} km
+                    </TableCell>
+                    <TableCell className="text-right py-3">
+                      {m!.Idle_Accumulation_Days.toFixed(1)}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
