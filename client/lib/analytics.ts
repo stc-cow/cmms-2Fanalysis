@@ -879,38 +879,51 @@ export interface TopEventData {
 export function calculateTopEvents(
   movements: CowMovementsFact[],
 ): TopEventData[] {
-  const eventCounts = new Map<string, number>();
+  // Map from normalized key -> { canonicalName, count }
+  const eventMap = new Map<string, { canonicalName: string; count: number }>();
 
   // Filter and aggregate events
   movements.forEach((mov) => {
     const event = mov.Top_Event || mov.To_Sub_Location;
     if (!event) return;
 
-    const normalizedEvent = event.trim().toUpperCase();
+    // Normalize: trim, lowercase for comparison
+    const trimmedEvent = event.trim();
+    const normalizedKey = trimmedEvent.toLowerCase();
 
-    // Exclude WH and Others
+    // Exclude WH, Others, and blank entries
     if (
-      normalizedEvent === "WH" ||
-      normalizedEvent === "OTHERS" ||
-      normalizedEvent === ""
+      normalizedKey === "wh" ||
+      normalizedKey === "others" ||
+      normalizedKey === "other" ||
+      normalizedKey === ""
     ) {
       return;
     }
 
-    // Count movement
-    eventCounts.set(event, (eventCounts.get(event) || 0) + 1);
+    // Get or create entry
+    if (!eventMap.has(normalizedKey)) {
+      eventMap.set(normalizedKey, {
+        canonicalName: trimmedEvent, // Store first occurrence with original casing
+        count: 0,
+      });
+    }
+
+    // Increment count
+    const entry = eventMap.get(normalizedKey)!;
+    entry.count += 1;
   });
 
   // Calculate total for percentage
-  const totalMovements = Array.from(eventCounts.values()).reduce(
-    (sum, count) => sum + count,
+  const totalMovements = Array.from(eventMap.values()).reduce(
+    (sum, entry) => sum + entry.count,
     0,
   );
 
   // Convert to array and sort by count descending
-  const eventData: TopEventData[] = Array.from(eventCounts.entries())
-    .map(([eventName, count]) => ({
-      eventName,
+  const eventData: TopEventData[] = Array.from(eventMap.entries())
+    .map(([, { canonicalName, count }]) => ({
+      eventName: canonicalName,
       movementCount: count,
       percentage:
         totalMovements > 0
