@@ -407,11 +407,11 @@ export function ExecutiveOverviewCard({
       </div>
 
       {/* Main Split Layout: Map + Vendor (60%) | KPIs + Charts (40%) */}
-      <div className="flex flex-col lg:flex-row flex-1 gap-3 p-3 overflow-hidden">
+      <div className="flex flex-col lg:flex-row flex-1 gap-3 p-3 overflow-y-auto">
         {/* LEFT PANEL (60%): Map + Vendor Chart */}
-        <div className="w-full lg:w-3/5 flex flex-col gap-3 min-h-0">
+        <div className="w-full lg:w-3/5 flex flex-col gap-3 min-h-fit lg:min-h-0">
           {/* Movement Distribution Map (65% of left panel) */}
-          <div className="flex-1 min-h-0 bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          <div className="flex-1 min-h-[500px] bg-white rounded-lg border border-gray-200 shadow-sm">
             <SaudiHighchartsMap
               regionMetrics={regionMetrics || {}}
               maxMetric={maxMetric}
@@ -420,7 +420,7 @@ export function ExecutiveOverviewCard({
           </div>
 
           {/* Top Vendor Chart (35% of left panel) */}
-          <div className="h-48 bg-white rounded-lg p-3 border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+          <div className="h-48 bg-white rounded-lg p-3 border border-gray-200 shadow-sm flex flex-col">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-gray-900 text-sm font-bold">Top Vendor</h3>
               {topVendor && (
