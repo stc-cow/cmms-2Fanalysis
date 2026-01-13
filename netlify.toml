@@ -1,6 +1,5 @@
 [build]
-  command = "pnpm install && pnpm run build:client"
-  functions = "netlify/functions"
+  command = "pnpm install && pnpm run build"
   publish = "dist/spa"
 
 [build.environment]
@@ -10,3 +9,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+[dev]
+  command = "pnpm run dev"
+  port = 3000
