@@ -183,7 +183,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
 
       {/* Statistics summary - Three categories */}
       <div className="flex-shrink-0 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 px-3 sm:px-4 md:px-6">
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#8b5cf6",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             ROYAL Movements
           </div>
@@ -192,7 +198,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
             {((royalCount / totalMovements) * 100).toFixed(1)}% of total
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#fbbf24",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             EBU Movements
           </div>
@@ -201,7 +213,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
             {((ebuCount / totalMovements) * 100).toFixed(1)}% of total
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#6b7280",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             NON EBU Movements
           </div>
@@ -210,7 +228,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
             {((nonEbuCount / totalMovements) * 100).toFixed(1)}% of total
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#8b5cf6",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             Avg ROYAL Distance
           </div>
@@ -218,7 +242,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
             {distanceData[0].distance.toFixed(0)} KM
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#fbbf24",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             Avg EBU Distance
           </div>
@@ -226,7 +256,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
             {distanceData[1].distance.toFixed(0)} KM
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#6b7280",
+          }}
+        >
           <div className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
             Avg NON EBU Distance
           </div>
