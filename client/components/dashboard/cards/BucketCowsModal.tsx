@@ -88,20 +88,34 @@ export function BucketCowsModal({
             <Table className="text-sm">
               <TableHeader className="sticky top-0 bg-white dark:bg-slate-900 z-10">
                 <TableRow className="bg-gray-50 dark:bg-gray-900">
-                  <TableHead className="text-left py-3">COW ID</TableHead>
-                  <TableHead className="text-center py-3">
-                    Total Movement Times
+                  <TableHead
+                    className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                    onClick={() => setSortColumn("cowId")}
+                  >
+                    COW ID{getSortIndicator("cowId")}
                   </TableHead>
-                  <TableHead className="text-center py-3">
-                    Average Off-Air Idle Days
+                  <TableHead
+                    className="text-center py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                    onClick={() => setSortColumn("totalMovementTimes")}
+                  >
+                    Total Movement Times{getSortIndicator("totalMovementTimes")}
                   </TableHead>
-                  <TableHead className="text-left py-3">
-                    Top Off-Air Warehouse
+                  <TableHead
+                    className="text-center py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                    onClick={() => setSortColumn("avgOffAirIdleDays")}
+                  >
+                    Average Off-Air Idle Days{getSortIndicator("avgOffAirIdleDays")}
+                  </TableHead>
+                  <TableHead
+                    className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                    onClick={() => setSortColumn("topOffAirWarehouse")}
+                  >
+                    Top Off-Air Warehouse{getSortIndicator("topOffAirWarehouse")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {bucketData.map((row) => (
+                {sortedBucketData.map((row) => (
                   <TableRow
                     key={row.cowId}
                     className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors"
