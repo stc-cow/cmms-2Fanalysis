@@ -891,11 +891,12 @@ export function calculateTopEvents(
     const trimmedEvent = event.trim();
     const normalizedKey = trimmedEvent.toLowerCase();
 
-    // Exclude WH, Others, and blank entries
+    // Exclude WH, Others, #N/A, and blank entries
     if (
       normalizedKey === "wh" ||
       normalizedKey === "others" ||
       normalizedKey === "other" ||
+      normalizedKey === "#n/a" ||
       normalizedKey === ""
     ) {
       return;
