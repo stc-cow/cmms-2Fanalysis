@@ -176,6 +176,7 @@ function parseCSVData(csvText: unknown): Movement[] {
     )?.index;
 
     const movements: Movement[] = [];
+    let serialNumber = 1;
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i]?.trim();
@@ -186,22 +187,18 @@ function parseCSVData(csvText: unknown): Movement[] {
 
       if (!cowId) continue;
 
+      // Ensure required datetime fields exist
+      const movedDt = cells[movedDateTimeIdx]?.trim() || new Date().toISOString();
+      const reachedDt = cells[reachedDateTimeIdx]?.trim() || new Date().toISOString();
+
       const movement: Movement = {
+        SN: serialNumber++,
         COW_ID: cowId,
         From_Location_ID: cells[fromLocationIdx]?.trim() || "",
         To_Location_ID: cells[toLocationIdx]?.trim() || "",
+        Moved_DateTime: movedDt,
+        Reached_DateTime: reachedDt,
       };
-
-      // Add datetime fields
-      const movedDt = cells[movedDateTimeIdx]?.trim();
-      if (movedDt) {
-        movement.Moved_DateTime = movedDt;
-      }
-
-      const reachedDt = cells[reachedDateTimeIdx]?.trim();
-      if (reachedDt) {
-        movement.Reached_DateTime = reachedDt;
-      }
 
       // Add sub-location fields
       if (fromSubLocIdx !== undefined) {
