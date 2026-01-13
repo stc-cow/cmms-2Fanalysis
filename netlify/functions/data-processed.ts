@@ -317,15 +317,57 @@ const handler: Handler = async () => {
     // Build dimension arrays
     const cowSet = new Set<string>();
     const cowMovementCount = new Map<string, number>();
-    const locationSet = new Set<string>();
+    const locationMap = new Map<
+      string,
+      {
+        Location_ID: string;
+        Location_Name: string;
+        Latitude?: number;
+        Longitude?: number;
+        Region?: string;
+        Governorate?: string;
+      }
+    >();
     const eventSet = new Set<string>();
     const vendorSet = new Set<string>();
 
     movements.forEach((m) => {
       cowSet.add(m.COW_ID);
-      cowMovementCount.set(m.COW_ID, (cowMovementCount.get(m.COW_ID) || 0) + 1);
-      if (m.From_Location_ID) locationSet.add(m.From_Location_ID);
-      if (m.To_Location_ID) locationSet.add(m.To_Location_ID);
+      cowMovementCount.set(
+        m.COW_ID,
+        (cowMovementCount.get(m.COW_ID) || 0) + 1,
+      );
+
+      // Track From Location with coordinates and region
+      if (m.From_Location_ID) {
+        if (!locationMap.has(m.From_Location_ID)) {
+          locationMap.set(m.From_Location_ID, {
+            Location_ID: m.From_Location_ID,
+            Location_Name: m.From_Location_ID,
+          });
+        }
+        const fromLoc = locationMap.get(m.From_Location_ID)!;
+        if (m.From_Latitude !== undefined) fromLoc.Latitude = m.From_Latitude;
+        if (m.From_Longitude !== undefined)
+          fromLoc.Longitude = m.From_Longitude;
+        if (m.Region_From) fromLoc.Region = m.Region_From;
+      }
+
+      // Track To Location with coordinates and region
+      if (m.To_Location_ID) {
+        if (!locationMap.has(m.To_Location_ID)) {
+          locationMap.set(m.To_Location_ID, {
+            Location_ID: m.To_Location_ID,
+            Location_Name: m.To_Location_ID,
+          });
+        }
+        const toLoc = locationMap.get(m.To_Location_ID)!;
+        if (m.To_Latitude !== undefined) toLoc.Latitude = m.To_Latitude;
+        if (m.To_Longitude !== undefined) toLoc.Longitude = m.To_Longitude;
+        if (m.Region_To) toLoc.Region = m.Region_To;
+        if (m.Governorate) toLoc.Governorate = m.Governorate;
+      }
+
       if (m.Top_Event) eventSet.add(m.Top_Event);
       if (m.Vendor) vendorSet.add(m.Vendor);
     });
@@ -335,10 +377,7 @@ const handler: Handler = async () => {
       cows: Array.from(cowSet).map((id) => ({
         COW_ID: id,
       })),
-      locations: Array.from(locationSet).map((id) => ({
-        Location_ID: id,
-        Location_Name: id,
-      })),
+      locations: Array.from(locationMap.values()),
       events: Array.from(eventSet).map((id) => ({
         Event_ID: id,
         Event_Name: id,
