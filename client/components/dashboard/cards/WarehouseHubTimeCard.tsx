@@ -7,6 +7,15 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Cell,
+  Defs,
+  LinearGradient,
+  Filter,
+  FeGaussianBlur,
+  FeOffset,
+  FeComponentTransfer,
+  FeFlood,
+  feGaussianBlur,
 } from "recharts";
 import { CowMovementsFact, DimLocation } from "@shared/models";
 import {
@@ -30,7 +39,14 @@ interface WarehouseHubTimeCardProps {
   locations: DimLocation[];
 }
 
-const CHART_COLOR = "#3b82f6";
+// Color palette for each bucket with 3D gradient effects
+const BUCKET_COLORS = [
+  { gradient: "url(#gradient0)", color: "#3b82f6", dark: "#1e40af" }, // Blue - 0-3 Months
+  { gradient: "url(#gradient1)", color: "#06b6d4", dark: "#0891b2" }, // Cyan - 4-6 Months
+  { gradient: "url(#gradient2)", color: "#10b981", dark: "#047857" }, // Green - 7-9 Months
+  { gradient: "url(#gradient3)", color: "#f59e0b", dark: "#d97706" }, // Amber - 10-12 Months
+  { gradient: "url(#gradient4)", color: "#ef4444", dark: "#dc2626" }, // Red - 12+ Months
+];
 
 export function WarehouseHubTimeCard({
   movements,
