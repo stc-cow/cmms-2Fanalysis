@@ -113,7 +113,7 @@ const handler: Handler = async () => {
       }));
 
     const responseData = {
-      neverMovedCows,
+      cows: neverMovedCows,
       totalCount: neverMovedCows.length,
       timestamp: new Date().toISOString(),
     };
