@@ -178,7 +178,8 @@ export function calculateCowMetrics(
     Avg_Idle_Duration_Days: Math.round(avgIdleDuration * 100) / 100,
     Is_Static: isStatic,
     Last_Movement_Date:
-      cowMovements.length > 0
+      cowMovements.length > 0 &&
+      cowMovements[cowMovements.length - 1].Reached_DateTime
         ? cowMovements[cowMovements.length - 1].Reached_DateTime.split("T")[0]
         : undefined,
     Regions_Served: regionsServed,
