@@ -91,7 +91,7 @@ export function generateTimelineMonths(
       cowId: mov.COW_ID,
       distance: mov.Distance_KM || 0,
       movementType: mov.Movement_Type || "Zero",
-      vendor: cow.Vendor,
+      vendor: mov.Vendor || "Unknown",
       month: monthKey,
       date: mov.Moved_DateTime
         ? mov.Moved_DateTime.split("T")[0]
@@ -111,8 +111,9 @@ export function generateTimelineMonths(
     timeline.movementCounts[
       mapLine.movementType as keyof typeof timeline.movementCounts
     ]++;
-    timeline.vendorCounts[cow.Vendor] =
-      (timeline.vendorCounts[cow.Vendor] || 0) + 1;
+    const vendorName = mov.Vendor || "Unknown";
+    timeline.vendorCounts[vendorName] =
+      (timeline.vendorCounts[vendorName] || 0) + 1;
   });
 
   // Sort by date using cached sort key (year*12 + month is more efficient than Date parsing)
