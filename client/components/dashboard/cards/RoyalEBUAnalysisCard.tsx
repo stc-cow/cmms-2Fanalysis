@@ -141,7 +141,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
         </div>
 
         {/* Average distance comparison */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#8b5cf6",
+          }}
+        >
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
             Average Distance Deployed
           </h3>
