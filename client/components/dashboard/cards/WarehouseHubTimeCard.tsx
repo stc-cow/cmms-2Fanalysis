@@ -36,14 +36,17 @@ export function WarehouseHubTimeCard({
   movements,
   locations,
 }: WarehouseHubTimeCardProps) {
-  // State for modal
+  // State for modals
   const [selectedCowForModal, setSelectedCowForModal] = useState<string | null>(
     null,
   );
+  const [selectedBucketForModal, setSelectedBucketForModal] = useState<
+    string | null
+  >(null);
   const [forceRender, setForceRender] = useState(false);
 
   // Calculate off-air warehouse aging data (memoized to prevent unnecessary recalculations)
-  const { buckets, tableData, cowAgingMap } = useMemo(
+  const { buckets, tableData, cowAgingMap, bucketCows } = useMemo(
     () => calculateOffAirWarehouseAging(movements, locations),
     [movements, locations],
   );
