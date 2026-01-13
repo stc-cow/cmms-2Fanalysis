@@ -174,7 +174,6 @@ export function TopEventsMovementCard({
         }}
       >
         <div className="flex flex-col items-center justify-center gap-3">
-          <div className="text-4xl sm:text-5xl">📊</div>
           <div className="text-center">
             <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
               Total Event Movements
