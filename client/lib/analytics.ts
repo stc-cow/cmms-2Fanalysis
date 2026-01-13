@@ -766,10 +766,17 @@ export function calculateOffAirWarehouseAging(
     })
     .sort((a, b) => b.avgOffAirIdleDays - a.avgOffAirIdleDays);
 
+  // Convert Sets to Arrays for easier use
+  const bucketCowsMap = new Map<string, string[]>();
+  bucketCounts.forEach((cowSet, bucketName) => {
+    bucketCowsMap.set(bucketName, Array.from(cowSet).sort());
+  });
+
   return {
     buckets,
     tableData,
     cowAgingMap,
+    bucketCows: bucketCowsMap,
   };
 }
 
