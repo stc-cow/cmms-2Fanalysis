@@ -153,6 +153,18 @@ const handler: Handler = async () => {
           if (cells[43]) cowRecord.First_Deploy_Date = cells[43].trim();
           if (cells[44]) cowRecord.Vendor = cells[44].trim();
 
+          // Calculate Days_On_Air from First_Deploy_Date
+          if (cells[43]) {
+            const firstDeployDate = new Date(cells[43].trim());
+            if (!isNaN(firstDeployDate.getTime())) {
+              const today = new Date();
+              const daysOnAir = Math.floor(
+                (today.getTime() - firstDeployDate.getTime()) / (1000 * 60 * 60 * 24)
+              );
+              cowRecord.Days_On_Air = Math.max(0, daysOnAir);
+            }
+          }
+
           staticCowData.set(staticCowId, cowRecord);
         }
       }
