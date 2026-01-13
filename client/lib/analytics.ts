@@ -936,3 +936,35 @@ export function calculateTopEvents(
 
   return eventData;
 }
+
+// Calculate total movements across all events (excluding WH, Others, #N/A, blanks)
+export function calculateAllEventsTotalMovements(
+  movements: CowMovementsFact[],
+): number {
+  let totalCount = 0;
+
+  movements.forEach((mov) => {
+    const event = mov.Top_Event || mov.To_Sub_Location;
+    if (!event) return;
+
+    // Normalize: trim, lowercase for comparison
+    const trimmedEvent = event.trim();
+    const normalizedKey = trimmedEvent.toLowerCase();
+
+    // Exclude WH, Others, #N/A, and blank entries
+    if (
+      normalizedKey === "wh" ||
+      normalizedKey === "others" ||
+      normalizedKey === "other" ||
+      normalizedKey === "#n/a" ||
+      normalizedKey === ""
+    ) {
+      return;
+    }
+
+    // Count this movement
+    totalCount += 1;
+  });
+
+  return totalCount;
+}
