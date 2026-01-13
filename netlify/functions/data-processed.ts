@@ -454,6 +454,21 @@ const handler: Handler = async () => {
       timestamp: new Date().toISOString(),
     };
 
+    // Log final response structure for debugging
+    console.log(`Response structure:
+  movements: ${responseData.movements.length}
+  cows: ${responseData.cows.length}
+  locations: ${responseData.locations.length}
+  events: ${responseData.events.length}
+  vendors: ${responseData.vendors.length}`);
+
+    const cowWithVendors = responseData.cows.filter(
+      (c) => c.Vendor && c.Vendor !== "Unknown",
+    ).length;
+    console.log(
+      `COWs with vendor data: ${cowWithVendors} / ${responseData.cows.length}`,
+    );
+
     // Cache the response
     setCache("processed-data-v2", responseData);
     console.log("Data cached successfully");
