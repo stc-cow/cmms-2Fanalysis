@@ -70,7 +70,32 @@ interface Movement {
   Region_To?: string;
   Vendor?: string;
   Governorate?: string;
+  Is_Royal?: boolean;
+  Is_EBU?: boolean;
+  EbuRoyalCategory?: "ROYAL" | "EBU" | "NON EBU";
   [key: string]: unknown;
+}
+
+function classifyEbuRoyal(flag: string | undefined): {
+  isRoyal: boolean;
+  isEBU: boolean;
+  category: "ROYAL" | "EBU" | "NON EBU";
+} {
+  if (!flag || flag.trim() === "") {
+    return { isRoyal: false, isEBU: false, category: "NON EBU" };
+  }
+
+  const normalized = flag.trim().toLowerCase();
+
+  if (normalized === "royal") {
+    return { isRoyal: true, isEBU: false, category: "ROYAL" };
+  } else if (normalized === "ebu") {
+    return { isRoyal: false, isEBU: true, category: "EBU" };
+  } else if (normalized === "non ebu" || normalized === "non-ebu") {
+    return { isRoyal: false, isEBU: false, category: "NON EBU" };
+  } else {
+    return { isRoyal: false, isEBU: false, category: "NON EBU" };
+  }
 }
 
 function parseCSVData(csvText: unknown): Movement[] {
