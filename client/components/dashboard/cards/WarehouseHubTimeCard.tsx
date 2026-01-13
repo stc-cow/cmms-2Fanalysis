@@ -109,8 +109,8 @@ export function WarehouseHubTimeCard({
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Off-Air Warehouse Aging
           </h3>
-          <div className="flex-1" style={{ width: "100%" }}>
-            <ResponsiveContainer width="100%" height={350}>
+          <div style={{ width: "100%", height: "400px" }}>
+            <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 key={`chart-${forceRender}`}
                 data={chartData}
