@@ -411,6 +411,7 @@ const handler: Handler = async () => {
       movements,
       cows: Array.from(cowSet).map((id) => ({
         COW_ID: id,
+        Vendor: cowVendorMap.get(id) || "Unknown",
       })),
       locations: Array.from(locationMap.values()),
       events: Array.from(eventSet).map((id) => ({
