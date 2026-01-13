@@ -190,10 +190,14 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
         <div className="p-4 border-b bg-gray-50">
           <h3 className="font-semibold text-gray-900">Location Map</h3>
           <p className="text-xs text-gray-600 mt-1">
-            Click on a COW marker to view full details ({neverMovedCows.length} COWs)
+            Click on a COW marker to view full details ({neverMovedCows.length}{" "}
+            COWs)
           </p>
         </div>
-        <NeverMovedCowMap cows={neverMovedCows} onCowSelected={setSelectedCow} />
+        <NeverMovedCowMap
+          cows={neverMovedCows}
+          onCowSelected={setSelectedCow}
+        />
       </div>
 
       {/* Full Details Modal - Rendered as Portal to appear above map */}
@@ -205,11 +209,13 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
           >
             <div
               className="bg-white dark:bg-slate-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
-              style={{ position: 'relative', zIndex: 1 }}
+              style={{ position: "relative", zIndex: 1 }}
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between bg-gradient-to-r from-blue-500 to-blue-600 p-6 flex-shrink-0">
-                <h2 className="text-2xl font-bold text-white">{selectedCow.COW_ID}</h2>
+                <h2 className="text-2xl font-bold text-white">
+                  {selectedCow.COW_ID}
+                </h2>
                 <button
                   onClick={() => setSelectedCow(null)}
                   className="text-white hover:bg-blue-700 rounded-lg p-2 transition-colors"
@@ -290,7 +296,9 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
                         1st Deploy Date
                       </label>
                       <p className="text-sm font-medium text-gray-900 dark:text-white mt-1">
-                        {new Date(selectedCow.First_Deploy_Date).toLocaleDateString()}
+                        {new Date(
+                          selectedCow.First_Deploy_Date,
+                        ).toLocaleDateString()}
                       </p>
                     </div>
 
@@ -299,7 +307,9 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
                         Last Deploy Date
                       </label>
                       <p className="text-sm font-medium text-gray-900 dark:text-white mt-1">
-                        {new Date(selectedCow.Last_Deploy_Date).toLocaleDateString()}
+                        {new Date(
+                          selectedCow.Last_Deploy_Date,
+                        ).toLocaleDateString()}
                       </p>
                     </div>
 
@@ -320,7 +330,8 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
                     GPS Coordinates
                   </label>
                   <p className="text-sm font-mono text-gray-700 dark:text-gray-300">
-                    {selectedCow.Latitude.toFixed(4)}, {selectedCow.Longitude.toFixed(4)}
+                    {selectedCow.Latitude.toFixed(4)},{" "}
+                    {selectedCow.Longitude.toFixed(4)}
                   </p>
                 </div>
               </div>

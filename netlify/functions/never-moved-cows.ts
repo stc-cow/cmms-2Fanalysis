@@ -159,7 +159,8 @@ const handler: Handler = async () => {
             if (!isNaN(firstDeployDate.getTime())) {
               const today = new Date();
               const daysOnAir = Math.floor(
-                (today.getTime() - firstDeployDate.getTime()) / (1000 * 60 * 60 * 24)
+                (today.getTime() - firstDeployDate.getTime()) /
+                  (1000 * 60 * 60 * 24),
               );
               cowRecord.Days_On_Air = Math.max(0, daysOnAir);
             }
