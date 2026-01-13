@@ -465,8 +465,8 @@ export function calculateWarehouseHubTime(
             cowId,
             warehouseName: warehouse.Location_Name,
             stayDays: Math.round(stayDays * 100) / 100,
-            arrivalDate: currentMovement.Reached_DateTime.split("T")[0],
-            departureDate: nextMovement.Moved_DateTime.split("T")[0],
+            arrivalDate: currentMovement.Reached_DateTime ? currentMovement.Reached_DateTime.split("T")[0] : "",
+            departureDate: nextMovement.Moved_DateTime ? nextMovement.Moved_DateTime.split("T")[0] : "",
           });
         }
       }
