@@ -35,8 +35,8 @@ interface EventLogo {
 const EVENT_LOGOS: Record<string, EventLogo> = {
   "riyadh season": {
     name: "Riyadh Season",
-    emoji: "🎪",
-    color: "#9f1d20",
+    imageUrl: "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Faf509990f22c404abfcd24961f6298a9?format=webp&width=800",
+    color: "#FF6B35",
   },
   "jeddah season": {
     name: "Jeddah Season",
@@ -45,7 +45,7 @@ const EVENT_LOGOS: Record<string, EventLogo> = {
   },
   hajj: {
     name: "Hajj",
-    emoji: "⛩️",
+    imageUrl: "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F05c92686d68d4c299e9942cf600d9266?format=webp&width=800",
     color: "#1f4788",
   },
   "formula 1": {
