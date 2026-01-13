@@ -332,23 +332,6 @@ export function TopEventsMovementCard({
         )}
       </div>
 
-      {/* Summary Stats */}
-      <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-lg border border-blue-200 dark:border-blue-700/50 p-3 sm:p-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs sm:text-sm font-semibold text-blue-600 dark:text-blue-300 uppercase tracking-wide">
-              Total Event Movements (Filtered)
-            </p>
-            <p className="text-2xl sm:text-3xl font-bold text-blue-900 dark:text-blue-100 mt-1">
-              {totalMovements}
-            </p>
-          </div>
-          <div className="text-right text-xs sm:text-sm text-blue-600 dark:text-blue-300">
-            <p>Showing {topEvents.length} events</p>
-            <p className="text-xs">WH & Others excluded</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
