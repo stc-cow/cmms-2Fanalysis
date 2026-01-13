@@ -72,27 +72,9 @@ export function WarehouseHubTimeCard({
     return buckets.some((b) => b.count > 0);
   }, [buckets]);
 
-  // Handle chart bar click - finds first COW in bucket from ALL COWs
+  // Handle chart bar click - show modal with all COWs in bucket
   const handleChartClick = (bucketName: string) => {
-    let targetCowId: string | null = null;
-
-    cowAgingMap.forEach((months, cowId) => {
-      if (targetCowId) return;
-
-      if (
-        (bucketName === "0-3 Months" && months <= 3) ||
-        (bucketName === "4-6 Months" && months > 3 && months <= 6) ||
-        (bucketName === "7-9 Months" && months > 6 && months <= 9) ||
-        (bucketName === "10-12 Months" && months > 9 && months <= 12) ||
-        (bucketName === "More than 12 Months" && months > 12)
-      ) {
-        targetCowId = cowId;
-      }
-    });
-
-    if (targetCowId) {
-      setSelectedCowForModal(targetCowId);
-    }
+    setSelectedBucketForModal(bucketName);
   };
 
   // Handle table row click
