@@ -1,12 +1,5 @@
 import { useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { NeverMovedCow } from "@shared/models";
 import { NeverMovedCowMap } from "./NeverMovedCowMap";
