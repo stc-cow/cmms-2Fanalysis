@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { OffAirAgingTableRow } from "@/lib/analytics";
+import { useSortableTable } from "@/hooks/useSortableTable";
 
 interface BucketCowsModalProps {
   open: boolean;
