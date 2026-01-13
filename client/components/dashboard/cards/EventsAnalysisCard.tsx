@@ -117,7 +117,13 @@ export function EventsAnalysisCard({
       {/* Charts Section - Responsive Height */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 h-72 sm:h-80 md:h-96">
         {/* Event distribution pie */}
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col">
+        <div
+          className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: "#8b5cf6",
+          }}
+        >
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Movements by Event Type
           </h3>
