@@ -280,6 +280,14 @@ function parseCSVData(csvText: unknown): Movement[] {
     }
 
     console.log(`Parsed ${movements.length} movements from CSV`);
+
+    // Log vendor extraction debug info
+    const vendorSample = movements.slice(0, 5).map(m => ({
+      COW_ID: m.COW_ID,
+      Vendor: m.Vendor,
+    }));
+    console.log(`Sample movements with vendor data:`, JSON.stringify(vendorSample, null, 2));
+
     return movements;
   } catch (error) {
     console.error("Error parsing CSV:", error);
