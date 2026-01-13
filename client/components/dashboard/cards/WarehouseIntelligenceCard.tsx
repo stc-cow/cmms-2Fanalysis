@@ -95,6 +95,32 @@ export function WarehouseIntelligenceCard({
     [warehouses],
   );
 
+  // Prepare table data for sorting
+  const tableData = useMemo(
+    () =>
+      (selectedRegion ? filteredMetrics : warehouseMetrics)
+        .filter((m) => m !== null)
+        .map((m) => ({
+          Location_ID: m!.Location_ID,
+          Location_Name: m!.Location_Name,
+          Region: warehouses.find((w) => w.Location_ID === m!.Location_ID)?.Region || "",
+          Outgoing_Movements: m!.Outgoing_Movements,
+          Incoming_Movements: m!.Incoming_Movements,
+        })),
+    [selectedRegion, filteredMetrics, warehouseMetrics, warehouses],
+  );
+
+  // Set up table sorting
+  const {
+    sortedData: sortedTableData,
+    setSortColumn,
+    getSortIndicator,
+  } = useSortableTable({
+    data: tableData,
+    initialSortColumn: "Outgoing_Movements",
+    initialSortDirection: "desc",
+  });
+
   // Colorful bar colors for warehouse charts
   const WAREHOUSE_COLORS = [
     "#3b82f6", // Blue
