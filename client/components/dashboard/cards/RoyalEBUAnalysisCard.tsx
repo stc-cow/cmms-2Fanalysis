@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import { CowMovementsFact } from "@shared/models";
 
@@ -66,6 +67,13 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
   const nonEbuDistance = movements
     .filter((m) => m.EbuRoyalCategory === "NON EBU")
     .reduce((sum, m) => sum + (m.Distance_KM || 0), 0);
+
+  // Category colors
+  const CATEGORY_COLORS = {
+    ROYAL: "#8b5cf6", // Purple
+    EBU: "#fbbf24", // Amber
+    "NON EBU": "#6b7280", // Gray
+  };
 
   const distanceData = [
     {
@@ -142,8 +150,16 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                   border: "1px solid #e5e7eb",
                   borderRadius: "8px",
                 }}
+                formatter={(value: number) => `${value.toFixed(0)} KM`}
               />
-              <Bar dataKey="distance" fill="#ec4899" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="distance" radius={[8, 8, 0, 0]}>
+                {distanceData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={CATEGORY_COLORS[entry.type as keyof typeof CATEGORY_COLORS]}
+                  />
+                ))}
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
