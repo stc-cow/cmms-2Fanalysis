@@ -8,14 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
-  Defs,
-  LinearGradient,
-  Filter,
-  FeGaussianBlur,
-  FeOffset,
-  FeComponentTransfer,
-  FeFlood,
-  feGaussianBlur,
 } from "recharts";
 import { CowMovementsFact, DimLocation } from "@shared/models";
 import {
