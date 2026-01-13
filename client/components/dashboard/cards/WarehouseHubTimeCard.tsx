@@ -195,7 +195,20 @@ export function WarehouseHubTimeCard({
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Bucket Modal - shows all COWs in selected bucket */}
+      {selectedBucketForModal && (
+        <BucketCowsModal
+          open={!!selectedBucketForModal}
+          onOpenChange={(open) => {
+            if (!open) setSelectedBucketForModal(null);
+          }}
+          bucketName={selectedBucketForModal}
+          cowIds={bucketCows.get(selectedBucketForModal) || []}
+          allTableData={tableData}
+        />
+      )}
+
+      {/* Single COW Modal - shows details for a specific COW */}
       {selectedCowForModal && modalData && (
         <COWOffAirDetailsModal
           open={!!selectedCowForModal}
