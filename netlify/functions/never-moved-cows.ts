@@ -92,7 +92,7 @@ const handler: Handler = async () => {
 
     // Track COWs with movements (from movement section - column 0)
     const cowsWithMovements = new Set<string>();
-    
+
     // Extract static COW data (from static section - columns 31+)
     const staticCowData = new Map<string, Record<string, unknown>>();
 
@@ -103,7 +103,7 @@ const handler: Handler = async () => {
       if (!line) continue;
 
       const cells = parseCSVLine(line);
-      
+
       // Column 0: Movement COW ID - track all COWs that have movement records
       const movementCowId = cells[0]?.trim();
       if (movementCowId) {
@@ -123,7 +123,7 @@ const handler: Handler = async () => {
       // Column 43: First_Deploy_Date (AR)
       // Column 44: Vendor (AS)
       const staticCowId = cells[31]?.trim();
-      
+
       if (staticCowId) {
         // Store the first complete record found for this COW
         if (!staticCowData.has(staticCowId)) {
@@ -136,7 +136,7 @@ const handler: Handler = async () => {
           if (cells[35]) cowRecord.District = cells[35].trim();
           if (cells[36]) cowRecord.City = cells[36].trim();
           if (cells[38]) cowRecord.Location = cells[38].trim();
-          
+
           // Coordinates - ESSENTIAL for mapping
           if (cells[39]) {
             const lat = parseFloat(cells[39].trim());
@@ -146,7 +146,7 @@ const handler: Handler = async () => {
             const lon = parseFloat(cells[40].trim());
             if (!isNaN(lon)) cowRecord.Longitude = lon;
           }
-          
+
           // Status and deployment dates
           if (cells[41]) cowRecord.Status = cells[41].trim();
           if (cells[42]) cowRecord.Last_Deploy_Date = cells[42].trim();
@@ -166,9 +166,11 @@ const handler: Handler = async () => {
     console.log(`✓ Found ${cowsWithMovements.size} COWs with movements`);
     console.log(`✓ Found ${staticCowData.size} total static COWs`);
     console.log(`✓ Found ${neverMovedCows.length} never-moved COWs`);
-    
+
     if (neverMovedCows.length > 0) {
-      console.log(`✓ Sample never-moved COW: ${JSON.stringify(neverMovedCows[0])}`);
+      console.log(
+        `✓ Sample never-moved COW: ${JSON.stringify(neverMovedCows[0])}`,
+      );
     }
 
     const responseData = {

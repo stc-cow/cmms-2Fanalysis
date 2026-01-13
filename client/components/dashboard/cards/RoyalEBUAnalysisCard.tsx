@@ -156,7 +156,11 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                 {distanceData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={CATEGORY_COLORS[entry.type as keyof typeof CATEGORY_COLORS]}
+                    fill={
+                      CATEGORY_COLORS[
+                        entry.type as keyof typeof CATEGORY_COLORS
+                      ]
+                    }
                   />
                 ))}
               </Bar>
