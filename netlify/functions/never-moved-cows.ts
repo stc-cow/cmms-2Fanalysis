@@ -53,7 +53,7 @@ const handler: Handler = async () => {
         headers,
         body: JSON.stringify({
           error: "Failed to fetch data",
-          neverMovedCows: [],
+          cows: [],
           totalCount: 0,
         }),
       };
