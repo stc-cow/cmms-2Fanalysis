@@ -80,7 +80,7 @@ function parseCSVData(csvText: string): MovementData[] {
     csvText.includes("<!DOCTYPE")
   ) {
     throw new Error(
-      "Google Sheets returned HTML instead of CSV. Check if sheet is published."
+      "Google Sheets returned HTML instead of CSV. Check if sheet is published.",
     );
   }
 
@@ -103,34 +103,34 @@ function parseCSVData(csvText: string): MovementData[] {
     (h) =>
       (h.lower.includes("cow") && h.lower.includes("id")) ||
       h.lower === "cow" ||
-      h.lower === "cows id"
+      h.lower === "cows id",
   );
 
   const fromLocationMatch = headerLower.find(
     (h) =>
       (h.lower.includes("from") && h.lower.includes("location")) ||
       h.lower === "origin" ||
-      h.lower === "from"
+      h.lower === "from",
   );
 
   const toLocationMatch = headerLower.find(
     (h) =>
       (h.lower.includes("to") && h.lower.includes("location")) ||
       h.lower === "destination" ||
-      h.lower === "to"
+      h.lower === "to",
   );
 
   const movementTypeMatch = headerLower.find(
     (h) =>
       (h.lower.includes("movement") && h.lower.includes("type")) ||
-      h.lower === "type"
+      h.lower === "type",
   );
 
   const distanceMatch = headerLower.find(
     (h) =>
       h.lower.includes("distance") ||
       h.lower === "km" ||
-      h.lower === "distance (km)"
+      h.lower === "distance (km)",
   );
 
   const topEventMatch = headerLower.find((h) => h.lower === "top events");
@@ -263,7 +263,7 @@ const handler: Handler = async (event, context) => {
     }));
 
     const events = Array.from(
-      new Set(rows.map((m) => m.Top_Event).filter(Boolean))
+      new Set(rows.map((m) => m.Top_Event).filter(Boolean)),
     ).map((event, idx) => ({
       Event_ID: event,
       Event_Name: event,
@@ -291,7 +291,8 @@ const handler: Handler = async (event, context) => {
       body: JSON.stringify(responseData),
     };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
     console.error("Error in data-processed function:", errorMessage);
 
     return {
