@@ -113,24 +113,41 @@ export function COWOffAirDetailsModal({
               <Table className="text-sm">
                 <TableHeader>
                   <TableRow className="bg-gray-50 dark:bg-gray-900">
-                    <TableHead className="text-left py-3">
-                      From Location
+                    <TableHead
+                      className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                      onClick={() => setSortColumn("fromLocation")}
+                    >
+                      From Location{getSortIndicator("fromLocation")}
                     </TableHead>
-                    <TableHead className="text-left py-3">
-                      To Location (Warehouse)
+                    <TableHead
+                      className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                      onClick={() => setSortColumn("toWarehouse")}
+                    >
+                      To Location (Warehouse){getSortIndicator("toWarehouse")}
                     </TableHead>
-                    <TableHead className="text-left py-3">
-                      Idle Start Date
+                    <TableHead
+                      className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                      onClick={() => setSortColumn("idleStartDate")}
+                    >
+                      Idle Start Date{getSortIndicator("idleStartDate")}
                     </TableHead>
-                    <TableHead className="text-left py-3">
-                      Idle End Date
+                    <TableHead
+                      className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                      onClick={() => setSortColumn("idleEndDate")}
+                    >
+                      Idle End Date{getSortIndicator("idleEndDate")}
                     </TableHead>
-                    <TableHead className="text-right py-3">Idle Days</TableHead>
+                    <TableHead
+                      className="text-right py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                      onClick={() => setSortColumn("idleDays")}
+                    >
+                      Idle Days{getSortIndicator("idleDays")}
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {stays.length > 0 ? (
-                    stays.map((stay, idx) => (
+                    sortedStays.map((stay, idx) => (
                       <TableRow
                         key={idx}
                         className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30"
