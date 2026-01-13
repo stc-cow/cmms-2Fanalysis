@@ -90,9 +90,11 @@ const handler: Handler = async () => {
       };
     }
 
-    // Count movements per COW and extract coordinates for never-moved ones
-    const cowMovementCount = new Map<string, number>();
-    const cowCoordinates = new Map<
+    // Track COWs with movements
+    const cowsWithMovements = new Set<string>();
+    
+    // Extract static COW data with coordinates
+    const staticCowData = new Map<
       string,
       { latitude: number; longitude: number }
     >();
@@ -102,38 +104,47 @@ const handler: Handler = async () => {
       if (!line) continue;
 
       const cells = parseCSVLine(line);
-      const cowId = cells[0]?.trim();
+      
+      // Column 0: Movement COW ID - track all COWs with movement records
+      const movementCowId = cells[0]?.trim();
+      if (movementCowId) {
+        cowsWithMovements.add(movementCowId);
+      }
 
-      if (cowId) {
-        cowMovementCount.set(cowId, (cowMovementCount.get(cowId) || 0) + 1);
-
-        // Extract coordinates from AN (index 39) and AO (index 40)
-        // Column AN = Latitude for static COWs
-        // Column AO = Longitude for static COWs
+      // Columns 31-46: Static COW data (same row)
+      // Column 31: Static COW ID
+      // Column 39: Latitude (in static section)
+      // Column 40: Longitude (in static section)
+      const staticCowId = cells[31]?.trim();
+      
+      if (staticCowId) {
+        // Extract coordinates from static COW section
         if (cells[39] && cells[40]) {
           const lat = parseFloat(cells[39].trim());
           const lon = parseFloat(cells[40].trim());
 
           if (!isNaN(lat) && !isNaN(lon)) {
-            cowCoordinates.set(cowId, { latitude: lat, longitude: lon });
+            // Store the first valid coordinates found for this COW
+            if (!staticCowData.has(staticCowId)) {
+              staticCowData.set(staticCowId, { latitude: lat, longitude: lon });
+            }
           }
         }
       }
     }
 
-    // Find never-moved cows (those with exactly 1 movement)
-    const neverMovedCows = Array.from(cowMovementCount.entries())
-      .filter(([, count]) => count <= 1)
-      .map(([cowId]) => {
-        const coords = cowCoordinates.get(cowId);
-        return {
-          COW_ID: cowId,
-          ...(coords && {
-            Latitude: coords.latitude,
-            Longitude: coords.longitude,
-          }),
-        };
-      });
+    // Find never-moved cows: Static COWs that DON'T appear in movement data
+    const neverMovedCows = Array.from(staticCowData.entries())
+      .filter(([cowId]) => !cowsWithMovements.has(cowId))
+      .map(([cowId, coords]) => ({
+        COW_ID: cowId,
+        Latitude: coords.latitude,
+        Longitude: coords.longitude,
+      }));
+
+    console.log(`Found ${cowsWithMovements.size} COWs with movements`);
+    console.log(`Found ${staticCowData.size} static COWs`);
+    console.log(`Found ${neverMovedCows.length} never-moved COWs`);
 
     const responseData = {
       cows: neverMovedCows,
@@ -157,7 +168,7 @@ const handler: Handler = async () => {
       body: JSON.stringify({
         error: "Internal server error",
         message: errorMessage,
-        neverMovedCows: [],
+        cows: [],
         totalCount: 0,
       }),
     };
