@@ -146,6 +146,24 @@ export function TopEventsMovementCard({
 
   return (
     <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 md:p-6">
+      {/* Total All Events Card */}
+      <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50 dark:from-indigo-900/40 dark:via-purple-900/40 dark:to-blue-900/40 rounded-xl border border-indigo-200 dark:border-indigo-700/50 p-4 sm:p-6 shadow-sm">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <p className="text-xs sm:text-sm font-semibold text-indigo-600 dark:text-indigo-300 uppercase tracking-wider mb-2">
+              Total Event Movements
+            </p>
+            <p className="text-3xl sm:text-4xl font-bold text-indigo-900 dark:text-indigo-100">
+              {allEventsTotalMovements.toLocaleString()}
+            </p>
+            <p className="text-xs sm:text-sm text-indigo-600 dark:text-indigo-300 mt-2">
+              All events combined (WH & Others excluded)
+            </p>
+          </div>
+          <div className="text-4xl sm:text-5xl opacity-20">📊</div>
+        </div>
+      </div>
+
       {/* Top 3 Events Logos Section */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         {topThree.map((event, index) => {
