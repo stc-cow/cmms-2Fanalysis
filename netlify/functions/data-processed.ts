@@ -323,10 +323,7 @@ const handler: Handler = async () => {
 
     movements.forEach((m) => {
       cowSet.add(m.COW_ID);
-      cowMovementCount.set(
-        m.COW_ID,
-        (cowMovementCount.get(m.COW_ID) || 0) + 1,
-      );
+      cowMovementCount.set(m.COW_ID, (cowMovementCount.get(m.COW_ID) || 0) + 1);
       if (m.From_Location_ID) locationSet.add(m.From_Location_ID);
       if (m.To_Location_ID) locationSet.add(m.To_Location_ID);
       if (m.Top_Event) eventSet.add(m.Top_Event);
