@@ -289,9 +289,9 @@ export function SaudiHighchartsMap({
       </h3>
 
       {/* Map Container with Overlays */}
-      <div className="flex-1 min-h-[380px] rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-slate-700 relative">
+      <div className="flex-1 min-h-[500px] rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-700 relative">
         {/* Top: Color Intensity Scale Legend */}
-        <div className="absolute top-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-3 shadow-lg z-10">
+        <div className="absolute top-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-3 py-3 shadow-lg z-20 pointer-events-auto">
           <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
             Movements
           </p>
@@ -309,22 +309,24 @@ export function SaudiHighchartsMap({
           </div>
         </div>
 
-        <HighchartsReact
-          key="saudi-map"
-          highcharts={Highcharts}
-          constructorType="mapChart"
-          options={options}
-          onLoad={(chart) => {
-            chartRef.current = chart;
-          }}
-          containerProps={{
-            style: { width: "100%", height: "100%" },
-          }}
-          immutable={false}
-        />
+        <div className="w-full h-full overflow-hidden rounded-lg">
+          <HighchartsReact
+            key="saudi-map"
+            highcharts={Highcharts}
+            constructorType="mapChart"
+            options={options}
+            onLoad={(chart) => {
+              chartRef.current = chart;
+            }}
+            containerProps={{
+              style: { width: "100%", height: "100%" },
+            }}
+            immutable={false}
+          />
+        </div>
 
         {/* Bottom Left: Total Movements */}
-        <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg z-10">
+        <div className="absolute bottom-4 left-4 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 px-4 py-3 shadow-lg z-20 pointer-events-auto">
           <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
             Total Movements
           </p>
