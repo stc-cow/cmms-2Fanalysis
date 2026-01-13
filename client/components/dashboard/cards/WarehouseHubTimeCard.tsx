@@ -55,16 +55,6 @@ export function WarehouseHubTimeCard({
     return () => clearTimeout(timer);
   }, []);
 
-
-  // Filter table data by COW ID search
-  const filteredTableData = useMemo(() => {
-    if (!cowIdFilter.trim()) return tableData;
-    const lowerFilter = cowIdFilter.toLowerCase();
-    return tableData.filter((row) =>
-      row.cowId.toLowerCase().includes(lowerFilter),
-    );
-  }, [tableData, cowIdFilter]);
-
   // Chart data - ALWAYS shows ALL COWs in their buckets (never filtered)
   const chartData = useMemo(() => {
     return buckets.map((b) => ({
