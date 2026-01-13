@@ -59,6 +59,7 @@ export interface CowMovementsFact {
   Reached_DateTime: string; // ISO datetime
   Movement_Type?: MovementType;
   Event_ID?: string;
+  Top_Event?: string; // Column L - Top Events (Riyadh Season, Hajj, Formula 1, etc.)
   Distance_KM?: number;
   Is_Royal?: boolean; // Derived from Column E (ebu_royal_flag) - true if contains "Royal"
   Is_EBU?: boolean; // Derived from Column E (ebu_royal_flag) - true if contains "EBU"
