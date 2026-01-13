@@ -225,6 +225,14 @@ function parseCSVData(csvText: unknown): Movement[] {
     const governorateIdx =
       headerLower.find((h) => h.lower === "governorate")?.index ?? 29; // Column AD
 
+    // Find EBU/Royal flag column
+    const ebuRoyalIdx =
+      headerLower.find(
+        (h) =>
+          (h.lower.includes("ebu") && h.lower.includes("royal")) ||
+          h.lower === "ebu/royal",
+      )?.index ?? 4; // Column E
+
     const movements: Movement[] = [];
     let serialNumber = 1;
 
