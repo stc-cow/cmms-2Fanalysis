@@ -136,10 +136,17 @@ export default function Dashboard() {
   );
 
   const vendors = useMemo(
-    () =>
-      Array.from(new Set(cows.map((c) => c.Vendor)))
+    () => {
+      const allVendors = Array.from(new Set(cows.map((c) => c.Vendor)));
+      const nonUnknownVendors = allVendors
         .filter((v) => v && v !== "Unknown")
-        .sort(),
+        .sort();
+
+      // Debug logging
+      console.debug(`[Vendors] Total cows: ${cows.length}, All unique vendors: ${JSON.stringify(allVendors)}, Non-unknown: ${JSON.stringify(nonUnknownVendors)}`);
+
+      return nonUnknownVendors;
+    },
     [cows],
   );
 
