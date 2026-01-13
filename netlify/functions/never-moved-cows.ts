@@ -70,7 +70,7 @@ const handler: Handler = async () => {
         statusCode: 200,
         headers,
         body: JSON.stringify({
-          neverMovedCows: [],
+          cows: [],
           totalCount: 0,
           timestamp: new Date().toISOString(),
         }),
@@ -83,7 +83,7 @@ const handler: Handler = async () => {
         statusCode: 200,
         headers,
         body: JSON.stringify({
-          neverMovedCows: [],
+          cows: [],
           totalCount: 0,
           timestamp: new Date().toISOString(),
         }),
