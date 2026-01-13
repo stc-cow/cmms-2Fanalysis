@@ -66,6 +66,10 @@ interface Movement {
   Top_Event?: string;
   From_Sub_Location?: string;
   To_Sub_Location?: string;
+  Region_From?: string;
+  Region_To?: string;
+  Vendor?: string;
+  Governorate?: string;
   [key: string]: unknown;
 }
 
@@ -103,14 +107,14 @@ function parseCSVData(csvText: unknown): Movement[] {
       index: idx,
     }));
 
-    // Find column indices
+    // Find column indices - use fallback indices based on Google Sheets structure
     const cowIdIdx =
       headerLower.find(
         (h) =>
           (h.lower.includes("cow") && h.lower.includes("id")) ||
           h.lower === "cow" ||
           h.lower === "cows id",
-      )?.index ?? 0;
+      )?.index ?? 0; // Column A
 
     const fromLocationIdx =
       headerLower.find(
@@ -118,7 +122,7 @@ function parseCSVData(csvText: unknown): Movement[] {
           (h.lower.includes("from") && h.lower.includes("location")) ||
           h.lower === "origin" ||
           h.lower === "from",
-      )?.index ?? 14;
+      )?.index ?? 16; // Column Q
 
     const toLocationIdx =
       headerLower.find(
@@ -126,56 +130,73 @@ function parseCSVData(csvText: unknown): Movement[] {
           (h.lower.includes("to") && h.lower.includes("location")) ||
           h.lower === "destination" ||
           h.lower === "to",
-      )?.index ?? 20;
+      )?.index ?? 20; // Column U
 
-    const movementTypeIdx = headerLower.find(
-      (h) =>
-        (h.lower.includes("movement") && h.lower.includes("type")) ||
-        h.lower === "type",
-    )?.index;
-
-    const distanceIdx = headerLower.find(
-      (h) =>
-        h.lower.includes("distance") ||
-        h.lower === "km" ||
-        h.lower === "distance (km)",
-    )?.index;
-
-    const topEventIdx = headerLower.find(
-      (h) => h.lower === "top events",
-    )?.index;
-
-    // Find datetime columns (typically columns L[12] and N[14]: "Moved Date/Time" and "Reached Date/Time")
+    // DateTime columns
     const movedDateTimeMatch = headerLower.find(
       (h) =>
-        h.lower.includes("moved") &&
-        h.lower.includes("date") &&
+        h.lower.includes("moved") && h.lower.includes("date") &&
         h.lower.includes("time"),
     );
-    const movedDateTimeIdx = movedDateTimeMatch?.index ?? 12;
+    const movedDateTimeIdx = movedDateTimeMatch?.index ?? 12; // Column M
 
     const reachedDateTimeMatch = headerLower.find(
       (h) =>
-        h.lower.includes("reached") &&
-        h.lower.includes("date") &&
+        h.lower.includes("reached") && h.lower.includes("date") &&
         h.lower.includes("time"),
     );
-    const reachedDateTimeIdx = reachedDateTimeMatch?.index ?? 14;
+    const reachedDateTimeIdx = reachedDateTimeMatch?.index ?? 14; // Column O
 
-    // Find sub-location columns
-    const fromSubLocIdx = headerLower.find(
-      (h) =>
-        h.lower.includes("from") &&
-        h.lower.includes("sub") &&
-        h.lower.includes("location"),
-    )?.index;
+    // Sub-location columns
+    const fromSubLocIdx =
+      headerLower.find(
+        (h) =>
+          h.lower.includes("from") && h.lower.includes("sub") &&
+          h.lower.includes("location"),
+      )?.index ?? 17; // Column R
 
-    const toSubLocIdx = headerLower.find(
-      (h) =>
-        h.lower.includes("to") &&
-        h.lower.includes("sub") &&
-        h.lower.includes("location"),
-    )?.index;
+    const toSubLocIdx =
+      headerLower.find(
+        (h) =>
+          h.lower.includes("to") && h.lower.includes("sub") &&
+          h.lower.includes("location"),
+      )?.index ?? 21; // Column V
+
+    const movementTypeIdx =
+      headerLower.find(
+        (h) =>
+          (h.lower.includes("movement") && h.lower.includes("type")) ||
+          h.lower === "type",
+      )?.index ?? 25; // Column Z
+
+    const distanceIdx =
+      headerLower.find(
+        (h) =>
+          h.lower.includes("distance") ||
+          h.lower === "km" ||
+          h.lower === "distance (km)",
+      )?.index ?? 24; // Column Y
+
+    const topEventIdx =
+      headerLower.find((h) => h.lower === "top events")?.index ?? 11; // Column L
+
+    const regionFromIdx =
+      headerLower.find(
+        (h) =>
+          h.lower.includes("region") && h.lower.includes("from"),
+      )?.index ?? 26; // Column AA
+
+    const regionToIdx =
+      headerLower.find(
+        (h) =>
+          h.lower.includes("region") && h.lower.includes("to"),
+      )?.index ?? 27; // Column AB
+
+    const vendorIdx =
+      headerLower.find((h) => h.lower === "vendor")?.index ?? 28; // Column AC
+
+    const governorateIdx =
+      headerLower.find((h) => h.lower === "governorate")?.index ?? 29; // Column AD
 
     const movements: Movement[] = [];
     let serialNumber = 1;
@@ -204,7 +225,7 @@ function parseCSVData(csvText: unknown): Movement[] {
         Reached_DateTime: reachedDt,
       };
 
-      // Add sub-location fields
+      // Add optional fields
       if (fromSubLocIdx !== undefined) {
         movement.From_Sub_Location = cells[fromSubLocIdx]?.trim();
       }
@@ -224,6 +245,22 @@ function parseCSVData(csvText: unknown): Movement[] {
 
       if (topEventIdx !== undefined && cells[topEventIdx]) {
         movement.Top_Event = cells[topEventIdx].trim();
+      }
+
+      if (regionFromIdx !== undefined && cells[regionFromIdx]) {
+        movement.Region_From = cells[regionFromIdx].trim();
+      }
+
+      if (regionToIdx !== undefined && cells[regionToIdx]) {
+        movement.Region_To = cells[regionToIdx].trim();
+      }
+
+      if (vendorIdx !== undefined && cells[vendorIdx]) {
+        movement.Vendor = cells[vendorIdx].trim();
+      }
+
+      if (governorateIdx !== undefined && cells[governorateIdx]) {
+        movement.Governorate = cells[governorateIdx].trim();
       }
 
       movements.push(movement);
@@ -298,12 +335,14 @@ const handler: Handler = async () => {
     const cowSet = new Set<string>();
     const locationSet = new Set<string>();
     const eventSet = new Set<string>();
+    const vendorSet = new Set<string>();
 
     movements.forEach((m) => {
       cowSet.add(m.COW_ID);
       if (m.From_Location_ID) locationSet.add(m.From_Location_ID);
       if (m.To_Location_ID) locationSet.add(m.To_Location_ID);
       if (m.Top_Event) eventSet.add(m.Top_Event);
+      if (m.Vendor) vendorSet.add(m.Vendor);
     });
 
     const responseData = {
@@ -319,10 +358,10 @@ const handler: Handler = async () => {
         Event_ID: id,
         Event_Name: id,
       })),
-      totalDistanceKM: movements.reduce(
-        (sum, m) => sum + (m.Distance_KM || 0),
-        0,
-      ),
+      vendors: Array.from(vendorSet).map((id) => ({
+        Vendor: id,
+      })),
+      totalDistanceKM: movements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0),
       timestamp: new Date().toISOString(),
     };
 
