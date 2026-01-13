@@ -283,32 +283,29 @@ export function EventsAnalysisCard({
         </div>
       </div>
 
-      {/* Detailed event breakdown */}
+      {/* Detailed event breakdown - KPI Cards Grid */}
       {eventData.length > 0 && (
-        <div className="flex-shrink-0 bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-2 sm:p-4">
-          <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-2 sm:mb-4">
+        <div className="flex-shrink-0">
+          <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 px-2">
             Event Type Breakdown
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
-            {eventData.map(({ name, value }) => (
+            {eventData.map(({ name, value }, idx) => (
               <div
                 key={name}
-                className="p-2 sm:p-3 rounded border-2 text-center flex flex-col justify-center"
+                className="bg-white dark:bg-slate-800 rounded-xl border border-gray-200 dark:border-gray-700 p-3 sm:p-4 shadow-sm hover:shadow-md transition-shadow text-center"
                 style={{
-                  backgroundColor: `${EVENT_COLORS[name] || "#6b7280"}15`,
-                  borderColor: EVENT_COLORS[name] || "#6b7280",
+                  borderTopWidth: "4px",
+                  borderTopColor: EVENT_COLORS[name] || "#6b7280",
                 }}
               >
-                <div
-                  className="text-sm sm:text-base font-bold"
-                  style={{ color: EVENT_COLORS[name] || "#6b7280" }}
-                >
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-1">
                   {value}
-                </div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                </p>
+                <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
                   {name}
-                </div>
-                <div className="text-xs text-gray-500 mt-0.5">
+                </p>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
                   {((value / totalMovements) * 100).toFixed(1)}%
                 </div>
               </div>
