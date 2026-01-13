@@ -302,6 +302,27 @@ function parseCSVData(csvText: unknown): Movement[] {
         movement.To_Sub_Location = cells[toSubLocIdx]?.trim();
       }
 
+      // Add latitude/longitude
+      if (fromLatIdx !== undefined && cells[fromLatIdx]) {
+        const lat = parseFloat(cells[fromLatIdx].trim());
+        if (!isNaN(lat)) movement.From_Latitude = lat;
+      }
+
+      if (fromLonIdx !== undefined && cells[fromLonIdx]) {
+        const lon = parseFloat(cells[fromLonIdx].trim());
+        if (!isNaN(lon)) movement.From_Longitude = lon;
+      }
+
+      if (toLatIdx !== undefined && cells[toLatIdx]) {
+        const lat = parseFloat(cells[toLatIdx].trim());
+        if (!isNaN(lat)) movement.To_Latitude = lat;
+      }
+
+      if (toLonIdx !== undefined && cells[toLonIdx]) {
+        const lon = parseFloat(cells[toLonIdx].trim());
+        if (!isNaN(lon)) movement.To_Longitude = lon;
+      }
+
       if (movementTypeIdx !== undefined && cells[movementTypeIdx]) {
         movement.Movement_Type = cells[movementTypeIdx].trim();
       }
