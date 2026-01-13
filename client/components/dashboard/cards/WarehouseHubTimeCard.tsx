@@ -203,7 +203,7 @@ export function WarehouseHubTimeCard({
             </div>
           ) : (
             <div className="flex items-center justify-center py-8 text-gray-400">
-              No COWs match the filter
+              No COWs with Off-Air aging found
             </div>
           )}
         </div>
