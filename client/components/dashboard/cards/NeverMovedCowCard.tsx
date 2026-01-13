@@ -127,10 +127,10 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
         <div className="p-4 border-b bg-gray-50">
           <h3 className="font-semibold text-gray-900">Location Map</h3>
           <p className="text-xs text-gray-600 mt-1">
-            Click on a COW marker to view full details ({filteredCows.length} COWs)
+            Click on a COW marker to view full details ({neverMovedCows.length} COWs)
           </p>
         </div>
-        <NeverMovedCowMap cows={filteredCows} onCowSelected={setSelectedCow} />
+        <NeverMovedCowMap cows={neverMovedCows} onCowSelected={setSelectedCow} />
       </div>
 
       {/* Full Details Modal - Rendered as Portal to appear above map */}
