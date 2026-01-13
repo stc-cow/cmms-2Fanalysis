@@ -868,3 +868,57 @@ export function getCOWOffAirAgingDetails(
     stays,
   };
 }
+
+// Top Events Movement Analytics
+export interface TopEventData {
+  eventName: string;
+  movementCount: number;
+  percentage: number;
+}
+
+export function calculateTopEvents(
+  movements: CowMovementsFact[],
+): TopEventData[] {
+  const eventCounts = new Map<string, number>();
+
+  // Filter and aggregate events
+  movements.forEach((mov) => {
+    const event = mov.Top_Event || mov.To_Sub_Location;
+    if (!event) return;
+
+    const normalizedEvent = event.trim().toUpperCase();
+
+    // Exclude WH and Others
+    if (
+      normalizedEvent === "WH" ||
+      normalizedEvent === "OTHERS" ||
+      normalizedEvent === ""
+    ) {
+      return;
+    }
+
+    // Count movement
+    eventCounts.set(event, (eventCounts.get(event) || 0) + 1);
+  });
+
+  // Calculate total for percentage
+  const totalMovements = Array.from(eventCounts.values()).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+
+  // Convert to array and sort by count descending
+  const eventData: TopEventData[] = Array.from(eventCounts.entries())
+    .map(([eventName, count]) => ({
+      eventName,
+      movementCount: count,
+      percentage:
+        totalMovements > 0
+          ? Math.round((count / totalMovements) * 10000) / 100
+          : 0,
+    }))
+    .sort((a, b) => b.movementCount - a.movementCount)
+    .slice(0, 10); // Keep top 10 only
+
+  return eventData;
+}
