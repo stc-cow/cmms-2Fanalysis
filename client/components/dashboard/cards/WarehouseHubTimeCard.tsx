@@ -96,6 +96,17 @@ export function WarehouseHubTimeCard({
     ? getCOWOffAirAgingDetails(selectedCowForModal, movements, locations)
     : null;
 
+  // Set up table sorting
+  const {
+    sortedData: sortedTableData,
+    setSortColumn,
+    getSortIndicator,
+  } = useSortableTable({
+    data: tableData,
+    initialSortColumn: "avgOffAirIdleDays",
+    initialSortDirection: "desc",
+  });
+
   return (
     <>
       <div className="h-full overflow-y-auto overflow-x-hidden flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 md:p-6">
