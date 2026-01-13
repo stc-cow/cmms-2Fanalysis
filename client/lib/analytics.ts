@@ -592,6 +592,7 @@ export function calculateOffAirWarehouseAging(
   buckets: OffAirAgingBucket[];
   tableData: OffAirAgingTableRow[];
   cowAgingMap: Map<string, number>; // cowId -> total idle months
+  bucketCows: Map<string, string[]>; // bucket name -> array of cow IDs
 } {
   const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
 
