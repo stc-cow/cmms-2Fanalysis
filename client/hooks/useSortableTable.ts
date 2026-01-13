@@ -73,7 +73,11 @@ export function useSortableTable<T extends Record<string, any>>({
         return {
           column,
           direction:
-            prev.direction === "asc" ? "desc" : prev.direction === "desc" ? null : "asc",
+            prev.direction === "asc"
+              ? "desc"
+              : prev.direction === "desc"
+                ? null
+                : "asc",
         };
       }
       // If clicking a new column, sort ascending

@@ -104,13 +104,15 @@ export function BucketCowsModal({
                     className="text-center py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
                     onClick={() => setSortColumn("avgOffAirIdleDays")}
                   >
-                    Average Off-Air Idle Days{getSortIndicator("avgOffAirIdleDays")}
+                    Average Off-Air Idle Days
+                    {getSortIndicator("avgOffAirIdleDays")}
                   </TableHead>
                   <TableHead
                     className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
                     onClick={() => setSortColumn("topOffAirWarehouse")}
                   >
-                    Top Off-Air Warehouse{getSortIndicator("topOffAirWarehouse")}
+                    Top Off-Air Warehouse
+                    {getSortIndicator("topOffAirWarehouse")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
