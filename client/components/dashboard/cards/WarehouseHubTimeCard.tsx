@@ -158,7 +158,7 @@ export function WarehouseHubTimeCard({
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Off-Air Warehouse Aging Details
           </h3>
-          {filteredTableData.length > 0 ? (
+          {tableData.length > 0 ? (
             <div className="overflow-x-auto flex-1">
               <Table className="text-sm">
                 <TableHeader>
@@ -178,7 +178,7 @@ export function WarehouseHubTimeCard({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredTableData.map((row) => (
+                  {tableData.map((row) => (
                     <TableRow
                       key={row.cowId}
                       onClick={() => handleTableRowClick(row.cowId)}
