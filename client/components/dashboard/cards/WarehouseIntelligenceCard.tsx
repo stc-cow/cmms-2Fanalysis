@@ -262,37 +262,53 @@ export function WarehouseIntelligenceCard({
           <Table className="text-sm">
             <TableHeader>
               <TableRow className="border-b border-gray-200 dark:border-gray-700">
-                <TableHead className="text-left py-3">Warehouse</TableHead>
-                <TableHead className="text-left py-3">Region</TableHead>
-                <TableHead className="text-right py-3">Outgoing</TableHead>
-                <TableHead className="text-right py-3">Incoming</TableHead>
+                <TableHead
+                  className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                  onClick={() => setSortColumn("Location_Name")}
+                >
+                  Warehouse{getSortIndicator("Location_Name")}
+                </TableHead>
+                <TableHead
+                  className="text-left py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                  onClick={() => setSortColumn("Region")}
+                >
+                  Region{getSortIndicator("Region")}
+                </TableHead>
+                <TableHead
+                  className="text-right py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                  onClick={() => setSortColumn("Outgoing_Movements")}
+                >
+                  Outgoing{getSortIndicator("Outgoing_Movements")}
+                </TableHead>
+                <TableHead
+                  className="text-right py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 select-none"
+                  onClick={() => setSortColumn("Incoming_Movements")}
+                >
+                  Incoming{getSortIndicator("Incoming_Movements")}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(selectedRegion ? filteredMetrics : warehouseMetrics)
+              {sortedTableData
                 .slice(0, 12)
                 .map((m) => (
                   <TableRow
-                    key={m!.Location_ID}
+                    key={m.Location_ID}
                     className="border-b border-gray-100 dark:border-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700/30"
                   >
                     <TableCell className="font-medium py-3">
-                      {m!.Location_Name}
+                      {m.Location_Name}
                     </TableCell>
                     <TableCell className="py-3 text-gray-600 dark:text-gray-400">
                       <span className="inline-block px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-semibold">
-                        {
-                          warehouses.find(
-                            (w) => w.Location_ID === m!.Location_ID,
-                          )?.Region
-                        }
+                        {m.Region}
                       </span>
                     </TableCell>
                     <TableCell className="text-right py-3 font-semibold text-green-600 dark:text-green-400">
-                      {m!.Outgoing_Movements}
+                      {m.Outgoing_Movements}
                     </TableCell>
                     <TableCell className="text-right py-3 font-semibold text-amber-600 dark:text-amber-400">
-                      {m!.Incoming_Movements}
+                      {m.Incoming_Movements}
                     </TableCell>
                   </TableRow>
                 ))}
