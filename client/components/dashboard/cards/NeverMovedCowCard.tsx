@@ -93,55 +93,74 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
     EAST: "#ef4444",
   };
 
+  const KPI_CARD_COLORS = ["#6366f1", "#3b82f6", "#06b6d4", "#10b981"];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
       {/* Left Panel: On-Air Duration Chart and Stats */}
       <div className="flex flex-col overflow-y-auto gap-4">
         {/* KPI Cards: Total COWs and Regional Breakdown */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 flex-shrink-0">
-          <Card className="flex-shrink-0">
-            <CardContent className="pt-6">
-              <div className="text-center">
-                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-                  Total COWs
-                </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                  {neverMovedCows.length}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div
+            className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+            style={{
+              borderTopWidth: "4px",
+              borderTopColor: KPI_CARD_COLORS[0],
+            }}
+          >
+            <div className="text-center">
+              <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                Total COWs
+              </p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                {neverMovedCows.length}
+              </p>
+            </div>
+          </div>
 
           {Object.entries(regionStats)
             .filter(([_, count]) => count > 0)
             .map(([region, count]) => (
-              <Card key={region} className="flex-shrink-0">
-                <CardContent className="pt-6">
-                  <div className="text-center">
-                    <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
-                      {region}
-                    </p>
-                    <p
-                      className="text-3xl font-bold"
-                      style={{ color: REGION_COLORS[region] || "#6b7280" }}
-                    >
-                      {count}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div
+                key={region}
+                className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4"
+                style={{
+                  borderTopWidth: "4px",
+                  borderTopColor: REGION_COLORS[region] || "#6b7280",
+                }}
+              >
+                <div className="text-center">
+                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
+                    {region}
+                  </p>
+                  <p
+                    className="text-3xl font-bold"
+                    style={{ color: REGION_COLORS[region] || "#6b7280" }}
+                  >
+                    {count}
+                  </p>
+                </div>
+              </div>
             ))}
         </div>
 
         {/* Chart */}
-        <Card className="flex-1 flex flex-col">
-          <CardHeader>
-            <CardTitle>Never Moved COWs - On-Air Duration</CardTitle>
-            <CardDescription>
+        <div
+          className="flex-1 flex flex-col bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700"
+          style={{
+            borderTopWidth: "4px",
+            borderTopColor: KPI_CARD_COLORS[2],
+          }}
+        >
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Never Moved COWs - On-Air Duration
+            </h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Static COWs grouped by years on deployment location
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 flex items-center justify-center min-h-0">
+            </p>
+          </div>
+          <div className="flex-1 flex items-center justify-center min-h-0 p-6">
             {chartData.some((d) => d.count > 0) ? (
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -181,8 +200,8 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
                 No COWs data available
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* Right Panel: Map */}
