@@ -266,11 +266,15 @@ function parseCSVData(csvText: unknown): Movement[] {
       if (cells[26]) movement.Region_From = cells[26].trim();
       if (cells[27]) movement.Region_To = cells[27].trim();
 
-      // Vendor
-      if (cells[28]) {
-        movement.Vendor = cells[28].trim() || "Unknown";
-      } else {
-        movement.Vendor = "Unknown";
+      // Vendor (Column AC - index 28)
+      const vendorRaw = cells[28]?.trim() || "";
+      movement.Vendor = vendorRaw.length > 0 ? vendorRaw : "Unknown";
+
+      // Log first 3 vendor extractions for debugging
+      if (i <= 3) {
+        console.log(
+          `[${i}] Vendor extraction: cells[28]="${cells[28]}" -> movement.Vendor="${movement.Vendor}"`,
+        );
       }
 
       // Governorate
