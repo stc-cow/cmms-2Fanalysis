@@ -15,6 +15,7 @@ import {
   OffAirAgingTableRow,
 } from "@/lib/analytics";
 import { COWOffAirDetailsModal } from "./COWOffAirDetailsModal";
+import { BucketCowsModal } from "./BucketCowsModal";
 import {
   Table,
   TableBody,
