@@ -101,10 +101,7 @@ const handler: Handler = async () => {
       const cowId = cells[0]?.trim();
 
       if (cowId) {
-        cowMovementCount.set(
-          cowId,
-          (cowMovementCount.get(cowId) || 0) + 1,
-        );
+        cowMovementCount.set(cowId, (cowMovementCount.get(cowId) || 0) + 1);
       }
     }
 

@@ -135,14 +135,16 @@ function parseCSVData(csvText: unknown): Movement[] {
     // DateTime columns
     const movedDateTimeMatch = headerLower.find(
       (h) =>
-        h.lower.includes("moved") && h.lower.includes("date") &&
+        h.lower.includes("moved") &&
+        h.lower.includes("date") &&
         h.lower.includes("time"),
     );
     const movedDateTimeIdx = movedDateTimeMatch?.index ?? 12; // Column M
 
     const reachedDateTimeMatch = headerLower.find(
       (h) =>
-        h.lower.includes("reached") && h.lower.includes("date") &&
+        h.lower.includes("reached") &&
+        h.lower.includes("date") &&
         h.lower.includes("time"),
     );
     const reachedDateTimeIdx = reachedDateTimeMatch?.index ?? 14; // Column O
@@ -151,14 +153,16 @@ function parseCSVData(csvText: unknown): Movement[] {
     const fromSubLocIdx =
       headerLower.find(
         (h) =>
-          h.lower.includes("from") && h.lower.includes("sub") &&
+          h.lower.includes("from") &&
+          h.lower.includes("sub") &&
           h.lower.includes("location"),
       )?.index ?? 17; // Column R
 
     const toSubLocIdx =
       headerLower.find(
         (h) =>
-          h.lower.includes("to") && h.lower.includes("sub") &&
+          h.lower.includes("to") &&
+          h.lower.includes("sub") &&
           h.lower.includes("location"),
       )?.index ?? 21; // Column V
 
@@ -182,14 +186,12 @@ function parseCSVData(csvText: unknown): Movement[] {
 
     const regionFromIdx =
       headerLower.find(
-        (h) =>
-          h.lower.includes("region") && h.lower.includes("from"),
+        (h) => h.lower.includes("region") && h.lower.includes("from"),
       )?.index ?? 26; // Column AA
 
     const regionToIdx =
       headerLower.find(
-        (h) =>
-          h.lower.includes("region") && h.lower.includes("to"),
+        (h) => h.lower.includes("region") && h.lower.includes("to"),
       )?.index ?? 27; // Column AB
 
     const vendorIdx =
@@ -361,7 +363,10 @@ const handler: Handler = async () => {
       vendors: Array.from(vendorSet).map((id) => ({
         Vendor: id,
       })),
-      totalDistanceKM: movements.reduce((sum, m) => sum + (m.Distance_KM || 0), 0),
+      totalDistanceKM: movements.reduce(
+        (sum, m) => sum + (m.Distance_KM || 0),
+        0,
+      ),
       timestamp: new Date().toISOString(),
     };
 
