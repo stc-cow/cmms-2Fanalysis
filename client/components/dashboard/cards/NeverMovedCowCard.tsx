@@ -26,56 +26,46 @@ interface NeverMovedCowCardProps {
 }
 
 export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
-  const [selectedStatus, setSelectedStatus] = useState<
-    "ALL" | "ON-AIR" | "OFF-AIR"
-  >("ALL");
   const [selectedCow, setSelectedCow] = useState<NeverMovedCow | null>(null);
 
-  const stats = useMemo(() => {
-    const onAir = neverMovedCows.filter((c) => c.Status === "ON-AIR");
-    const offAir = neverMovedCows.filter((c) => c.Status === "OFF-AIR");
-    const avgDaysOnAir =
-      onAir.length > 0
-        ? Math.round(
-            onAir.reduce((sum, c) => sum + (c.Days_On_Air || 0), 0) /
-              onAir.length,
-          )
-        : 0;
-
-    return {
-      total: neverMovedCows.length,
-      onAir: onAir.length,
-      offAir: offAir.length,
-      avgDaysOnAir,
-      onAirPercentage:
-        neverMovedCows.length > 0
-          ? Math.round((onAir.length / neverMovedCows.length) * 100)
-          : 0,
+  // Calculate years on-air and bucket data
+  const chartData = useMemo(() => {
+    const buckets = {
+      "1-3 Years": 0,
+      "4-6 Years": 0,
+      "7-9 Years": 0,
+      "10-12 Years": 0,
+      "12+ Years": 0,
     };
+
+    neverMovedCows.forEach((cow) => {
+      const yearsOnAir = (cow.Days_On_Air || 0) / 365;
+      if (yearsOnAir <= 3) {
+        buckets["1-3 Years"]++;
+      } else if (yearsOnAir <= 6) {
+        buckets["4-6 Years"]++;
+      } else if (yearsOnAir <= 9) {
+        buckets["7-9 Years"]++;
+      } else if (yearsOnAir <= 12) {
+        buckets["10-12 Years"]++;
+      } else {
+        buckets["12+ Years"]++;
+      }
+    });
+
+    return Object.entries(buckets).map(([range, count]) => ({
+      name: range,
+      count,
+    }));
   }, [neverMovedCows]);
 
-  const filteredCows = useMemo(() => {
-    if (selectedStatus === "ALL") return neverMovedCows;
-    return neverMovedCows.filter((c) => c.Status === selectedStatus);
-  }, [neverMovedCows, selectedStatus]);
-
-  const recentlyDeployed = useMemo(() => {
-    const seenIds = new Set<string>();
-    return [...neverMovedCows]
-      .sort((a, b) => {
-        const dateA = new Date(a.Last_Deploy_Date).getTime();
-        const dateB = new Date(b.Last_Deploy_Date).getTime();
-        return dateB - dateA;
-      })
-      .filter((cow) => {
-        if (seenIds.has(cow.COW_ID)) {
-          return false;
-        }
-        seenIds.add(cow.COW_ID);
-        return true;
-      })
-      .slice(0, 5);
-  }, [neverMovedCows]);
+  const BAR_COLORS = [
+    "#3b82f6", // Blue
+    "#06b6d4", // Cyan
+    "#10b981", // Green
+    "#f59e0b", // Amber
+    "#ef4444", // Red
+  ];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
