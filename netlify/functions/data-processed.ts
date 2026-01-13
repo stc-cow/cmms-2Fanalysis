@@ -251,6 +251,12 @@ function parseCSVData(csvText: unknown): Movement[] {
       const reachedDt =
         cells[reachedDateTimeIdx]?.trim() || new Date().toISOString();
 
+      // Classify Royal/EBU status
+      const ebuRoyalFlag = cells[ebuRoyalIdx]?.trim();
+      const { isRoyal, isEBU, category } = classifyEbuRoyal(
+        ebuRoyalFlag,
+      );
+
       const movement: Movement = {
         SN: serialNumber++,
         COW_ID: cowId,
@@ -258,6 +264,9 @@ function parseCSVData(csvText: unknown): Movement[] {
         To_Location_ID: cells[toLocationIdx]?.trim() || "",
         Moved_DateTime: movedDt,
         Reached_DateTime: reachedDt,
+        Is_Royal: isRoyal,
+        Is_EBU: isEBU,
+        EbuRoyalCategory: category,
       };
 
       // Add optional fields
