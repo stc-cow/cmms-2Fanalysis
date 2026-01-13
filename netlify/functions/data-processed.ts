@@ -148,31 +148,33 @@ function parseCSVData(csvText: unknown): Movement[] {
     const movedDateTimeIdx =
       headerLower.find(
         (h) =>
-          h.lower.includes("moved") && h.lower.includes("date") &&
+          h.lower.includes("moved") &&
+          h.lower.includes("date") &&
           h.lower.includes("time"),
       )?.index ?? 12;
 
     const reachedDateTimeIdx =
       headerLower.find(
         (h) =>
-          h.lower.includes("reached") && h.lower.includes("date") &&
+          h.lower.includes("reached") &&
+          h.lower.includes("date") &&
           h.lower.includes("time"),
       )?.index ?? 14;
 
     // Find sub-location columns
-    const fromSubLocIdx =
-      headerLower.find(
-        (h) =>
-          h.lower.includes("from") && h.lower.includes("sub") &&
-          h.lower.includes("location"),
-      )?.index;
+    const fromSubLocIdx = headerLower.find(
+      (h) =>
+        h.lower.includes("from") &&
+        h.lower.includes("sub") &&
+        h.lower.includes("location"),
+    )?.index;
 
-    const toSubLocIdx =
-      headerLower.find(
-        (h) =>
-          h.lower.includes("to") && h.lower.includes("sub") &&
-          h.lower.includes("location"),
-      )?.index;
+    const toSubLocIdx = headerLower.find(
+      (h) =>
+        h.lower.includes("to") &&
+        h.lower.includes("sub") &&
+        h.lower.includes("location"),
+    )?.index;
 
     const movements: Movement[] = [];
 
