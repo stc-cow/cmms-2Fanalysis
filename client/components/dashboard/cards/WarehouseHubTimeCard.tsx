@@ -286,6 +286,62 @@ export function WarehouseHubTimeCard({
           )}
         </div>
 
+        {/* Short Idle Time Chart */}
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col flex-shrink-0 min-h-[400px]">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
+            Off-Air Warehouse Short Idle Time
+          </h3>
+          <div style={{ width: "100%", height: "300px" }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={shortIdleChartData}
+                margin={{ top: 20, right: 30, left: 0, bottom: 60 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <XAxis
+                  dataKey="name"
+                  angle={-45}
+                  textAnchor="end"
+                  height={80}
+                  tick={{ fontSize: 12, fontWeight: 500 }}
+                />
+                <YAxis tick={{ fontSize: 12 }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                  }}
+                  formatter={(value: number) => `${value} COWs`}
+                  cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
+                />
+                <Bar
+                  dataKey="count"
+                  fill="#1Bced8"
+                  radius={[8, 8, 0, 0]}
+                  label={{
+                    position: "top",
+                    fill: "#374151",
+                    fontSize: 11,
+                    fontWeight: "bold",
+                    formatter: (value: number) => value.toString(),
+                  }}
+                  style={{
+                    cursor: "pointer",
+                    filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15))",
+                  }}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          {shortIdleChartData.every((d) => d.count === 0) && (
+            <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded text-sm text-gray-600 dark:text-gray-400">
+              No short idle time (1-15 days) found in warehouse placements.
+            </div>
+          )}
+        </div>
+
         {/* Off-Air Warehouse Aging Table */}
         <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 sm:p-4 overflow-hidden flex flex-col">
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
