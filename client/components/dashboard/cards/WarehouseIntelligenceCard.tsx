@@ -330,7 +330,6 @@ export function WarehouseIntelligenceCard({
           </Table>
         </div>
       </div>
-
     </div>
   );
 }
