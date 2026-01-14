@@ -164,7 +164,17 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                 }}
                 formatter={(value: number) => `${value.toFixed(0)} KM`}
               />
-              <Bar dataKey="distance" radius={[8, 8, 0, 0]}>
+              <Bar
+                dataKey="distance"
+                radius={[8, 8, 0, 0]}
+                label={{
+                  position: "top",
+                  fill: "#374151",
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  formatter: (value: number) => value.toFixed(0),
+                }}
+              >
                 {distanceData.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
