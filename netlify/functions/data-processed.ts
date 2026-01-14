@@ -243,8 +243,12 @@ function parseCSVData(csvText: unknown): Movement[] {
       // Extract location names and create normalized Location IDs
       const fromLocationName = cells[16]?.trim() || cells[14]?.trim() || "";
       const toLocationName = cells[20]?.trim() || cells[18]?.trim() || "";
-      const fromLocationId = fromLocationName ? `LOC-${normalizeLocationName(fromLocationName)}` : "";
-      const toLocationId = toLocationName ? `LOC-${normalizeLocationName(toLocationName)}` : "";
+      const fromLocationId = fromLocationName
+        ? `LOC-${normalizeLocationName(fromLocationName)}`
+        : "";
+      const toLocationId = toLocationName
+        ? `LOC-${normalizeLocationName(toLocationName)}`
+        : "";
 
       const movement: Movement = {
         SN: serialNumber++,
@@ -476,7 +480,11 @@ const handler: Handler = async () => {
           locationMap.set(m.From_Location_ID, {
             Location_ID: m.From_Location_ID,
             Location_Name: (m as any).From_Location_Name || m.From_Location_ID,
-            Location_Type: ((m as any).From_Location_Name || "").toUpperCase().includes("WH") ? "Warehouse" : "Site",
+            Location_Type: ((m as any).From_Location_Name || "")
+              .toUpperCase()
+              .includes("WH")
+              ? "Warehouse"
+              : "Site",
           });
         }
         const fromLoc = locationMap.get(m.From_Location_ID)!;
@@ -492,7 +500,11 @@ const handler: Handler = async () => {
           locationMap.set(m.To_Location_ID, {
             Location_ID: m.To_Location_ID,
             Location_Name: (m as any).To_Location_Name || m.To_Location_ID,
-            Location_Type: ((m as any).To_Location_Name || "").toUpperCase().includes("WH") ? "Warehouse" : "Site",
+            Location_Type: ((m as any).To_Location_Name || "")
+              .toUpperCase()
+              .includes("WH")
+              ? "Warehouse"
+              : "Site",
           });
         }
         const toLoc = locationMap.get(m.To_Location_ID)!;

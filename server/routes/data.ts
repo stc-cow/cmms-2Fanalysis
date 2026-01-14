@@ -468,7 +468,9 @@ function processData(rows: any[]) {
         return date.toISOString();
       } catch (e) {
         if (idx < 10) {
-          console.warn(`⚠️  Row ${idx}: Date parsing error for "${dateStr}": ${e}`);
+          console.warn(
+            `⚠️  Row ${idx}: Date parsing error for "${dateStr}": ${e}`,
+          );
         }
         return "1900-01-01T00:00:00Z";
       }
