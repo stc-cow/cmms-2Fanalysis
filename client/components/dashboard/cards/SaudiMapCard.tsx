@@ -259,7 +259,18 @@ export function SaudiMapCard({
                   <XAxis dataKey="name" tick={{ fontSize: 8 }} />
                   <YAxis tick={{ fontSize: 8 }} />
                   <Tooltip cursor={{ fill: "rgba(139, 92, 246, 0.15)" }} />
-                  <Bar dataKey="value" fill="#a855f7" radius={[4, 4, 0, 0]} />
+                  <Bar
+                    dataKey="value"
+                    fill="#a855f7"
+                    radius={[4, 4, 0, 0]}
+                    label={{
+                      position: "top",
+                      fill: "#374151",
+                      fontSize: 8,
+                      fontWeight: "bold",
+                      formatter: (value: number) => value.toString(),
+                    }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
