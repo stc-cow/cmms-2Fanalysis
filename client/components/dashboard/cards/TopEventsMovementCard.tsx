@@ -75,7 +75,8 @@ const EVENT_LOGOS: Record<string, EventLogo> = {
   },
   "fifa world cup": {
     name: "FIFA World Cup",
-    emoji: "⚽",
+    imageUrl:
+      "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F101fb5095e1041498719ac88c2593926?format=webp&width=800",
     color: "#003366",
   },
   "camel festival": {
