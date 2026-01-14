@@ -411,12 +411,24 @@ export function ExecutiveOverviewCard({
         {/* LEFT PANEL (60%): Map + Vendor Chart */}
         <div className="w-full lg:w-3/5 flex flex-col gap-3 min-h-fit lg:min-h-0">
           {/* Movement Distribution Map (65% of left panel) */}
-          <div className="flex-1 min-h-[500px] bg-white rounded-lg border border-gray-200 shadow-sm">
+          <div className="flex-1 min-h-[500px] bg-white rounded-lg border border-gray-200 shadow-sm flex flex-col">
             <SaudiHighchartsMap
               regionMetrics={regionMetrics || {}}
               maxMetric={maxMetric}
               title="Movement Distribution by Region"
             />
+
+            {/* Month-Year Indicator */}
+            <div className="flex justify-center items-center px-4 py-3 border-t border-gray-200 bg-gray-50">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-full text-white font-semibold text-sm shadow-md">
+                <span className="text-lg">📅</span>
+                <span>
+                  {currentMonthIndex === -1
+                    ? "All Months (2021-2025)"
+                    : `${timelineMonths[currentMonthIndex]?.month} ${timelineMonths[currentMonthIndex]?.year}`}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Top Vendor Chart (35% of left panel) */}
