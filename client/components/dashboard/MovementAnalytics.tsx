@@ -164,7 +164,7 @@ export function MovementAnalytics({
               <Line
                 type="monotone"
                 dataKey="movements"
-                stroke="#06b6d4"
+                stroke="#1Bced8"
                 strokeWidth={2}
                 dot={false}
               />
