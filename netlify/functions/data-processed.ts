@@ -102,6 +102,18 @@ function classifyEbuRoyal(flag: string | undefined): {
   }
 }
 
+/**
+ * Normalize location name to create consistent Location IDs
+ * Must match the server-side implementation in server/routes/data.ts
+ */
+function normalizeLocationName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "-") // Replace special chars with dash
+    .replace(/-+/g, "-") // Collapse multiple dashes
+    .replace(/^-+|-+$/g, ""); // Remove leading/trailing dashes
+}
+
 function parseCSVData(csvText: unknown): Movement[] {
   // Validate input
   if (typeof csvText !== "string" || !csvText) {
