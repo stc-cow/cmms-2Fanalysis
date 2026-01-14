@@ -57,7 +57,8 @@ const EVENT_LOGOS: Record<string, EventLogo> = {
   },
   "formula 1": {
     name: "Formula 1",
-    emoji: "🏎️",
+    imageUrl:
+      "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fd3ffe09f170040e89c7ca5948d8cd007?format=webp&width=800",
     color: "#e3000f",
   },
   "formula e": {
