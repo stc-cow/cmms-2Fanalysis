@@ -53,11 +53,11 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
   }, [neverMovedCows]);
 
   const BAR_COLORS = [
-    "#3b82f6", // Blue
-    "#06b6d4", // Cyan
-    "#10b981", // Green
-    "#f59e0b", // Amber
-    "#ef4444", // Red
+    "#FF375E", // Red (Base)
+    "#1Bced8", // Teal (Base)
+    "#4F008C", // Purple (Base)
+    "#FF6F8A", // Red (Light)
+    "#5FE0E7", // Teal (Light)
   ];
 
   // Calculate regional breakdown
@@ -80,13 +80,13 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
   }, [neverMovedCows]);
 
   const REGION_COLORS: Record<string, string> = {
-    WEST: "#3b82f6",
-    SOUTH: "#10b981",
-    CENTRAL: "#f59e0b",
-    EAST: "#ef4444",
+    WEST: "#FF375E", // Red (Base)
+    SOUTH: "#1Bced8", // Teal (Base)
+    CENTRAL: "#4F008C", // Purple (Base)
+    EAST: "#FF6F8A", // Red (Light)
   };
 
-  const KPI_CARD_COLORS = ["#6366f1", "#3b82f6", "#06b6d4", "#10b981"];
+  const KPI_CARD_COLORS = ["#4F008C", "#FF375E", "#1Bced8", "#FF6F8A"];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
