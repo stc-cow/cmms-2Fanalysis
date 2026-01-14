@@ -298,6 +298,14 @@ export function TopEventsMovementCard({
               <Bar
                 dataKey="count"
                 radius={[0, 12, 12, 0]}
+                label={{
+                  position: "right",
+                  fill: "#374151",
+                  fontSize: 11,
+                  fontWeight: "bold",
+                  formatter: (value: number) => value.toString(),
+                  offset: 8,
+                }}
                 style={{
                   cursor: "pointer",
                   filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15))",
