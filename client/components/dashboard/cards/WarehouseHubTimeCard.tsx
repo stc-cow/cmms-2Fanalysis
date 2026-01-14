@@ -61,6 +61,13 @@ export function WarehouseHubTimeCard({
     [movements, locations],
   );
 
+  // Calculate short idle time data
+  const { buckets: shortIdleBuckets, bucketCows: shortIdleBucketCows } =
+    useMemo(
+      () => calculateShortIdleTime(movements, locations),
+      [movements, locations],
+    );
+
   // Force chart to render on mount by triggering a state update after DOM is ready
   useEffect(() => {
     const timer = setTimeout(() => {
