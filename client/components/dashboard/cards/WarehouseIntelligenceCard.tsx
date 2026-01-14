@@ -331,39 +331,6 @@ export function WarehouseIntelligenceCard({
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-900 dark:to-slate-800 rounded-xl border border-gray-200/60 dark:border-gray-700/40 p-3 sm:p-4">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#3A0CA3" }}
-            />
-            <span className="text-gray-700 dark:text-gray-300">STC</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#5F2EEA" }}
-            />
-            <span className="text-gray-700 dark:text-gray-300">ACES</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#1Bced8" }}
-            />
-            <span className="text-gray-700 dark:text-gray-300">Madaf</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: "#F97316" }}
-            />
-            <span className="text-gray-700 dark:text-gray-300">HOI</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
