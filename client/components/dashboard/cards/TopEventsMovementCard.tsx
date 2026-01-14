@@ -67,8 +67,9 @@ const EVENT_LOGOS: Record<string, EventLogo> = {
   },
   mdlbeast: {
     name: "MDLBEAST",
-    emoji: "🎵",
-    color: "#000000",
+    imageUrl:
+      "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F57f7055ccc2e4f78ab744e572e8de5c9?format=webp&width=800",
+    color: "#FF1493",
   },
   "fifa world cup": {
     name: "FIFA World Cup",
