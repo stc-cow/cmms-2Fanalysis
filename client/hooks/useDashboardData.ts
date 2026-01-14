@@ -45,7 +45,9 @@ export function useDashboardData(): UseDashboardDataResult {
         // 10 second timeout - strict, no retries
         const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-        const response = await fetch("/api/data/processed-data", {
+        // Add timestamp to bust any caches and force fresh data
+        const cacheBustParam = `?t=${Date.now()}`;
+        const response = await fetch(`/api/data/processed-data${cacheBustParam}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
