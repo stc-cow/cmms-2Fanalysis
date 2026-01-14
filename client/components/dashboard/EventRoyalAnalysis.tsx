@@ -19,12 +19,12 @@ interface EventRoyalAnalysisProps {
 }
 
 const EVENT_COLORS: Record<string, string> = {
-  Hajj: "#f59e0b",
-  Umrah: "#06b6d4",
-  Royal: "#8b5cf6",
-  "National Event": "#10b981",
-  Seasonal: "#ec4899",
-  "Normal Coverage": "#6b7280",
+  Hajj: "#FF375E", // Red (Base)
+  Umrah: "#1Bced8", // Teal (Base)
+  Royal: "#4F008C", // Purple (Base)
+  "National Event": "#FF6F8A", // Red (Light)
+  Seasonal: "#5FE0E7", // Teal (Light)
+  "Normal Coverage": "#7A3DB8", // Purple (Light)
 };
 
 export function EventRoyalAnalysis({
