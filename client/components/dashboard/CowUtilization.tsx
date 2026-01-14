@@ -80,7 +80,18 @@ export function CowUtilization({ cowMetrics }: CowUtilizationProps) {
                   borderRadius: "8px",
                 }}
               />
-              <Bar dataKey="count" fill="#6366f1" radius={[8, 8, 0, 0]} />
+              <Bar
+                dataKey="count"
+                fill="#6366f1"
+                radius={[8, 8, 0, 0]}
+                label={{
+                  position: "top",
+                  fill: "#374151",
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  formatter: (value: number) => value.toString(),
+                }}
+              />
             </BarChart>
           </ResponsiveContainer>
           <p className="text-xs text-gray-600 dark:text-gray-400 mt-4">
