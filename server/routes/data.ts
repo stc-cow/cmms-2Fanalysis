@@ -455,16 +455,6 @@ function processData(rows: any[]) {
 
     // Add movement with standard field names
     const distanceValue = parseFloat(row.distance_km) || 0;
-
-    // Create Location IDs - use full normalized location name (no truncation to prevent collisions)
-    const normalizeLocationName = (name: string): string => {
-      return name
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-") // Replace special chars with dash
-        .replace(/-+/g, "-") // Collapse multiple dashes
-        .replace(/^-+|-+$/g, ""); // Remove leading/trailing dashes
-    };
-
     const fromLocId = `LOC-${normalizeLocationName(from_loc)}`;
     const toLocId = `LOC-${normalizeLocationName(to_loc)}`;
 
