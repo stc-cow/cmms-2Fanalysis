@@ -84,6 +84,14 @@ export function WarehouseHubTimeCard({
     }));
   }, [buckets]);
 
+  // Short idle time chart data
+  const shortIdleChartData = useMemo(() => {
+    return shortIdleBuckets.map((b) => ({
+      name: b.bucket,
+      count: b.count,
+    }));
+  }, [shortIdleBuckets]);
+
   // Check if there's any data in the buckets
   const hasChartData = useMemo(() => {
     return buckets.some((b) => b.count > 0);
