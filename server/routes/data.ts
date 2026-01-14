@@ -510,8 +510,8 @@ function processData(rows: any[]) {
       });
     }
 
-    // Add from location
-    const fromId = `LOC-${from_loc.replace(/\s+/g, "-").substring(0, 20)}`;
+    // Add from location (using pre-computed ID to ensure consistency)
+    const fromId = `LOC-${normalizeLocationName(from_loc)}`;
     if (!locationMap.has(fromId)) {
       // Detect warehouse based on "WH" in location name
       const isFromWarehouse = from_loc.toUpperCase().includes("WH");
@@ -528,8 +528,8 @@ function processData(rows: any[]) {
       });
     }
 
-    // Add to location
-    const toId = `LOC-${to_loc.replace(/\s+/g, "-").substring(0, 20)}`;
+    // Add to location (using pre-computed ID to ensure consistency)
+    const toId = `LOC-${normalizeLocationName(to_loc)}`;
     if (!locationMap.has(toId)) {
       // Detect warehouse based on "WH" in location name
       const isToWarehouse = to_loc.toUpperCase().includes("WH");
