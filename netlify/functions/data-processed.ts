@@ -1,6 +1,6 @@
 import { Handler } from "@netlify/functions";
 
-const FETCH_TIMEOUT = 20000;
+const FETCH_TIMEOUT = 60000; // 60 seconds - allows time for Google Sheets to respond
 const CACHE_TTL = 300;
 
 const MOVEMENT_DATA_CSV_URL =
@@ -192,15 +192,25 @@ function parseCSVData(csvText: unknown): Movement[] {
 
     const movements: Movement[] = [];
     let serialNumber = 1;
+    let skippedRows = 0;
 
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i]?.trim();
-      if (!line) continue;
+      if (!line) {
+        skippedRows++;
+        continue;
+      }
 
       const cells = parseCSVLine(line);
       const cowId = cells[0]?.trim();
 
-      if (!cowId) continue;
+      if (!cowId) {
+        if (i <= 10) {
+          console.log(`[Row ${i}] Skipped: Empty COW_ID`);
+        }
+        skippedRows++;
+        continue;
+      }
 
       // Extract and parse datetime fields with proper date handling
       const parseDate = (dateStr: string | undefined): string => {
