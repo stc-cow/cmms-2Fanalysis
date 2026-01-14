@@ -106,10 +106,10 @@ export function EventsAnalysisCard({
 
   // KPI Card color scheme
   const KPI_CARD_COLORS = [
-    "#3b82f6", // Blue
-    "#06b6d4", // Cyan
-    "#10b981", // Green
-    "#f59e0b", // Amber
+    "#FF375E", // Red (Base)
+    "#1Bced8", // Teal (Base)
+    "#4F008C", // Purple (Base)
+    "#FF6F8A", // Red (Light)
   ];
 
   return (
