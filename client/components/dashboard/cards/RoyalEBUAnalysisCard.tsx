@@ -122,7 +122,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
                 dataKey="value"
               >
                 {categoryData.map((entry, index) => {
-                  const colors = ["#8b5cf6", "#fbbf24", "#6b7280"];
+                  const colors = ["#4F008C", "#FF375E", "#1Bced8"];
                   return <Cell key={`cell-${index}`} fill={colors[index]} />;
                 })}
               </Pie>
