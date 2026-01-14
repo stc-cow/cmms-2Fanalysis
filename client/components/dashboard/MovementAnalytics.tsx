@@ -94,7 +94,18 @@ export function MovementAnalytics({
                   borderRadius: "8px",
                 }}
               />
-              <Bar dataKey="count" fill="#1Bced8" radius={[8, 8, 0, 0]} />
+              <Bar
+                dataKey="count"
+                fill="#1Bced8"
+                radius={[8, 8, 0, 0]}
+                label={{
+                  position: "top",
+                  fill: "#374151",
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  formatter: (value: number) => value.toString(),
+                }}
+              />
             </BarChart>
           </ResponsiveContainer>
           <div className="mt-4 grid grid-cols-3 gap-4">
