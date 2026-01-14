@@ -894,6 +894,106 @@ export function getCOWOffAirAgingDetails(
   };
 }
 
+// Calculate short idle time buckets for warehouse placements (1-5, 6-10, 11-15 days)
+export function calculateShortIdleTime(
+  movements: CowMovementsFact[],
+  locations: DimLocation[],
+): {
+  buckets: Array<{ bucket: string; count: number }>;
+  bucketCows: Map<string, string[]>;
+} {
+  const locMap = new Map(locations.map((l) => [l.Location_ID, l]));
+
+  // Filter ONLY off-air movements (Half/Zero)
+  const offAirMovements = movements.filter(
+    (mov) => mov.Movement_Type === "Half" || mov.Movement_Type === "Zero",
+  );
+
+  // Group movements by COW ID
+  const movementsByCow = new Map<string, CowMovementsFact[]>();
+  offAirMovements.forEach((mov) => {
+    if (!movementsByCow.has(mov.COW_ID)) {
+      movementsByCow.set(mov.COW_ID, []);
+    }
+    movementsByCow.get(mov.COW_ID)!.push(mov);
+  });
+
+  // Sort each COW's movements chronologically
+  movementsByCow.forEach((movements) => {
+    movements.sort(
+      (a, b) =>
+        new Date(a.Moved_DateTime).getTime() -
+        new Date(b.Moved_DateTime).getTime(),
+    );
+  });
+
+  // Calculate short idle stays (1-15 days only)
+  const shortIdleStays: Array<{ cowId: string; idleDays: number }> = [];
+
+  movementsByCow.forEach((movements, cowId) => {
+    // Calculate idle time between consecutive movements
+    for (let i = 0; i < movements.length - 1; i++) {
+      const currentMov = movements[i];
+      const nextMov = movements[i + 1];
+
+      // Get the warehouse (To_Location of current movement)
+      const warehouse = locMap.get(currentMov.To_Location_ID);
+
+      // Only count if it's a warehouse
+      if (!warehouse) continue;
+      const isWarehouse =
+        warehouse.Location_Type === "Warehouse" ||
+        warehouse.Location_Name.toUpperCase().includes("WH");
+      if (!isWarehouse) continue;
+
+      // Calculate idle days
+      const idleStart = new Date(currentMov.Reached_DateTime).getTime();
+      const idleEnd = new Date(nextMov.Moved_DateTime).getTime();
+      const idleDays = (idleEnd - idleStart) / (1000 * 60 * 60 * 24);
+
+      // Only record short idles (1-15 days)
+      if (idleDays >= 1 && idleDays <= 15) {
+        shortIdleStays.push({ cowId, idleDays });
+      }
+    }
+  });
+
+  // Create buckets for short idle times
+  const bucketCounts = new Map<"1-5 Days" | "6-10 Days" | "11-15 Days", Set<string>>();
+  bucketCounts.set("1-5 Days", new Set());
+  bucketCounts.set("6-10 Days", new Set());
+  bucketCounts.set("11-15 Days", new Set());
+
+  // Assign COWs to buckets based on their idle days
+  shortIdleStays.forEach(({ cowId, idleDays }) => {
+    if (idleDays <= 5) {
+      bucketCounts.get("1-5 Days")!.add(cowId);
+    } else if (idleDays <= 10) {
+      bucketCounts.get("6-10 Days")!.add(cowId);
+    } else {
+      bucketCounts.get("11-15 Days")!.add(cowId);
+    }
+  });
+
+  // Build buckets array for chart
+  const buckets = [
+    { bucket: "1-5 Days", count: bucketCounts.get("1-5 Days")!.size },
+    { bucket: "6-10 Days", count: bucketCounts.get("6-10 Days")!.size },
+    { bucket: "11-15 Days", count: bucketCounts.get("11-15 Days")!.size },
+  ];
+
+  // Convert Sets to Arrays
+  const bucketCowsMap = new Map<string, string[]>();
+  bucketCounts.forEach((cowSet, bucketName) => {
+    bucketCowsMap.set(bucketName, Array.from(cowSet).sort());
+  });
+
+  return {
+    buckets,
+    bucketCows: bucketCowsMap,
+  };
+}
+
 // Top Events Movement Analytics
 export interface TopEventData {
   eventName: string;
