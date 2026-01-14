@@ -164,7 +164,18 @@ export function EventRoyalAnalysis({
                   borderRadius: "8px",
                 }}
               />
-              <Bar dataKey="avgDistance" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+              <Bar
+                dataKey="avgDistance"
+                fill="#3b82f6"
+                radius={[8, 8, 0, 0]}
+                label={{
+                  position: "top",
+                  fill: "#374151",
+                  fontSize: 10,
+                  fontWeight: "bold",
+                  formatter: (value: number) => value.toFixed(0),
+                }}
+              />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
