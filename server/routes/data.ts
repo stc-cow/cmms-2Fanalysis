@@ -37,7 +37,7 @@ function setCached(key: string, data: any, ttlSeconds: number = 300): void {
 }
 
 // Fetch timeout configuration (in milliseconds)
-const FETCH_TIMEOUT = 20000; // 20 seconds - safe timeout for API requests
+const FETCH_TIMEOUT = 60000; // 60 seconds - allows time for Google Sheets to respond
 const CACHE_TTL = 300; // 5 minutes cache for data endpoints
 
 // Google Sheet Configuration - Published CSV URL (Single Sheet)
