@@ -234,6 +234,13 @@ export function WarehouseHubTimeCard({
                 <Bar
                   dataKey="count"
                   radius={[12, 12, 0, 0]}
+                  label={{
+                    position: "top",
+                    fill: "#374151",
+                    fontSize: 11,
+                    fontWeight: "bold",
+                    formatter: (value: number) => value.toString(),
+                  }}
                   onClick={(state: any) => {
                     if (state && state.name) {
                       handleChartClick(state.name);
