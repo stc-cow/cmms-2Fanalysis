@@ -641,7 +641,7 @@ export function ExecutiveOverviewCard({
             {/* Movement by Event Type Donut (Column R) */}
             <div className="bg-white rounded-lg p-2 border border-gray-200 shadow-sm flex flex-col overflow-hidden">
               <h3 className="text-gray-900 text-xs font-bold text-center flex-shrink-0">
-                Movement by Event Type
+                Movement Category
               </h3>
               {movementByEventTypeData.length > 0 ? (
                 <div className="flex-1 min-h-0 flex items-center justify-center">
