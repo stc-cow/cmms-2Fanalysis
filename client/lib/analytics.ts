@@ -959,7 +959,10 @@ export function calculateShortIdleTime(
   });
 
   // Create buckets for short idle times
-  const bucketCounts = new Map<"1-5 Days" | "6-10 Days" | "11-15 Days", Set<string>>();
+  const bucketCounts = new Map<
+    "1-5 Days" | "6-10 Days" | "11-15 Days",
+    Set<string>
+  >();
   bucketCounts.set("1-5 Days", new Set());
   bucketCounts.set("6-10 Days", new Set());
   bucketCounts.set("11-15 Days", new Set());
