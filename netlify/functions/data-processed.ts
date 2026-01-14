@@ -172,11 +172,39 @@ function parseCSVData(csvText: unknown): Movement[] {
 
       if (!cowId) continue;
 
-      // Extract required datetime fields with fallbacks
-      const movedDt =
-        cells[12]?.trim() || cells[10]?.trim() || new Date().toISOString();
-      const reachedDt =
-        cells[14]?.trim() || cells[12]?.trim() || new Date().toISOString();
+      // Extract and parse datetime fields with proper date handling
+      const parseDate = (dateStr: string | undefined): string => {
+        if (!dateStr || dateStr.trim() === "") {
+          return "1900-01-01T00:00:00Z"; // Use far-past date instead of today
+        }
+        try {
+          const trimmed = dateStr.trim();
+          let date: Date;
+
+          // Try ISO format first
+          if (trimmed.includes("T")) {
+            date = new Date(trimmed);
+          } else if (trimmed.includes("-")) {
+            // YYYY-MM-DD format
+            date = new Date(trimmed + "T00:00:00Z");
+          } else if (trimmed.includes("/")) {
+            // M/D/YYYY or MM/DD/YYYY format
+            date = new Date(trimmed);
+          } else {
+            date = new Date(trimmed);
+          }
+
+          if (isNaN(date.getTime())) {
+            return "1900-01-01T00:00:00Z";
+          }
+          return date.toISOString();
+        } catch (e) {
+          return "1900-01-01T00:00:00Z";
+        }
+      };
+
+      const movedDt = parseDate(cells[12]?.trim() || cells[10]?.trim());
+      const reachedDt = parseDate(cells[14]?.trim() || cells[12]?.trim());
 
       // Classify Royal/EBU status
       const ebuRoyalFlag = cells[4]?.trim();
