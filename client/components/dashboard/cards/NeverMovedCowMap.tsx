@@ -82,7 +82,7 @@ export function NeverMovedCowMap({
         { range: "4-6 Years", color: "#1Bced8" },
         { range: "7-9 Years", color: "#4F008C" },
         { range: "10-12 Years", color: "#FF6F8A" },
-        { range: "12+ Years", color: "#5FE0E7" },
+        { range: "12+ Years", color: "#7A3DB8" },
       ];
 
       div.innerHTML = `
