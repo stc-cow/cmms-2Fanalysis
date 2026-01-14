@@ -102,7 +102,7 @@ export function RoyalEBUAnalysisCard({ movements }: RoyalEBUAnalysisCardProps) {
           className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 overflow-hidden flex flex-col"
           style={{
             borderTopWidth: "4px",
-            borderTopColor: "#fbbf24",
+            borderTopColor: "#FF375E",
           }}
         >
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex-shrink-0">
