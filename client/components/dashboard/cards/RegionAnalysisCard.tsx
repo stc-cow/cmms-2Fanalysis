@@ -50,20 +50,20 @@ export function RegionAnalysisCard({
 
   // Color mapping for regions
   const regionColors: Record<string, string> = {
-    WEST: "#3b82f6",
-    EAST: "#a855f7",
-    CENTRAL: "#ec4899",
-    SOUTH: "#f59e0b",
+    WEST: "#FF375E", // Red (Base)
+    EAST: "#1Bced8", // Teal (Base)
+    CENTRAL: "#4F008C", // Purple (Base)
+    SOUTH: "#FF6F8A", // Red (Light)
   };
 
   // Get gradient color for bars based on count
   const getBarColor = (index: number) => {
     const colors = [
-      "#8b5cf6", // purple
-      "#a855f7", // lighter purple
-      "#c084fc", // light purple
-      "#d8b4fe", // lighter
-      "#e9d5ff", // pale
+      "#4F008C", // Purple (Base)
+      "#7A3DB8", // Purple (Light)
+      "#3A0066", // Purple (Dark)
+      "#FF375E", // Red (Base)
+      "#FF6F8A", // Red (Light)
     ];
     return colors[index % colors.length];
   };
