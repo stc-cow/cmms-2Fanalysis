@@ -377,7 +377,8 @@ function parseCSVData(csvText: unknown): Movement[] {
       movements.push(movement);
     }
 
-    console.log(`Parsed ${movements.length} movements from CSV`);
+    console.log(`Parsed ${movements.length} movements from CSV (${skippedRows} rows skipped)`);
+    console.log(`CSV had ${lines.length} total lines (${lines.length - 1} data rows)`);
 
     // Log vendor extraction debug info
     const vendorSample = movements.slice(0, 5).map((m) => ({
