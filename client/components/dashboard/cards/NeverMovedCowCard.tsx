@@ -53,11 +53,11 @@ export function NeverMovedCowCard({ neverMovedCows }: NeverMovedCowCardProps) {
   }, [neverMovedCows]);
 
   const BAR_COLORS = [
-    "#FF375E", // Red (Base)
-    "#1Bced8", // Teal (Base)
-    "#4F008C", // Purple (Base)
-    "#FF6F8A", // Red (Light)
-    "#5FE0E7", // Teal (Light)
+    "#FF375E", // Red (Base) - 1-3 Years
+    "#1Bced8", // Teal (Base) - 4-6 Years
+    "#4F008C", // Purple (Base) - 7-9 Years
+    "#FF6F8A", // Red (Light) - 10-12 Years
+    "#7A3DB8", // Purple (Light) - 12+ Years
   ];
 
   // Calculate regional breakdown
