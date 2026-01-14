@@ -111,17 +111,17 @@ export function RegionAnalysisCard({
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "rgba(255, 255, 255, 0.95)",
-                    border: "2px solid #a855f7",
+                    border: "2px solid #7A3DB8",
                     borderRadius: "12px",
                     boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
                     padding: "12px 16px",
                   }}
-                  cursor={{ fill: "rgba(168, 85, 247, 0.15)" }}
+                  cursor={{ fill: "rgba(122, 61, 184, 0.15)" }}
                   formatter={(value) => [`${value} transitions`, "Count"]}
                 />
                 <Bar
                   dataKey="count"
-                  fill="#a855f7"
+                  fill="#7A3DB8"
                   radius={[8, 8, 0, 0]}
                   animationDuration={600}
                 />
