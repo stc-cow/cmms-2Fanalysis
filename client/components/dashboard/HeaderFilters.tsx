@@ -75,11 +75,13 @@ export function HeaderFilters({
         <SelectContent>
           <SelectItem value={YEAR_PLACEHOLDER}>All Years</SelectItem>
           {years.length > 0 &&
-            years.map((year) => (
-              <SelectItem key={`year_${year}`} value={`year_${year}`}>
-                {year}
-              </SelectItem>
-            ))}
+            years
+              .filter((year) => year !== 1900) // Exclude placeholder year for invalid dates
+              .map((year) => (
+                <SelectItem key={`year_${year}`} value={`year_${year}`}>
+                  {year}
+                </SelectItem>
+              ))}
         </SelectContent>
       </Select>
 
