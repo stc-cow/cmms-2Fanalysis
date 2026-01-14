@@ -47,16 +47,19 @@ export function useDashboardData(): UseDashboardDataResult {
 
         // Add timestamp to bust any caches and force fresh data
         const cacheBustParam = `?t=${Date.now()}`;
-        const response = await fetch(`/api/data/processed-data${cacheBustParam}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            "Pragma": "no-cache",
-            "Expires": "0",
+        const response = await fetch(
+          `/api/data/processed-data${cacheBustParam}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Cache-Control": "no-cache, no-store, must-revalidate",
+              Pragma: "no-cache",
+              Expires: "0",
+            },
+            signal: controller.signal,
           },
-          signal: controller.signal,
-        });
+        );
 
         clearTimeout(timeoutId);
 

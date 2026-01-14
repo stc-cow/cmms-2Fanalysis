@@ -617,7 +617,8 @@ const processedDataHandler: RequestHandler = async (req, res) => {
     const cacheKey = "processed-data-v2";
     const shouldUseCache = process.env.NODE_ENV === "production";
     const hasCacheBustParam = req.query.nocache === "true" || req.query.t; // Allow cache busting
-    const cachedData = shouldUseCache && !hasCacheBustParam ? getCached(cacheKey) : null;
+    const cachedData =
+      shouldUseCache && !hasCacheBustParam ? getCached(cacheKey) : null;
     if (cachedData) {
       console.log(`✓ Serving cached data for processed-data`);
       res.set("Cache-Control", "public, max-age=300");
