@@ -417,7 +417,8 @@ const handler: Handler = async () => {
         if (!locationMap.has(m.From_Location_ID)) {
           locationMap.set(m.From_Location_ID, {
             Location_ID: m.From_Location_ID,
-            Location_Name: m.From_Location_ID,
+            Location_Name: (m as any).From_Location_Name || m.From_Location_ID,
+            Location_Type: ((m as any).From_Location_Name || "").toUpperCase().includes("WH") ? "Warehouse" : "Site",
           });
         }
         const fromLoc = locationMap.get(m.From_Location_ID)!;
@@ -432,7 +433,8 @@ const handler: Handler = async () => {
         if (!locationMap.has(m.To_Location_ID)) {
           locationMap.set(m.To_Location_ID, {
             Location_ID: m.To_Location_ID,
-            Location_Name: m.To_Location_ID,
+            Location_Name: (m as any).To_Location_Name || m.To_Location_ID,
+            Location_Type: ((m as any).To_Location_Name || "").toUpperCase().includes("WH") ? "Warehouse" : "Site",
           });
         }
         const toLoc = locationMap.get(m.To_Location_ID)!;
