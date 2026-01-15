@@ -87,34 +87,10 @@ export function useDashboardData(): UseDashboardDataResult {
 
         const errorMessage =
           err instanceof Error ? err.message : "Unknown error";
-        console.warn(
-          "Failed to load data from API, using mock data:",
-          errorMessage,
-        );
-
-        // Fall back to mock data (useful for GitHub Pages or offline mode)
-        try {
-          const mockData: DashboardDataResponse = {
-            movements: generateMockMovements(500),
-            cows: generateMockCows(50),
-            locations: generateMockLocations(20),
-            events: generateMockEvents(10),
-          };
-
-          console.log(
-            `✓ Using mock data: ${mockData.movements.length} movements, ${mockData.cows.length} cows`,
-          );
-          setData(mockData);
-          setError(null);
-          setLoading(false);
-        } catch (mockErr) {
-          const mockErrorMessage =
-            mockErr instanceof Error ? mockErr.message : "Unknown error";
-          console.error("Failed to load mock data:", mockErrorMessage);
-          setError(errorMessage);
-          setData(null);
-          setLoading(false);
-        }
+        console.error("Failed to load data from API:", errorMessage);
+        setError(errorMessage);
+        setData(null);
+        setLoading(false);
       }
     };
 
