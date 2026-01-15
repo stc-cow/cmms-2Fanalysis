@@ -29,7 +29,7 @@ export default function AIChatAgent() {
       id: "1",
       type: "ai",
       content:
-        "Hello! I'm your AI Chat Agent. I can help you with questions about cow movements, logistics, analytics, or anything else you'd like to know. Try asking about a specific COW ID (like CWN052) to get deployment and movement data. What can I help you with today?",
+        "Hello! 👋 I'm your AI Chat Agent powered by Saudi Arabia knowledge base. I can help you with:\n\n📡 **COW Analytics** - Deployment history, movement stats, vendor info\n🏙️ **Saudi Cities** - Information about Riyadh, Jeddah, Mecca, and more\n🎪 **Saudi Events** - Hajj, Umrah, Riyadh Season, Formula 1, and cultural events\n🌤️ **Weather & Climate** - Regional weather patterns and seasonal information\n🏗️ **Mega Projects** - NEOM, The Line, Qiddiya, Red Sea Project, etc.\n\nTry asking: 'CWN052 deployment', 'Tell me about Riyadh', 'Saudi events in December', or 'What is NEOM?'",
       timestamp: new Date(),
     },
   ]);
