@@ -47,10 +47,16 @@ jobs:
           rm -rf docs/assets docs/index.html docs/*.js docs/*.css
           cp -r dist/spa/* docs/
 
-      - name: Commit and push to main
+      - name: Commit and push to main (if changes exist)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/
-          git commit -m "Deploy: Update built app to docs folder" || echo "No changes to commit"
-          git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Deploy: Update built app to docs folder"
+            git push origin main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
