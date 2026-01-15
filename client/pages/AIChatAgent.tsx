@@ -512,7 +512,7 @@ Try asking: "CWN052 deployment", "Tell me about Riyadh", "What is NEOM?" or "Eve
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Ask about any COW (e.g., 'CWN052 how many times deployed') or any general question..."
+            placeholder="Ask about COW, Saudi cities, events, weather, mega projects... (e.g., 'CWN052 deployment', 'Riyadh', 'NEOM')"
             rows={1}
             className="flex-1 px-4 py-3 rounded-lg bg-slate-800 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:border-blue-500 resize-none"
             style={{
