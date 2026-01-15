@@ -7,7 +7,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Index from "./pages/Index";
+import Main from "./pages/Main";
+import Dashboard from "./pages/Dashboard";
+import AIMovement from "./pages/AIMovement";
+import AIChatAgent from "./pages/AIChatAgent";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,7 +23,10 @@ const App = () => (
         <Sonner />
         <BrowserRouter basename={import.meta.env.BASE_URL}>
           <Routes>
-            <Route path="/" element={<Index />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ai-movement" element={<AIMovement />} />
+            <Route path="/ai-chat" element={<AIChatAgent />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
