@@ -80,7 +80,7 @@ export default function Main() {
       <div id="features" className="py-20 px-6 bg-slate-800/50 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16">
-            Powered by Advanced Technology
+            Powered by ACES MSD
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
