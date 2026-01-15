@@ -100,10 +100,12 @@ The `jekyll-gh-pages.yml` workflow will:
 
 ## Verification Checklist
 
-- [ ] GitHub Pages source is correctly configured (gh-pages branch OR docs folder)
-- [ ] The `.nojekyll` file is present in the deployment
+- [ ] GitHub Pages source is correctly configured (main branch, `/docs` folder)
+- [ ] The `.nojekyll` file is present in the `docs/` folder after deployment
 - [ ] The workflow has completed successfully (green checkmark in Actions)
-- [ ] Try refreshing the GitHub Pages URL
+- [ ] The workflow pushed new commits to main with built app in `docs/`
+- [ ] Try refreshing the GitHub Pages URL in your browser
+- [ ] Clear browser cache (Ctrl+Shift+Delete)
 - [ ] Check browser console (F12) for any JavaScript errors
 - [ ] Try accessing a route like `/cmms-2Fanalysis/dashboard`
 
