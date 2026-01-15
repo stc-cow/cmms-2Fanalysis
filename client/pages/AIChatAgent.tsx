@@ -4,6 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send, MessageCircle, Brain, AlertCircle } from "lucide-react";
 import { useDashboardData } from "@/hooks/useDashboardData";
 import { DimCow, CowMovementsFact } from "@shared/models";
+import {
+  searchEvents,
+  searchCities,
+  searchProjects,
+  getEventsByMonth,
+  getWeatherByRegion,
+  SAUDI_CITIES,
+  MEGA_PROJECTS,
+} from "@/lib/saudiKnowledgeBase";
 
 interface Message {
   id: string;
