@@ -23,6 +23,11 @@ interface UseDashboardDataResult {
  * Hook to load dashboard data from Google Sheets API
  * Single source of truth: Google Sheets CSV
  * No retries - single timeout-based request only to prevent hanging
+ *
+ * API Endpoint Configuration:
+ * - Development: http://localhost:8080/api/data/processed-data
+ * - Production (GitHub Pages): Set VITE_API_BASE_URL env var
+ * - Example: VITE_API_BASE_URL=https://your-backend.com
  */
 export function useDashboardData(): UseDashboardDataResult {
   const [data, setData] = useState<DashboardDataResponse | null>(null);
@@ -39,7 +44,12 @@ export function useDashboardData(): UseDashboardDataResult {
         setLoading(true);
         setError(null);
 
+        // Get API base URL from environment or use relative path for dev
+        const apiBase = import.meta.env.VITE_API_BASE_URL || "/api";
+        const endpoint = `${apiBase}/data/processed-data`;
+
         console.log("Loading dashboard data from Google Sheets...");
+        console.log(`API Endpoint: ${endpoint}`);
 
         const controller = new AbortController();
         // 10 second timeout - strict, no retries
@@ -47,19 +57,16 @@ export function useDashboardData(): UseDashboardDataResult {
 
         // Add timestamp to bust any caches and force fresh data
         const cacheBustParam = `?t=${Date.now()}`;
-        const response = await fetch(
-          `/api/data/processed-data${cacheBustParam}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Cache-Control": "no-cache, no-store, must-revalidate",
-              Pragma: "no-cache",
-              Expires: "0",
-            },
-            signal: controller.signal,
+        const response = await fetch(`${endpoint}${cacheBustParam}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0",
           },
-        );
+          signal: controller.signal,
+        });
 
         clearTimeout(timeoutId);
 
