@@ -41,31 +41,27 @@ export default function Dashboard() {
       try {
         setNeverMovedLoading(true);
 
-        // Get API base URL from environment or use relative path for dev
-        const apiBase = import.meta.env.VITE_API_BASE_URL || "/api";
-        const endpoint = `${apiBase}/data/never-moved-cows`;
+        console.log(`📊 Loading Never Moved COWs from Google Sheets (client-side)...`);
 
-        console.log(`Loading Never Moved COWs from: ${endpoint}`);
+        const { fetchNeverMovedCows: fetchData } = await import("@/lib/googleSheetsFetcher");
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-        const response = await fetch(endpoint, {
-          signal: controller.signal,
-        });
+        try {
+          const result = await fetchData();
 
-        clearTimeout(timeoutId);
+          clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.status}`);
+          setNeverMovedCows(result || []);
+          console.log(`✅ Loaded ${result?.length || 0} Never Moved COWs`);
+          setNeverMovedLoading(false);
+        } catch (fetchErr) {
+          clearTimeout(timeoutId);
+          throw fetchErr;
         }
-
-        const result = await response.json();
-        setNeverMovedCows(result.cows || []);
-        console.log(`✓ Loaded ${result.cows?.length || 0} Never Moved COWs`);
-        setNeverMovedLoading(false);
       } catch (err) {
-        console.warn("Never-moved COWs fetch failed:", err);
+        console.warn("⚠️  Never-moved COWs fetch failed:", err);
         // Don't error out - just leave empty
         setNeverMovedCows([]);
         setNeverMovedLoading(false);
