@@ -1,0 +1,324 @@
+/**
+ * Direct Google Sheets CSV fetcher (client-side)
+ * No backend required - works 100% on GitHub Pages
+ */
+
+// Google Sheets CSV URLs (Published to web)
+const MOVEMENT_DATA_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1539310010&single=true&output=csv";
+
+const NEVER_MOVED_COWS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1685376708&single=true&output=csv";
+
+interface DashboardDataResponse {
+  movements: any[];
+  cows: any[];
+  locations: any[];
+  events: any[];
+}
+
+/**
+ * Parses CSV line handling quoted values correctly
+ */
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const nextChar = line[i + 1];
+
+    if (char === '"') {
+      if (insideQuotes && nextChar === '"') {
+        current += '"';
+        i++;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+    } else if (char === "," && !insideQuotes) {
+      result.push(current.trim());
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  result.push(current.trim());
+  return result;
+}
+
+/**
+ * Parse movement data from Google Sheets CSV
+ */
+function parseMovementData(csvText: string): DashboardDataResponse {
+  const lines = csvText.trim().split("\n");
+
+  if (lines.length < 2) {
+    console.warn("⚠️  CSV has fewer than 2 lines");
+    return { movements: [], cows: [], locations: [], events: [] };
+  }
+
+  // Parse header
+  const headerCells = parseCSVLine(lines[0]);
+  console.log(`📋 Movement Data - Found ${headerCells.length} columns`);
+
+  // Map column indices
+  const COW_ID_IDX = 0;
+  const FROM_LOCATION_IDX = 16;
+  const TO_LOCATION_IDX = 20;
+  const FROM_LAT_IDX = 18;
+  const FROM_LNG_IDX = 19;
+  const TO_LAT_IDX = 22;
+  const TO_LNG_IDX = 23;
+  const DISTANCE_IDX = 24;
+  const MOVEMENT_TYPE_IDX = 25;
+  const REGION_FROM_IDX = 26;
+  const REGION_TO_IDX = 27;
+  const VENDOR_IDX = 28;
+  const EBU_ROYAL_IDX = 4;
+  const MOVED_DATE_IDX = 12;
+  const REACHED_DATE_IDX = 14;
+
+  const movements: any[] = [];
+  const cowMap = new Map();
+  const locationMap = new Map();
+
+  // Parse data rows
+  for (let i = 1; i < lines.length; i++) {
+    const cells = parseCSVLine(lines[i]);
+
+    const cowId = cells[COW_ID_IDX]?.trim();
+    if (!cowId) continue;
+
+    const fromLoc = cells[FROM_LOCATION_IDX]?.trim() || "Unknown";
+    const toLoc = cells[TO_LOCATION_IDX]?.trim() || "Unknown";
+    const ebuRoyalFlag = cells[EBU_ROYAL_IDX]?.trim() || "NON EBU";
+    const distanceStr = cells[DISTANCE_IDX]?.trim() || "0";
+    const movementType = cells[MOVEMENT_TYPE_IDX]?.trim() || "Zero";
+    const movedDate = cells[MOVED_DATE_IDX]?.trim() || "";
+    const reachedDate = cells[REACHED_DATE_IDX]?.trim() || "";
+    const vendor = cells[VENDOR_IDX]?.trim() || "Unknown";
+
+    // Classify EBU/Royal
+    let category = "NON EBU";
+    let isRoyal = false;
+    let isEBU = false;
+
+    if (ebuRoyalFlag.toLowerCase() === "royal") {
+      category = "ROYAL";
+      isRoyal = true;
+    } else if (ebuRoyalFlag.toLowerCase() === "ebu") {
+      category = "EBU";
+      isEBU = true;
+    }
+
+    const movement = {
+      SN: i,
+      COW_ID: cowId,
+      From_Location_ID: `LOC-${fromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+      From_Sub_Location: cells[17]?.trim() || undefined,
+      To_Location_ID: `LOC-${toLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+      To_Sub_Location: cells[21]?.trim() || undefined,
+      Moved_DateTime: movedDate ? new Date(movedDate).toISOString() : "1900-01-01T00:00:00Z",
+      Reached_DateTime: reachedDate ? new Date(reachedDate).toISOString() : "1900-01-01T00:00:00Z",
+      Movement_Type: movementType.includes("Full") ? "Full" : movementType.includes("Half") ? "Half" : "Zero",
+      Top_Event: cells[11]?.trim() || undefined,
+      Distance_KM: parseFloat(distanceStr) || 0,
+      Is_Royal: isRoyal,
+      Is_EBU: isEBU,
+      EbuRoyalCategory: category,
+      Vendor: vendor,
+    };
+
+    movements.push(movement);
+
+    // Add COW
+    if (!cowMap.has(cowId)) {
+      cowMap.set(cowId, {
+        COW_ID: cowId,
+        Tower_Type: cells[6]?.includes("Small") ? "Small Cell" : cells[6]?.includes("Micro") ? "Micro Cell" : "Macro",
+        Tower_Height: parseFloat(cells[8]?.trim() || "0") || 0,
+        Network_2G: cells[9]?.includes("2G") || false,
+        Network_4G: cells[9]?.includes("4G") || cells[9]?.includes("LTE") || false,
+        Network_5G: cells[9]?.includes("5G") || false,
+        Shelter_Type: cells[5]?.includes("Shelter") ? "Shelter" : "Outdoor",
+        Vendor: vendor,
+        Installation_Date: new Date().toISOString().split("T")[0],
+      });
+    }
+
+    // Add locations
+    const fromLocId = `LOC-${fromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+    if (!locationMap.has(fromLocId)) {
+      const isWarehouse = fromLoc.toUpperCase().includes("WH");
+      locationMap.set(fromLocId, {
+        Location_ID: fromLocId,
+        Location_Name: fromLoc,
+        Sub_Location: cells[17]?.trim() || "",
+        Latitude: parseFloat(cells[FROM_LAT_IDX]?.trim() || "0") || 0,
+        Longitude: parseFloat(cells[FROM_LNG_IDX]?.trim() || "0") || 0,
+        Region: cells[REGION_FROM_IDX]?.trim() || "CENTRAL",
+        Location_Type: isWarehouse ? "Warehouse" : "Site",
+        Owner: vendor,
+      });
+    }
+
+    const toLocId = `LOC-${toLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+    if (!locationMap.has(toLocId)) {
+      const isWarehouse = toLoc.toUpperCase().includes("WH");
+      locationMap.set(toLocId, {
+        Location_ID: toLocId,
+        Location_Name: toLoc,
+        Sub_Location: cells[21]?.trim() || "",
+        Latitude: parseFloat(cells[TO_LAT_IDX]?.trim() || "0") || 0,
+        Longitude: parseFloat(cells[TO_LNG_IDX]?.trim() || "0") || 0,
+        Region: cells[REGION_TO_IDX]?.trim() || "CENTRAL",
+        Location_Type: isWarehouse ? "Warehouse" : "Site",
+        Owner: vendor,
+      });
+    }
+  }
+
+  console.log(`✓ Loaded ${movements.length} movements, ${cowMap.size} cows`);
+
+  return {
+    movements,
+    cows: Array.from(cowMap.values()),
+    locations: Array.from(locationMap.values()),
+    events: [],
+  };
+}
+
+/**
+ * Parse never-moved cows data from Google Sheets
+ */
+function parseNeverMovedCows(csvText: string): any[] {
+  const lines = csvText.trim().split("\n");
+
+  if (lines.length < 2) {
+    console.warn("⚠️  Never-Moved-COWs CSV has fewer than 2 lines");
+    return [];
+  }
+
+  // Parse header
+  const headerCells = parseCSVLine(lines[0]);
+  console.log(`📋 Never-Moved-COWs - Found ${headerCells.length} columns`);
+
+  // Auto-detect column indices
+  const findIndex = (keywords: string[]): number => {
+    const lower = headerCells.map((h) => h.toLowerCase());
+    for (const keyword of keywords) {
+      const idx = lower.findIndex((h) => h.includes(keyword));
+      if (idx >= 0) return idx;
+    }
+    return -1;
+  };
+
+  const COW_ID_IDX = findIndex(["cow", "id"]) ?? 0;
+  const REGION_IDX = findIndex(["region"]) ?? 3;
+  const LOCATION_IDX = findIndex(["location"]) ?? 7;
+  const LAT_IDX = findIndex(["latitude", "lat"]) ?? 8;
+  const LNG_IDX = findIndex(["longitude", "lng"]) ?? 9;
+  const STATUS_IDX = findIndex(["status", "onair"]) ?? 10;
+  const FIRST_DEPLOY_IDX = findIndex(["first", "deploy"]) ?? 12;
+  const VENDOR_IDX = findIndex(["vendor"]) ?? 13;
+
+  const neverMovedCows: any[] = [];
+
+  // Parse data rows
+  for (let i = 1; i < lines.length; i++) {
+    const cells = parseCSVLine(lines[i]);
+
+    const cowId = cells[COW_ID_IDX]?.trim();
+    if (!cowId) continue;
+
+    const firstDeployDate = cells[FIRST_DEPLOY_IDX]?.trim() || "";
+
+    // Calculate Days_On_Air
+    let daysOnAir = 0;
+    if (firstDeployDate) {
+      try {
+        const deployDate = new Date(firstDeployDate);
+        const today = new Date();
+        if (!isNaN(deployDate.getTime())) {
+          daysOnAir = Math.floor(
+            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24)
+          );
+        }
+      } catch (e) {
+        daysOnAir = 0;
+      }
+    }
+
+    const status = cells[STATUS_IDX]?.trim() || "OFF-AIR";
+    const normalizedStatus =
+      status.toUpperCase() === "ON-AIR" || status === "1" ? "ON-AIR" : "OFF-AIR";
+
+    neverMovedCows.push({
+      COW_ID: cowId,
+      Region: cells[REGION_IDX]?.trim() || "Unknown",
+      District: cells[REGION_IDX]?.trim() || "Unknown",
+      City: cells[REGION_IDX]?.trim() || "Unknown",
+      Location: cells[LOCATION_IDX]?.trim() || "Unknown",
+      Latitude: parseFloat(cells[LAT_IDX]?.trim() || "0") || 0,
+      Longitude: parseFloat(cells[LNG_IDX]?.trim() || "0") || 0,
+      Status: normalizedStatus,
+      Last_Deploy_Date: firstDeployDate
+        ? new Date(firstDeployDate).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+      First_Deploy_Date: firstDeployDate
+        ? new Date(firstDeployDate).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+      Days_On_Air: daysOnAir,
+      Vendor: cells[VENDOR_IDX]?.trim() || "Unknown",
+    });
+  }
+
+  console.log(`✓ Loaded ${neverMovedCows.length} Never Moved COWs`);
+
+  return neverMovedCows;
+}
+
+/**
+ * Fetch movement data from Google Sheets
+ */
+export async function fetchMovementData(): Promise<DashboardDataResponse> {
+  try {
+    console.log("📥 Fetching Movement Data from Google Sheets...");
+
+    const response = await fetch(MOVEMENT_DATA_CSV_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const csvText = await response.text();
+    const data = parseMovementData(csvText);
+
+    return data;
+  } catch (error) {
+    console.error("❌ Failed to fetch movement data:", error);
+    throw error;
+  }
+}
+
+/**
+ * Fetch never-moved cows data from Google Sheets
+ */
+export async function fetchNeverMovedCows(): Promise<any[]> {
+  try {
+    console.log("📥 Fetching Never Moved COWs from Google Sheets...");
+
+    const response = await fetch(NEVER_MOVED_COWS_CSV_URL);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const csvText = await response.text();
+    const data = parseNeverMovedCows(csvText);
+
+    return data;
+  } catch (error) {
+    console.error("❌ Failed to fetch never moved cows:", error);
+    throw error;
+  }
+}
