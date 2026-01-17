@@ -5,20 +5,11 @@
 [build.environment]
   NODE_ENV = "production"
 
-# API redirects for Netlify Functions
-[[redirects]]
-  from = "/api/data/processed-data"
-  to = "/.netlify/functions/data-processed"
-  status = 200
-  force = true
+# NOTE: This project uses GitHub Pages for deployment
+# The Express server (server/routes/data.ts) provides API endpoints
+# Netlify configuration is kept for reference but not actively used
 
-[[redirects]]
-  from = "/api/data/never-moved-cows"
-  to = "/.netlify/functions/never-moved-cows"
-  status = 200
-  force = true
-
-# Catch-all SPA redirect
+# Catch-all SPA redirect (for local Netlify dev server only)
 [[redirects]]
   from = "/*"
   to = "/index.html"
