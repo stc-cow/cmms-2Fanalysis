@@ -363,7 +363,9 @@ export function filterMovements(
 
     // Filter by region - check BOTH from and to regions
     if (filters.region) {
-      const fromLoc = locations.find((l) => l.Location_ID === mov.From_Location_ID);
+      const fromLoc = locations.find(
+        (l) => l.Location_ID === mov.From_Location_ID,
+      );
       const toLoc = locations.find((l) => l.Location_ID === mov.To_Location_ID);
 
       // Include if either source or destination matches the selected region
