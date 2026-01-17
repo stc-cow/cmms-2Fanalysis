@@ -361,10 +361,16 @@ export function filterMovements(
       if (movYear !== filters.year) return false;
     }
 
-    // Filter by region
+    // Filter by region - check BOTH from and to regions
     if (filters.region) {
+      const fromLoc = locations.find((l) => l.Location_ID === mov.From_Location_ID);
       const toLoc = locations.find((l) => l.Location_ID === mov.To_Location_ID);
-      if (toLoc?.Region !== filters.region) return false;
+
+      // Include if either source or destination matches the selected region
+      const fromRegionMatch = fromLoc?.Region === filters.region;
+      const toRegionMatch = toLoc?.Region === filters.region;
+
+      if (!fromRegionMatch && !toRegionMatch) return false;
     }
 
     // Filter by vendor
