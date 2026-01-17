@@ -40,7 +40,9 @@ export function useDashboardData(): UseDashboardDataResult {
         setLoading(true);
         setError(null);
 
-        console.log("📊 Loading dashboard data from Google Sheets (client-side)...");
+        console.log(
+          "📊 Loading dashboard data from Google Sheets (client-side)...",
+        );
 
         const controller = new AbortController();
         // 30 second timeout for Google Sheets fetch
@@ -73,7 +75,10 @@ export function useDashboardData(): UseDashboardDataResult {
 
         const errorMessage =
           err instanceof Error ? err.message : "Unknown error";
-        console.error("❌ Failed to load data from Google Sheets:", errorMessage);
+        console.error(
+          "❌ Failed to load data from Google Sheets:",
+          errorMessage,
+        );
         setError(errorMessage);
         setData(null);
         setLoading(false);

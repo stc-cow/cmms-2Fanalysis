@@ -3,6 +3,7 @@
 ## ✅ Changes Made
 
 ### Removed (No Longer Needed)
+
 - ❌ Netlify configuration (`netlify.toml`)
 - ❌ Vercel configuration (`vercel.json`)
 - ❌ Netlify Functions (`netlify/functions/`)
@@ -11,15 +12,18 @@
 - ❌ Railway/Vercel deployment docs
 
 ### Created (Client-Side Fetching)
+
 - ✅ `client/lib/googleSheetsFetcher.ts` - Fetches CSV from Google Sheets
 - ✅ `GITHUB_PAGES_DEPLOYMENT.md` - Complete deployment guide
 - ✅ `QUICK_START.md` - Quick start checklist
 
 ### Updated (Client-Side Data Flow)
+
 - ✅ `client/hooks/useDashboardData.ts` - Uses client-side fetcher
 - ✅ `client/pages/Dashboard.tsx` - Client-side Never-Moved-COWs fetch
 
 ### Unchanged (Still Works)
+
 - ✅ `.github/workflows/jekyll-gh-pages.yml` - GitHub Actions build
 - ✅ `vite.config.ts` - Vite build config
 - ✅ `public/404.html` - SPA routing
@@ -61,6 +65,7 @@ Display analytics, charts, data
 ### 1. Publish Google Sheets to Web
 
 **For Movement Data Sheet**:
+
 ```
 File → Share → Publish to web
 Select "Movement Data" tab
@@ -68,6 +73,7 @@ Click Publish
 ```
 
 **For Never-Moved-COWs Sheet**:
+
 ```
 File → Share → Publish to web
 Select "Never-Moved-COWs" tab
@@ -94,14 +100,14 @@ git push origin main
 
 ## ⏱️ Timeline
 
-| Step | Time | Status |
-|------|------|--------|
-| Push to main | 0s | Done |
-| GitHub Actions starts | ~10s | Automatic |
-| Build React app | ~30s | Automatic |
-| Copy to /docs | ~10s | Automatic |
-| Deploy to GitHub Pages | ~20s | Automatic |
-| **Total** | **~2 minutes** | ✅ **Live** |
+| Step                   | Time           | Status      |
+| ---------------------- | -------------- | ----------- |
+| Push to main           | 0s             | Done        |
+| GitHub Actions starts  | ~10s           | Automatic   |
+| Build React app        | ~30s           | Automatic   |
+| Copy to /docs          | ~10s           | Automatic   |
+| Deploy to GitHub Pages | ~20s           | Automatic   |
+| **Total**              | **~2 minutes** | ✅ **Live** |
 
 ## 🌐 Access
 
@@ -129,10 +135,10 @@ If you see these messages → ✅ **Success!**
 
 Your dashboard reads from:
 
-| Data | Source | GID | Rows |
-|------|--------|-----|------|
-| **Movements** | Google Sheet (published) | 1539310010 | 2535 |
-| **Never-Moved-COWs** | Google Sheet (published) | 1685376708 | 118 |
+| Data                 | Source                   | GID        | Rows |
+| -------------------- | ------------------------ | ---------- | ---- |
+| **Movements**        | Google Sheet (published) | 1539310010 | 2535 |
+| **Never-Moved-COWs** | Google Sheet (published) | 1685376708 | 118  |
 
 Both are fetched **client-side** (in the browser).
 
@@ -179,12 +185,14 @@ Both are fetched **client-side** (in the browser).
 ## ✨ Summary
 
 **Old Setup**:
+
 ```
 Browser → Backend Server → Google Sheets
          (Netlify/Railway/Vercel)
 ```
 
 **New Setup**:
+
 ```
 Browser → Google Sheets (direct)
 ```
@@ -203,6 +211,7 @@ Browser → Google Sheets (direct)
 ---
 
 **Questions?** See:
+
 - `QUICK_START.md` - Quick checklist
 - `GITHUB_PAGES_DEPLOYMENT.md` - Detailed guide
 - Browser console (F12) - Error messages

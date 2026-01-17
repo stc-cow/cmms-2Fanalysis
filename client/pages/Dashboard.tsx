@@ -41,9 +41,13 @@ export default function Dashboard() {
       try {
         setNeverMovedLoading(true);
 
-        console.log(`📊 Loading Never Moved COWs from Google Sheets (client-side)...`);
+        console.log(
+          `📊 Loading Never Moved COWs from Google Sheets (client-side)...`,
+        );
 
-        const { fetchNeverMovedCows: fetchData } = await import("@/lib/googleSheetsFetcher");
+        const { fetchNeverMovedCows: fetchData } = await import(
+          "@/lib/googleSheetsFetcher"
+        );
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout

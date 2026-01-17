@@ -29,10 +29,12 @@ https://stc-cow.github.io/           (CSV published to web)
 ## Requirements
 
 ✅ **Google Sheets published to web**
+
 - Your sheets must be "Publish to web" so the CSV URLs are accessible
 - Settings → Share → Publish to web
 
 ✅ **GitHub Pages enabled**
+
 - Repository Settings → Pages → Deploy from `main` → `/docs` folder
 
 ## Deployment
@@ -76,6 +78,7 @@ git push origin main
 ```
 
 GitHub Actions will:
+
 1. Build the React app with Vite
 2. Copy to `/docs` folder
 3. Deploy to GitHub Pages
@@ -100,19 +103,25 @@ Open **DevTools (F12)** and check **Console**:
 ## Architecture Files
 
 ### Client-Side Fetcher
+
 **File**: `client/lib/googleSheetsFetcher.ts`
+
 - Fetches CSV directly from Google Sheets
 - Parses CSV into structured data
 - No backend dependency
 
 ### Data Hook
+
 **File**: `client/hooks/useDashboardData.ts`
+
 - Uses client-side fetcher
 - Loads movement data
 - No API endpoints
 
 ### Dashboard
+
 **File**: `client/pages/Dashboard.tsx`
+
 - Loads Never-Moved-COWs client-side
 - Renders all charts and analytics
 - Works 100% offline (after initial load)
@@ -120,11 +129,14 @@ Open **DevTools (F12)** and check **Console**:
 ## URL Configuration
 
 The Google Sheets CSV URLs are hardcoded in:
+
 ```typescript
 // client/lib/googleSheetsFetcher.ts
 
-const MOVEMENT_DATA_CSV_URL = "https://docs.google.com/spreadsheets/d/e/[YOUR_SHEET_ID]/pub?gid=1539310010&single=true&output=csv";
-const NEVER_MOVED_COWS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/[YOUR_SHEET_ID]/pub?gid=1685376708&single=true&output=csv";
+const MOVEMENT_DATA_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/[YOUR_SHEET_ID]/pub?gid=1539310010&single=true&output=csv";
+const NEVER_MOVED_COWS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/[YOUR_SHEET_ID]/pub?gid=1685376708&single=true&output=csv";
 ```
 
 To change sheets, update these URLs.
@@ -136,6 +148,7 @@ To change sheets, update these URLs.
 **Cause**: Google Sheets are not published to web
 
 **Fix**:
+
 1. Open Google Sheet
 2. File → Share → Publish to web
 3. Select the sheet tabs
@@ -147,6 +160,7 @@ To change sheets, update these URLs.
 **Cause**: CSV URL is wrong or sheet is empty
 
 **Fix**:
+
 1. Test the CSV URL in browser - should download a CSV file
 2. Verify sheet has data
 3. Check `client/lib/googleSheetsFetcher.ts` for correct URLs
@@ -156,6 +170,7 @@ To change sheets, update these URLs.
 **Cause**: CSV fetch failed or incorrect column mapping
 
 **Fix**:
+
 1. Open browser DevTools (F12)
 2. Check Console for error messages
 3. Verify Google Sheets columns match expected format
@@ -165,6 +180,7 @@ To change sheets, update these URLs.
 **Cause**: Large Google Sheets file or network latency
 
 **Fix**:
+
 - Google Sheets CSV fetch can take 10-30 seconds
 - Files are cached in browser after first load
 - Consider archiving old data in separate sheets
@@ -187,18 +203,22 @@ To change sheets, update these URLs.
 ## Files Changed
 
 ### Created
+
 - ✅ `client/lib/googleSheetsFetcher.ts` - Client-side CSV fetcher
 
 ### Updated
+
 - ✅ `client/hooks/useDashboardData.ts` - Uses client-side fetcher
 - ✅ `client/pages/Dashboard.tsx` - Client-side Never-Moved-COWs fetch
 
 ### Removed
+
 - ❌ `.env.example` (no backend config needed)
 - ❌ `GITHUB_PAGES_BACKEND_SETUP.md` (no backend)
 - ❌ `DEPLOYMENT_FIXED.md` (no backend)
 
 ### Unchanged
+
 - ✅ `.github/workflows/jekyll-gh-pages.yml` (still builds to `/docs`)
 - ✅ `vite.config.ts` (still handles GitHub Pages base path)
 - ✅ `public/404.html` (still handles SPA routing)

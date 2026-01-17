@@ -15,17 +15,20 @@
 For EACH sheet tab:
 
 **Movement Data Sheet**:
+
 - [ ] Open your Google Sheet
 - [ ] File → Share → Publish to web
 - [ ] Select **"Movement Data"** tab
 - [ ] Click **Publish**
 
 **Never-Moved-COWs Sheet**:
+
 - [ ] File → Share → Publish to web
 - [ ] Select **"Never-Moved-COWs"** tab
 - [ ] Click **Publish**
 
 **Verify URLs work**:
+
 ```bash
 curl -I "https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftVtl3XLaZuY2Jb_IDi4M7T-vq-wmFIra9T2BiAtOKkEZkbQwz/pub?gid=1539310010&single=true&output=csv"
 # Should return HTTP 200 or 307 (redirect)
@@ -51,6 +54,7 @@ git push origin main
 ```
 
 That's it! GitHub Actions will automatically:
+
 1. Build the React app
 2. Deploy to `/docs` folder
 3. Publish to GitHub Pages
@@ -92,6 +96,7 @@ If you see these messages → ✅ **Success!**
 **Cause**: Google Sheets not published to web
 
 **Fix**:
+
 ```
 1. File → Share → Publish to web
 2. Select both sheet tabs
@@ -103,6 +108,7 @@ If you see these messages → ✅ **Success!**
 ### Still shows error after 5 minutes
 
 **Check**:
+
 1. Open DevTools Console (F12)
 2. Copy the error message
 3. Verify Google Sheets URLs are accessible:
@@ -114,6 +120,7 @@ If you see these messages → ✅ **Success!**
 **Cause**: Column mapping mismatch
 
 **Fix**:
+
 1. Check if Google Sheet columns match expected format
 2. Open `client/lib/googleSheetsFetcher.ts`
 3. Verify column indices are correct
@@ -122,6 +129,7 @@ If you see these messages → ✅ **Success!**
 ## 📚 Detailed Info
 
 See `GITHUB_PAGES_DEPLOYMENT.md` for:
+
 - Complete architecture explanation
 - How client-side fetching works
 - Performance notes

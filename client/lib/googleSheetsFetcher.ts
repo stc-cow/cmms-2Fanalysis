@@ -180,7 +180,11 @@ function parseMovementData(csvText: string): DashboardDataResponse {
       To_Sub_Location: cells[21]?.trim() || undefined,
       Moved_DateTime: parseDate(movedDate),
       Reached_DateTime: parseDate(reachedDate),
-      Movement_Type: movementType.includes("Full") ? "Full" : movementType.includes("Half") ? "Half" : "Zero",
+      Movement_Type: movementType.includes("Full")
+        ? "Full"
+        : movementType.includes("Half")
+          ? "Half"
+          : "Zero",
       Top_Event: cells[11]?.trim() || undefined,
       Distance_KM: parseFloat(distanceStr) || 0,
       Is_Royal: isRoyal,
@@ -195,10 +199,15 @@ function parseMovementData(csvText: string): DashboardDataResponse {
     if (!cowMap.has(cowId)) {
       cowMap.set(cowId, {
         COW_ID: cowId,
-        Tower_Type: cells[6]?.includes("Small") ? "Small Cell" : cells[6]?.includes("Micro") ? "Micro Cell" : "Macro",
+        Tower_Type: cells[6]?.includes("Small")
+          ? "Small Cell"
+          : cells[6]?.includes("Micro")
+            ? "Micro Cell"
+            : "Macro",
         Tower_Height: parseFloat(cells[8]?.trim() || "0") || 0,
         Network_2G: cells[9]?.includes("2G") || false,
-        Network_4G: cells[9]?.includes("4G") || cells[9]?.includes("LTE") || false,
+        Network_4G:
+          cells[9]?.includes("4G") || cells[9]?.includes("LTE") || false,
         Network_5G: cells[9]?.includes("5G") || false,
         Shelter_Type: cells[5]?.includes("Shelter") ? "Shelter" : "Outdoor",
         Vendor: vendor,
@@ -301,7 +310,7 @@ function parseNeverMovedCows(csvText: string): any[] {
         const today = new Date();
         if (!isNaN(deployDate.getTime())) {
           daysOnAir = Math.floor(
-            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24)
+            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
           );
         }
       } catch (e) {
@@ -312,7 +321,9 @@ function parseNeverMovedCows(csvText: string): any[] {
 
     const status = cells[STATUS_IDX]?.trim() || "OFF-AIR";
     const normalizedStatus =
-      status.toUpperCase() === "ON-AIR" || status === "1" ? "ON-AIR" : "OFF-AIR";
+      status.toUpperCase() === "ON-AIR" || status === "1"
+        ? "ON-AIR"
+        : "OFF-AIR";
 
     // Use parseDate helper for both fields
     const deployISO = parseDate(firstDeployDate);

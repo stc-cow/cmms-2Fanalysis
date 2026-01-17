@@ -5,6 +5,7 @@
 **IMPORTANT**: Your Google Sheets must be published to the web.
 
 ### For Movement Data Sheet:
+
 1. Open your Google Sheet in a browser
 2. Click **File → Share → Publish to web**
 3. In the dialog:
@@ -15,6 +16,7 @@
 5. **Wait 1-2 minutes** for Google to activate the published URL
 
 ### For Never-Moved-COWs Sheet:
+
 1. Same Google Sheet
 2. Click **File → Share → Publish to web** again
 3. In the dialog:
@@ -32,6 +34,7 @@ https://docs.google.com/spreadsheets/d/e/2PACX-1vTFm8lIuL_0cRCLq_jIa12vm1etX-ftV
 ```
 
 If the page shows:
+
 - ✅ **CSV data loads** → Good! ✅
 - ❌ **404 error or blank** → Google Sheet not published yet
 - ⏳ **Wait a few more minutes** → Google needs time to activate
@@ -60,8 +63,9 @@ git push origin main
 ```
 
 That's it! GitHub will automatically:
+
 1. Build the React app
-2. Copy to `/docs` folder  
+2. Copy to `/docs` folder
 3. Deploy to GitHub Pages
 4. Publish at: `https://stc-cow.github.io/cmms-2Fanalysis/`
 
@@ -101,6 +105,7 @@ If you see these messages → ✅ **Your dashboard is working!**
 **Problem**: Google Sheets not published to web
 
 **Solution**:
+
 ```
 1. File → Share → Publish to web
 2. Check both sheet tabs are published
@@ -113,6 +118,7 @@ If you see these messages → ✅ **Your dashboard is working!**
 **Problem**: Google Sheet isn't published or wrong URL
 
 **Solution**:
+
 ```
 1. Test CSV URL in browser (should download CSV file)
 2. If error, re-publish the sheet
@@ -126,6 +132,7 @@ If you see these messages → ✅ **Your dashboard is working!**
 **Problem**: CSV parsing error
 
 **Solution**:
+
 ```
 1. Check browser console (F12)
 2. Look for error messages
@@ -153,26 +160,29 @@ If you see these messages → ✅ **Your dashboard is working!**
 ## 📝 Files That Changed
 
 **Created**:
+
 - `client/lib/googleSheetsFetcher.ts` - Fetches from Google Sheets
 
 **Updated**:
+
 - `client/hooks/useDashboardData.ts` - Uses client-side fetcher
 - `client/pages/Dashboard.tsx` - Uses client-side fetcher
 
 **Removed**:
+
 - All backend configs (Netlify, Vercel, Railway)
 - All API endpoint code
 - All environment variable configs
 
 ## 🎯 Summary
 
-| Component | Before | Now |
-|-----------|--------|-----|
-| Backend | Railway/Netlify | None |
+| Component   | Before                        | Now                  |
+| ----------- | ----------------------------- | -------------------- |
+| Backend     | Railway/Netlify               | None                 |
 | Data Source | API → Backend → Google Sheets | Direct Google Sheets |
-| Deployment | Railway/Netlify/Vercel | GitHub Pages |
-| Cost | Money | Free |
-| Complexity | Complex | Simple |
+| Deployment  | Railway/Netlify/Vercel        | GitHub Pages         |
+| Cost        | Money                         | Free                 |
+| Complexity  | Complex                       | Simple               |
 
 ## 🚀 Ready?
 
@@ -185,6 +195,7 @@ Then watch your Actions tab and enjoy your dashboard! 🎉
 ---
 
 **Questions?** Check:
+
 - `QUICK_START.md` - Quick checklist
 - `GITHUB_PAGES_DEPLOYMENT.md` - Full explanation
 - Browser console (F12) - Error details
