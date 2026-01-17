@@ -43,6 +43,7 @@ git push origin main
 You need a separate server to host the Express backend. Options:
 
 #### Option A: Railway.app (Recommended - Free tier available)
+
 ```bash
 # 1. Sign up at railway.app
 # 2. Connect your GitHub repo
@@ -52,6 +53,7 @@ You need a separate server to host the Express backend. Options:
 ```
 
 #### Option B: Render.com (Free tier available)
+
 ```bash
 # 1. Sign up at render.com
 # 2. Create new Web Service
@@ -63,6 +65,7 @@ You need a separate server to host the Express backend. Options:
 ```
 
 #### Option C: Fly.io
+
 ```bash
 # 1. Install flyctl
 # 2. Run: fly launch
@@ -70,6 +73,7 @@ You need a separate server to host the Express backend. Options:
 ```
 
 #### Option D: Self-hosted (VPS/Cloud)
+
 ```bash
 # SSH into your server and:
 git clone <your-repo>
@@ -81,12 +85,14 @@ npm run dev  # or use PM2/systemd
 ### 3. Configure Frontend to Use Backend
 
 #### For Development (Local):
+
 ```bash
 # .env.development (optional - defaults to /api)
 VITE_API_BASE_URL=http://localhost:8080
 ```
 
 #### For Production (GitHub Pages):
+
 ```bash
 # .env.production
 VITE_API_BASE_URL=https://your-backend-server.com
@@ -104,6 +110,7 @@ Or set via GitHub Actions:
 ```
 
 Then add secret in GitHub:
+
 1. Go to Repo → Settings → Secrets → New repository secret
 2. Name: `API_BASE_URL`
 3. Value: `https://your-backend-server.com`
@@ -115,23 +122,26 @@ The backend needs to allow requests from your GitHub Pages domain.
 **Update `server/index.ts`:**
 
 ```typescript
-import cors from 'cors';
+import cors from "cors";
 
 const app = express();
 
 // Configure CORS for GitHub Pages
-app.use(cors({
-  origin: [
-    'https://stc-cow.github.io',  // GitHub Pages
-    'http://localhost:3000',      // Local dev
-    'http://localhost:8080',      // Local dev Vite
-  ],
-  methods: ['GET', 'POST'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      "https://stc-cow.github.io", // GitHub Pages
+      "http://localhost:3000", // Local dev
+      "http://localhost:8080", // Local dev Vite
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  }),
+);
 ```
 
 Install CORS package:
+
 ```bash
 npm install cors
 ```
@@ -139,6 +149,7 @@ npm install cors
 ### 5. Test the Connection
 
 #### Local Development:
+
 ```bash
 # Terminal 1: Start backend
 npm run dev
@@ -150,6 +161,7 @@ npm run dev
 ```
 
 #### Production (GitHub Pages):
+
 ```bash
 # After deploying backend:
 # 1. Update VITE_API_BASE_URL in GitHub secrets
@@ -163,16 +175,19 @@ npm run dev
 ### 6. Troubleshooting
 
 #### Error: "Failed to load data from API: API error: 404"
+
 - ✓ Backend URL is wrong in `VITE_API_BASE_URL`
 - ✓ Backend is not running
 - ✓ Endpoint path is incorrect
 
 #### Error: "CORS error"
+
 - ✓ Backend doesn't have CORS enabled
 - ✓ Frontend domain not in CORS whitelist
 - ✓ Check backend logs
 
 #### Error: "Timeout"
+
 - ✓ Backend is too slow (Google Sheets fetch taking too long)
 - ✓ Network issue
 - ✓ Backend is offline
@@ -180,22 +195,24 @@ npm run dev
 ### 7. Monitoring
 
 Check backend health:
+
 ```bash
 curl https://your-backend-server.com/api/data/diagnostic
 ```
 
 Should return JSON with:
+
 - Source of truth (Google Sheet URL)
 - CSV accessibility status
 - Recommendations
 
 ## Environment Variables Summary
 
-| Variable | Dev Default | Prod Default | Example |
-|----------|------------|------------|---------|
-| `VITE_API_BASE_URL` | `/api` (relative) | Must set | `https://api.railway.app` |
-| `GITHUB_PAGES` | Not set | `true` | (set by GitHub Actions) |
-| `GITHUB_REPOSITORY` | Not set | `owner/repo` | (set by GitHub Actions) |
+| Variable            | Dev Default       | Prod Default | Example                   |
+| ------------------- | ----------------- | ------------ | ------------------------- |
+| `VITE_API_BASE_URL` | `/api` (relative) | Must set     | `https://api.railway.app` |
+| `GITHUB_PAGES`      | Not set           | `true`       | (set by GitHub Actions)   |
+| `GITHUB_REPOSITORY` | Not set           | `owner/repo` | (set by GitHub Actions)   |
 
 ## Security Notes
 
@@ -225,6 +242,7 @@ Should return JSON with:
 ---
 
 Questions? Check the API endpoint directly:
+
 ```bash
 curl https://your-backend-server.com/api/data/diagnostic
 ```

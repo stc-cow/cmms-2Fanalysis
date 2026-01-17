@@ -3,16 +3,19 @@
 ## What Was Fixed
 
 ### ❌ Removed (Netlify & Vercel)
+
 - ✅ Deleted `netlify.toml`
 - ✅ Deleted `vercel.json`
 - ✅ Deleted `netlify/functions/` directory (all serverless functions)
 
 ### ✅ Updated (API Endpoint Configuration)
+
 - ✅ `client/hooks/useDashboardData.ts` - Now uses `VITE_API_BASE_URL` environment variable
 - ✅ `client/pages/Dashboard.tsx` - Never-Moved-COWs fetch now uses `VITE_API_BASE_URL`
 - ✅ Created `.env.example` - Template for environment configuration
 
 ### 📚 Documentation Created
+
 - ✅ `GITHUB_PAGES_BACKEND_SETUP.md` - Complete deployment guide
 
 ## The Problem (Solved)
@@ -45,6 +48,7 @@ https://stc-cow.github.io/  →  https://your-backend.com  →   CSV Sheets
 Choose ONE of these options:
 
 #### 🚀 Option A: Railway.app (Easiest, Free tier)
+
 1. Go to https://railway.app
 2. Sign up with GitHub
 3. New Project → Deploy from GitHub
@@ -53,6 +57,7 @@ Choose ONE of these options:
 6. Get your backend URL (e.g., `https://cmms-production.up.railway.app`)
 
 #### 🚀 Option B: Render.com (Also easy, Free tier)
+
 1. Go to https://render.com
 2. New Web Service → Connect GitHub repo
 3. Build Command: `npm install`
@@ -60,6 +65,7 @@ Choose ONE of these options:
 5. Deploy and get your URL (e.g., `https://cmms-api.onrender.com`)
 
 #### 🚀 Option C: Self-hosted (VPS/Cloud VM)
+
 ```bash
 ssh your-server@your-ip
 git clone <your-repo>
@@ -105,6 +111,7 @@ git push origin main
 ```
 
 GitHub Actions will:
+
 1. Build the React app with `VITE_API_BASE_URL` pointing to your backend
 2. Deploy to `/docs` folder
 3. Push to main branch
@@ -119,6 +126,7 @@ GitHub Actions will:
 ## Testing
 
 ### Test Local Development
+
 ```bash
 npm run dev
 # Opens http://localhost:8080
@@ -126,6 +134,7 @@ npm run dev
 ```
 
 ### Test Backend API Directly
+
 ```bash
 # Check if backend is working:
 curl https://your-backend-server.com/api/data/diagnostic
@@ -135,21 +144,23 @@ curl https://your-backend-server.com/api/data/diagnostic
 
 ### Troubleshooting
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| 404: API error | Backend URL not set | Set `API_BASE_URL` in GitHub Secrets |
-| CORS error | CORS not configured on backend | Ensure `server/index.ts` has CORS enabled |
-| Timeout | Backend too slow | Google Sheets fetch takes time (~10s) |
-| Blank dashboard | Frontend not loading backend data | Check browser console for API errors |
+| Error           | Cause                             | Fix                                       |
+| --------------- | --------------------------------- | ----------------------------------------- |
+| 404: API error  | Backend URL not set               | Set `API_BASE_URL` in GitHub Secrets      |
+| CORS error      | CORS not configured on backend    | Ensure `server/index.ts` has CORS enabled |
+| Timeout         | Backend too slow                  | Google Sheets fetch takes time (~10s)     |
+| Blank dashboard | Frontend not loading backend data | Check browser console for API errors      |
 
 ## Files Summary
 
 ### Removed
+
 - ❌ `netlify.toml`
 - ❌ `vercel.json`
 - ❌ `netlify/functions/` (all serverless code)
 
 ### Created/Updated
+
 - ✅ `.env.example` - Configuration template
 - ✅ `client/hooks/useDashboardData.ts` - Uses `VITE_API_BASE_URL`
 - ✅ `client/pages/Dashboard.tsx` - Uses `VITE_API_BASE_URL`
@@ -157,6 +168,7 @@ curl https://your-backend-server.com/api/data/diagnostic
 - ✅ `DEPLOYMENT_FIXED.md` - This file (summary)
 
 ### Unchanged (Still Working)
+
 - ✅ `server/routes/data.ts` - Backend API endpoints
 - ✅ `.github/workflows/jekyll-gh-pages.yml` - GitHub Actions (needs API_BASE_URL update)
 - ✅ `vite.config.ts` - Build configuration
@@ -164,11 +176,11 @@ curl https://your-backend-server.com/api/data/diagnostic
 
 ## Environment Variables
 
-| Variable | Where | Value | Example |
-|----------|-------|-------|---------|
+| Variable            | Where          | Value              | Example                   |
+| ------------------- | -------------- | ------------------ | ------------------------- |
 | `VITE_API_BASE_URL` | GitHub Secrets | Backend server URL | `https://api.railway.app` |
-| `GITHUB_PAGES` | GitHub Actions | `true` | (auto-set) |
-| `GITHUB_REPOSITORY` | GitHub Actions | `owner/repo` | (auto-set) |
+| `GITHUB_PAGES`      | GitHub Actions | `true`             | (auto-set)                |
+| `GITHUB_REPOSITORY` | GitHub Actions | `owner/repo`       | (auto-set)                |
 
 ## How It Works Now
 
