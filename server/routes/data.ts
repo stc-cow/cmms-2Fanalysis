@@ -961,7 +961,8 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
       const cow = cowMovementMap.get(cowId)!;
       if (fromLoc) cow.locations.add(fromLoc);
       if (toLoc) cow.locations.add(toLoc);
-      if (!cow.firstDeployDate && firstDeploy) cow.firstDeployDate = firstDeploy;
+      if (!cow.firstDeployDate && firstDeploy)
+        cow.firstDeployDate = firstDeploy;
       cow.lastLocation = toLoc || fromLoc || cow.lastLocation;
       cow.latitude = lat || cow.latitude;
       cow.longitude = lng || cow.longitude;
@@ -982,7 +983,8 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
             const today = new Date();
             if (!isNaN(deployDate.getTime())) {
               daysOnAir = Math.floor(
-                (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
+                (today.getTime() - deployDate.getTime()) /
+                  (1000 * 60 * 60 * 24),
               );
             }
           } catch (e) {
@@ -1019,7 +1021,9 @@ const neverMovedCowHandler: RequestHandler = async (req, res) => {
         neverMovedCows.push(neverMovedCow);
 
         if (neverMovedCows.length <= 3) {
-          console.log(`   ✓ ${cowId}: stayed in "${data.lastLocation}" for ${daysOnAir} days (${normalizedStatus})`);
+          console.log(
+            `   ✓ ${cowId}: stayed in "${data.lastLocation}" for ${daysOnAir} days (${normalizedStatus})`,
+          );
         }
       }
     }
