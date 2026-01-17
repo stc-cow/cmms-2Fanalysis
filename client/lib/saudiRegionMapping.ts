@@ -165,6 +165,8 @@ export function normalizeRegionName(region: string): string {
     }
   }
 
-  console.warn(`[normalizeRegionName] No mapping found for: "${region}", defaulting to Riyadh`);
+  console.warn(
+    `[normalizeRegionName] No mapping found for: "${region}", defaulting to Riyadh`,
+  );
   return "sa-ri"; // Default to Riyadh if not found
 }

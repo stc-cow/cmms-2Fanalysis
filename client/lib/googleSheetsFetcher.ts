@@ -225,7 +225,9 @@ function parseMovementData(csvText: string): DashboardDataResponse {
 
     // Debug: Log first few region values
     if (i <= 3) {
-      console.log(`Row ${i}: fromRegion="${fromRegion}", toRegion="${toRegion}"`);
+      console.log(
+        `Row ${i}: fromRegion="${fromRegion}", toRegion="${toRegion}"`,
+      );
     }
 
     const fromLocId = `LOC-${fromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
