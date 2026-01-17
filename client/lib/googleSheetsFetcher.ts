@@ -215,15 +215,17 @@ function parseMovementData(csvText: string): DashboardDataResponse {
       });
     }
 
-    // Add locations with region mapping
-    const fromRegion = cells[REGION_FROM_IDX]?.trim() || "CENTRAL";
-    const toRegion = cells[REGION_TO_IDX]?.trim() || "CENTRAL";
+    // Add locations with region mapping - NORMALIZE TO UPPERCASE
+    const fromRegionRaw = cells[REGION_FROM_IDX]?.trim() || "CENTRAL";
+    const toRegionRaw = cells[REGION_TO_IDX]?.trim() || "CENTRAL";
+
+    // Normalize to uppercase for consistent filtering
+    const fromRegion = fromRegionRaw.toUpperCase();
+    const toRegion = toRegionRaw.toUpperCase();
 
     // Debug: Log first few region values
     if (i <= 3) {
-      console.log(
-        `Row ${i}: fromRegion="${fromRegion}", toRegion="${toRegion}"`,
-      );
+      console.log(`Row ${i}: fromRegion="${fromRegion}", toRegion="${toRegion}"`);
     }
 
     const fromLocId = `LOC-${fromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
