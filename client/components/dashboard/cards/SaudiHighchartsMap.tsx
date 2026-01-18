@@ -318,7 +318,7 @@ export function SaudiHighchartsMap({
         enabled: false,
       },
     } as Highcharts.Options;
-  }, [saudiGeo, chartData, maxMetric]);
+  }, [saudiGeo, chartData, maxMetric, movementPointsData]);
 
   if (loading || !saudiGeo || !modulesReady) {
     return (
