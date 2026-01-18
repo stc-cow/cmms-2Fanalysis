@@ -258,7 +258,7 @@ export function SaudiHighchartsMap({
       series: [
         {
           type: "map",
-          name: "Movements",
+          name: "Movements by Region",
           data: chartData,
           joinBy: ["hc-key", 0],
           tooltip: {
@@ -271,6 +271,29 @@ export function SaudiHighchartsMap({
               brightness: 0.1,
             },
           },
+        } as any,
+        {
+          type: "mappoint",
+          name: "Movement Endpoints",
+          data: movementPointsData,
+          marker: {
+            radius: 3,
+            fillColor: "#9c27b0",
+            fillOpacity: 0.6,
+            lineWidth: 0,
+            states: {
+              hover: {
+                fillOpacity: 0.9,
+                radius: 5,
+              },
+            },
+          },
+          tooltip: {
+            headerFormat: "",
+            pointFormat:
+              "Movement endpoint<br/>Lat: {point.lat:.4f}, Lng: {point.lon:.4f}",
+          },
+          showInLegend: true,
         } as any,
       ],
       exporting: {
