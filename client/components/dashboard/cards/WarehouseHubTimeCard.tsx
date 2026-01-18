@@ -294,15 +294,33 @@ export function WarehouseHubTimeCard({
           <svg width="0" height="0">
             <defs>
               {/* Gradient definitions for short idle time buckets */}
-              <linearGradient id="shortIdleGradient0" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient
+                id="shortIdleGradient0"
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#FF375E" stopOpacity={1} />
                 <stop offset="100%" stopColor="#CC2C4B" stopOpacity={1} />
               </linearGradient>
-              <linearGradient id="shortIdleGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient
+                id="shortIdleGradient1"
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#1Bced8" stopOpacity={1} />
                 <stop offset="100%" stopColor="#159CA3" stopOpacity={1} />
               </linearGradient>
-              <linearGradient id="shortIdleGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+              <linearGradient
+                id="shortIdleGradient2"
+                x1="0%"
+                y1="0%"
+                x2="0%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#4F008C" stopOpacity={1} />
                 <stop offset="100%" stopColor="#3A0066" stopOpacity={1} />
               </linearGradient>
@@ -456,7 +474,9 @@ export function WarehouseHubTimeCard({
           }}
           bucketName={selectedBucketForModal}
           cowIds={
-            ["1-5 Days", "6-10 Days", "11-15 Days"].includes(selectedBucketForModal)
+            ["1-5 Days", "6-10 Days", "11-15 Days"].includes(
+              selectedBucketForModal,
+            )
               ? shortIdleBucketCows.get(selectedBucketForModal) || []
               : bucketCows.get(selectedBucketForModal) || []
           }
