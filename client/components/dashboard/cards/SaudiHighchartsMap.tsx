@@ -3,9 +3,17 @@ import Highcharts, { ensureHighchartsModules } from "@/lib/highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { normalizeRegionName } from "@/lib/saudiRegionMapping";
 
+interface MapLine {
+  to?: [number, number]; // [lon, lat]
+  toLocationId?: string;
+  distance?: number;
+  movementType?: string;
+}
+
 interface SaudiHighchartsMapProps {
   regionMetrics: Record<string, number>;
   maxMetric: number;
+  movements?: MapLine[];
   title?: string;
 }
 
