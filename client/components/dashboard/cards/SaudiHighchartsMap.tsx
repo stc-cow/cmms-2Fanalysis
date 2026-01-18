@@ -363,7 +363,7 @@ export function SaudiHighchartsMap({
         <div
           className="w-full h-full overflow-hidden rounded-lg relative"
           style={{
-            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F949a9e12bda84b8d8dc1a14b1a06a9d5?format=webp&width=800')`,
+            backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2F821d491c82c249ee92a27f63b19a7e98?format=webp&width=800')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
