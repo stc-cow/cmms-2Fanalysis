@@ -205,6 +205,7 @@ export function SaudiMapCard({
           <SaudiHighchartsMap
             regionMetrics={regionMetrics}
             maxMetric={maxRegionMetric}
+            movements={currentMonth.movements}
             title="Movements by Region"
           />
         </div>
