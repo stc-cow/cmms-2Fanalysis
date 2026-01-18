@@ -1104,3 +1104,28 @@ export function calculateAllEventsTotalMovements(
 
   return totalCount;
 }
+
+// Calculate count of sites with 2 or more movements
+export function calculateRepeatedMovementSites(
+  movements: CowMovementsFact[],
+): number {
+  // Group movements by destination location (To_Location_ID)
+  const siteCounts = new Map<string, number>();
+
+  movements.forEach((mov) => {
+    const toLocationId = mov.To_Location_ID;
+    if (toLocationId) {
+      siteCounts.set(toLocationId, (siteCounts.get(toLocationId) || 0) + 1);
+    }
+  });
+
+  // Count sites with 2 or more movements
+  let repeatedSitesCount = 0;
+  siteCounts.forEach((count) => {
+    if (count >= 2) {
+      repeatedSitesCount++;
+    }
+  });
+
+  return repeatedSitesCount;
+}
