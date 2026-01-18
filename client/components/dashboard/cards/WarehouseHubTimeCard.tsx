@@ -291,6 +291,23 @@ export function WarehouseHubTimeCard({
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 flex-shrink-0">
             Off-Air Warehouse Short Idle Time
           </h3>
+          <svg width="0" height="0">
+            <defs>
+              {/* Gradient definitions for short idle time buckets */}
+              <linearGradient id="shortIdleGradient0" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FF375E" stopOpacity={1} />
+                <stop offset="100%" stopColor="#CC2C4B" stopOpacity={1} />
+              </linearGradient>
+              <linearGradient id="shortIdleGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#1Bced8" stopOpacity={1} />
+                <stop offset="100%" stopColor="#159CA3" stopOpacity={1} />
+              </linearGradient>
+              <linearGradient id="shortIdleGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#4F008C" stopOpacity={1} />
+                <stop offset="100%" stopColor="#3A0066" stopOpacity={1} />
+              </linearGradient>
+            </defs>
+          </svg>
           <div style={{ width: "100%", height: "300px" }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -313,19 +330,18 @@ export function WarehouseHubTimeCard({
                     borderRadius: "8px",
                     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                   }}
-                  formatter={(value: number) => `${value} COWs`}
+                  formatter={(value: number) => `count: ${value} Move`}
                   cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
                 />
                 <Bar
                   dataKey="count"
-                  fill="#1Bced8"
                   radius={[8, 8, 0, 0]}
                   label={{
                     position: "top",
                     fill: "#374151",
                     fontSize: 11,
                     fontWeight: "bold",
-                    formatter: (value: number) => value.toString(),
+                    formatter: (value: number) => `count: ${value} Move`,
                   }}
                   onClick={(state: any) => {
                     if (state && state.name) {
@@ -336,7 +352,20 @@ export function WarehouseHubTimeCard({
                     cursor: "pointer",
                     filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.15))",
                   }}
-                />
+                >
+                  {shortIdleChartData.map((entry, index) => (
+                    <Cell
+                      key={`shortIdle-${index}`}
+                      fill={
+                        [
+                          "url(#shortIdleGradient0)",
+                          "url(#shortIdleGradient1)",
+                          "url(#shortIdleGradient2)",
+                        ][index % 3]
+                      }
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </div>
