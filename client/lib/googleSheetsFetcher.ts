@@ -275,6 +275,7 @@ function parseMovementData(csvText: string): DashboardDataResponse {
       Is_EBU: isEBU,
       EbuRoyalCategory: category,
       Vendor: vendor,
+      Governorate: governorate, // Column AD: Specific governorate name
     };
 
     movements.push(movement);
