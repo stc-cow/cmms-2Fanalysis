@@ -434,6 +434,7 @@ export function ExecutiveOverviewCard({
             <SaudiHighchartsMap
               regionMetrics={regionMetrics || {}}
               maxMetric={maxMetric}
+              movements={currentMonth.movements}
               title="Movement Distribution by Region"
             />
 
