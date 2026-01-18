@@ -203,7 +203,6 @@ export function EventsAnalysisCard({
                 />
                 <Bar
                   dataKey="avgDistance"
-                  fill="#1Bced8"
                   radius={[8, 8, 0, 0]}
                   label={{
                     position: "top",
@@ -212,7 +211,14 @@ export function EventsAnalysisCard({
                     fontWeight: "bold",
                     formatter: (value: number) => value.toFixed(0),
                   }}
-                />
+                >
+                  {distanceData.map((entry, index) => (
+                    <Cell
+                      key={`distance-${index}`}
+                      fill={EVENT_COLORS[entry.type] || "#6b7280"}
+                    />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           ) : (
