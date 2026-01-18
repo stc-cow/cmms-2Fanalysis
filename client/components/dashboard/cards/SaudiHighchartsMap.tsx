@@ -367,11 +367,10 @@ export function SaudiHighchartsMap({
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
           }}
         >
           {/* Semi-transparent overlay to make map readable */}
-          <div className="absolute inset-0 bg-white dark:bg-slate-700 opacity-85 rounded-lg z-0" />
+          <div className="absolute inset-0 bg-white dark:bg-slate-700 opacity-80 rounded-lg z-0" />
 
           <div className="relative z-10 w-full h-full">
             <HighchartsReact
