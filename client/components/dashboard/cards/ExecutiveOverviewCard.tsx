@@ -321,7 +321,7 @@ export function ExecutiveOverviewCard({
   const summaryStats = [
     {
       label: "Active Warehouses",
-      value: 10,
+      value: monthlyKpis.activeWarehouses,
     },
   ];
 
