@@ -364,9 +364,9 @@ export function SaudiHighchartsMap({
           className="w-full h-full overflow-hidden rounded-lg relative"
           style={{
             backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc742988398544e1fbb16e7b6f5805f74?format=webp&width=800')`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'right 70%',
-            backgroundRepeat: 'no-repeat',
+            backgroundSize: "contain",
+            backgroundPosition: "right 70%",
+            backgroundRepeat: "no-repeat",
           }}
         >
           {/* Semi-transparent overlay to make map readable */}
