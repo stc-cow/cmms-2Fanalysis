@@ -247,12 +247,14 @@ function parseMovementData(csvText: string): DashboardDataResponse {
       );
     }
 
-    const fromLocId = `LOC-${fromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+    // Normalize warehouse names to unify duplicates
+    const normalizedFromLoc = normalizeWarehouseName(fromLoc);
+    const fromLocId = `LOC-${normalizedFromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
     if (!locationMap.has(fromLocId)) {
-      const isWarehouse = fromLoc.toUpperCase().includes("WH");
+      const isWarehouse = normalizedFromLoc.toUpperCase().includes("WH");
       locationMap.set(fromLocId, {
         Location_ID: fromLocId,
-        Location_Name: fromLoc,
+        Location_Name: normalizedFromLoc,
         Sub_Location: cells[17]?.trim() || "",
         Latitude: parseFloat(cells[FROM_LAT_IDX]?.trim() || "0") || 0,
         Longitude: parseFloat(cells[FROM_LNG_IDX]?.trim() || "0") || 0,
@@ -262,12 +264,14 @@ function parseMovementData(csvText: string): DashboardDataResponse {
       });
     }
 
-    const toLocId = `LOC-${toLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+    // Normalize warehouse names to unify duplicates
+    const normalizedToLoc = normalizeWarehouseName(toLoc);
+    const toLocId = `LOC-${normalizedToLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
     if (!locationMap.has(toLocId)) {
-      const isWarehouse = toLoc.toUpperCase().includes("WH");
+      const isWarehouse = normalizedToLoc.toUpperCase().includes("WH");
       locationMap.set(toLocId, {
         Location_ID: toLocId,
-        Location_Name: toLoc,
+        Location_Name: normalizedToLoc,
         Sub_Location: cells[21]?.trim() || "",
         Latitude: parseFloat(cells[TO_LAT_IDX]?.trim() || "0") || 0,
         Longitude: parseFloat(cells[TO_LNG_IDX]?.trim() || "0") || 0,
