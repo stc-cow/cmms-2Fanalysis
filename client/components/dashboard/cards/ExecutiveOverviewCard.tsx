@@ -147,8 +147,8 @@ export function ExecutiveOverviewCard({
   const monthlyKpis = useMemo(() => {
     const uniqueCows = new Set(currentMonth.movements.map((m) => m.COW_ID));
 
-    // Count COWs with 2+ movements (High Moved COWs)
-    const highMovedCows = 2450;
+    // Count sites repeated 2 or more times dynamically
+    const highMovedCows = calculateRepeatedMovementSites(currentMonth.movements);
 
     // Use API's totalDistanceKM for "All" view (currentMonthIndex === -1) which is the accurate sum of Column Y
     // For individual months, use the timeline's aggregated distance
