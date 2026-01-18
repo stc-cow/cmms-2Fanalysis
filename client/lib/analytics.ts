@@ -1131,3 +1131,30 @@ export function calculateRepeatedMovementSites(
 
   return repeatedCowsCount;
 }
+
+// Calculate count of COWs with exactly 1 movement (One Time Moved COWs)
+// Supports both CowMovementsFact (PascalCase: COW_ID) and MapLine (camelCase: cowId)
+export function calculateOneTimeMovedCows(
+  movements: any[],
+): number {
+  // Group movements by COW ID (column A)
+  const cowCounts = new Map<string, number>();
+
+  movements.forEach((mov) => {
+    // Support both field name formats
+    const cowId = mov.COW_ID || mov.cowId;
+    if (cowId) {
+      cowCounts.set(cowId, (cowCounts.get(cowId) || 0) + 1);
+    }
+  });
+
+  // Count COWs with exactly 1 movement
+  let oneTimeMovedCount = 0;
+  cowCounts.forEach((count) => {
+    if (count === 1) {
+      oneTimeMovedCount++;
+    }
+  });
+
+  return oneTimeMovedCount;
+}
