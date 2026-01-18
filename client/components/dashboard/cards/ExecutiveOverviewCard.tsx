@@ -149,16 +149,23 @@ export function ExecutiveOverviewCard({
 
   // Calculate KPIs for current month
   const monthlyKpis = useMemo(() => {
-    const uniqueCows = new Set(currentMonth.movements.map((m) => m.COW_ID || m.cowId));
+    const uniqueCows = new Set(
+      currentMonth.movements.map((m) => m.COW_ID || m.cowId),
+    );
 
     // Count COWs with 2 or more movements dynamically
-    const highMovedCows = calculateRepeatedMovementSites(currentMonth.movements);
+    const highMovedCows = calculateRepeatedMovementSites(
+      currentMonth.movements,
+    );
 
     // Count COWs with exactly 1 movement dynamically
     const oneTimeMovedCows = calculateOneTimeMovedCows(currentMonth.movements);
 
     // Count active warehouses with movements in current period
-    const activeWarehousesCount = calculateActiveWarehouses(currentMonth.movements, locations);
+    const activeWarehousesCount = calculateActiveWarehouses(
+      currentMonth.movements,
+      locations,
+    );
 
     // Use API's totalDistanceKM for "All" view (currentMonthIndex === -1) which is the accurate sum of Column Y
     // For individual months, use the timeline's aggregated distance

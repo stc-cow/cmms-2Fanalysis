@@ -1107,9 +1107,7 @@ export function calculateAllEventsTotalMovements(
 
 // Calculate count of COWs with 2 or more movements
 // Supports both CowMovementsFact (PascalCase: COW_ID) and MapLine (camelCase: cowId)
-export function calculateRepeatedMovementSites(
-  movements: any[],
-): number {
+export function calculateRepeatedMovementSites(movements: any[]): number {
   // Group movements by COW ID (column A)
   const cowCounts = new Map<string, number>();
 
@@ -1134,9 +1132,7 @@ export function calculateRepeatedMovementSites(
 
 // Calculate count of COWs with exactly 1 movement (One Time Moved COWs)
 // Supports both CowMovementsFact (PascalCase: COW_ID) and MapLine (camelCase: cowId)
-export function calculateOneTimeMovedCows(
-  movements: any[],
-): number {
+export function calculateOneTimeMovedCows(movements: any[]): number {
   // Group movements by COW ID (column A)
   const cowCounts = new Map<string, number>();
 

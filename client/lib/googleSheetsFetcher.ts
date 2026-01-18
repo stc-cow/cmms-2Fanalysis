@@ -227,8 +227,12 @@ function parseMovementData(csvText: string): DashboardDataResponse {
     const cowId = cells[COW_ID_IDX]?.trim();
     if (!cowId) continue;
 
-    const fromLoc = normalizeWarehouseName(cells[FROM_LOCATION_IDX]?.trim() || "Unknown");
-    const toLoc = normalizeWarehouseName(cells[TO_LOCATION_IDX]?.trim() || "Unknown");
+    const fromLoc = normalizeWarehouseName(
+      cells[FROM_LOCATION_IDX]?.trim() || "Unknown",
+    );
+    const toLoc = normalizeWarehouseName(
+      cells[TO_LOCATION_IDX]?.trim() || "Unknown",
+    );
     const ebuRoyalFlag = cells[EBU_ROYAL_IDX]?.trim() || "NON EBU";
     const distanceStr = cells[DISTANCE_IDX]?.trim() || "0";
     const movementType = cells[MOVEMENT_TYPE_IDX]?.trim() || "Zero";
