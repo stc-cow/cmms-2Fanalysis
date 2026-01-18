@@ -122,6 +122,25 @@ export function SaudiHighchartsMap({
       .filter((item) => item !== null) as [string, number][];
   }, [regionMetrics]);
 
+  // Transform movements to mappoint data using lat/lng coordinates (columns W and X)
+  const movementPointsData = useMemo(() => {
+    if (!movements || movements.length === 0) {
+      return [];
+    }
+
+    return movements
+      .filter((mov) => mov.to && mov.to.length === 2)
+      .map((mov) => {
+        const [lon, lat] = mov.to!;
+        return {
+          lon,
+          lat,
+          name: `Movement`,
+          value: 1,
+        };
+      });
+  }, [movements]);
+
   // Update chart data when it changes (without regenerating entire options)
   useEffect(() => {
     if (
