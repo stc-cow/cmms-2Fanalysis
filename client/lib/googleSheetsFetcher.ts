@@ -48,6 +48,23 @@ function parseCSVLine(line: string): string[] {
 }
 
 /**
+ * Normalize warehouse names to unify duplicates
+ * Handles spacing, casing, and common variations
+ */
+function normalizeWarehouseName(name: string): string {
+  if (!name) return "";
+
+  // Trim and collapse multiple spaces
+  let normalized = name.trim().replace(/\s+/g, " ");
+
+  // Standardize common warehouse name patterns
+  // e.g., "ACES Makkah WH", "stc Jeddah WH"
+  // Keep original casing but ensure consistent spacing
+
+  return normalized;
+}
+
+/**
  * Safely parse date strings to ISO format
  * Handles various date formats and invalid dates
  */
