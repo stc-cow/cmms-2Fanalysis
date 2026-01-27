@@ -168,12 +168,12 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
           ? "Half"
           : "Zero",
       Top_Event: row.top_events?.trim() || undefined,
-      Distance_KM: parseFloat(row.distance_km || "0") || 0,
+      Distance_KM: parseFloat(row.distance || "0") || 0,
       Is_Royal: isRoyal,
       Is_EBU: isEBU,
       EbuRoyalCategory: category,
       Vendor: row.vendor?.trim() || "Unknown",
-      Governorate: governorate,
+      Governorate: row.goverment?.trim() || undefined,
     };
 
     movements.push(movement);
