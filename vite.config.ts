@@ -83,7 +83,10 @@ function copyJsonPlugin(): Plugin {
           });
           console.log(`✅ Copied ${file} to build output`);
         } catch (error) {
-          console.warn(`⚠️  Could not copy ${file} (may already be in public):`, error.message);
+          console.warn(
+            `⚠️  Could not copy ${file} (may already be in public):`,
+            error.message,
+          );
         }
       }
     },

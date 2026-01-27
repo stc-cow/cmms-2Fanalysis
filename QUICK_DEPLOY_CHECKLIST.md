@@ -61,6 +61,7 @@ curl https://username.github.io/repo-name/movement-data.json
 ## ✅ Post-Deployment (1 minute)
 
 1. **Open dashboard URL**
+
    ```
    https://your-deployment-url/
    ```
@@ -87,6 +88,7 @@ curl https://username.github.io/repo-name/movement-data.json
 ## 🚨 If Something Goes Wrong
 
 ### Dashboard Loads but Shows 404 Error
+
 ```
 Fix: JSON files not in build output
 Run: pnpm run build
@@ -94,6 +96,7 @@ Check: ls -lh dist/spa/movement-data.json
 ```
 
 ### JSON Fetch Works but No Data Displays
+
 ```
 Fix: BASE_URL issue
 Check Console: import.meta.env.BASE_URL
@@ -101,6 +104,7 @@ Should show: / (for root) or /repo-name/ (for GitHub Pages)
 ```
 
 ### Works Locally but Not in Production
+
 ```
 Fix: BASE_URL not set correctly for your deployment
 For GitHub Pages: No action needed (auto-detected)
@@ -110,12 +114,12 @@ Rebuild: VITE_BASE_URL=/your-path/ pnpm run build
 
 ## 📋 Environment Variables Reference
 
-| Deployment | Command | Environment |
-|-----------|---------|-------------|
-| **Local Dev** | `pnpm run dev` | `BASE_URL=/` |
-| **GitHub Pages** | `git push` | `BASE_URL=/repo-name/` (auto) |
-| **Root Domain** | `pnpm run build` | `BASE_URL=/` (default) |
-| **Subpath** | `VITE_BASE_URL=/path/ pnpm run build` | `BASE_URL=/path/` |
+| Deployment       | Command                               | Environment                   |
+| ---------------- | ------------------------------------- | ----------------------------- |
+| **Local Dev**    | `pnpm run dev`                        | `BASE_URL=/`                  |
+| **GitHub Pages** | `git push`                            | `BASE_URL=/repo-name/` (auto) |
+| **Root Domain**  | `pnpm run build`                      | `BASE_URL=/` (default)        |
+| **Subpath**      | `VITE_BASE_URL=/path/ pnpm run build` | `BASE_URL=/path/`             |
 
 ## 🎯 Verification URLs
 
@@ -168,6 +172,7 @@ Server responds with JSON
 ## 🔒 No External Dependencies
 
 This deployment is:
+
 - ✅ **No Google APIs** - Pure JSON
 - ✅ **No Backend** - Static files only
 - ✅ **No Credentials** - No secrets needed
@@ -193,4 +198,3 @@ This deployment is:
 ---
 
 **Ready to deploy? Run: `pnpm run build` then upload `dist/spa/` folder!** 🚀
-

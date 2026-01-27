@@ -334,14 +334,16 @@ export async function loadMovementData(): Promise<DashboardDataResponse> {
     // In dev: BASE_URL is '/' (root)
     // On GitHub Pages: BASE_URL is '/repo-name/'
     // On Builder: BASE_URL is configured by the platform
-    const base = import.meta.env.BASE_URL || './';
+    const base = import.meta.env.BASE_URL || "./";
     const url = `${base}movement-data.json`;
 
     console.log(`📍 Fetching from: ${url}`);
 
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: Failed to load movement data from ${url}`);
+      throw new Error(
+        `HTTP ${response.status}: Failed to load movement data from ${url}`,
+      );
     }
 
     const rawData = await response.json();
@@ -367,7 +369,7 @@ export async function loadNeverMovedCows(): Promise<any[]> {
     // In dev: BASE_URL is '/' (root)
     // On GitHub Pages: BASE_URL is '/repo-name/'
     // On Builder: BASE_URL is configured by the platform
-    const base = import.meta.env.BASE_URL || './';
+    const base = import.meta.env.BASE_URL || "./";
     const url = `${base}never-moved-cows.json`;
 
     console.log(`📍 Fetching from: ${url}`);

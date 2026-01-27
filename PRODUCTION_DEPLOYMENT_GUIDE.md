@@ -3,6 +3,7 @@
 ## ✅ Problem Solved: Subpath Deployment Support
 
 The dashboard now works on **any deployment path** - not just the root `/`:
+
 - ✅ Development: `http://localhost:8080/`
 - ✅ Root domain: `https://domain.com/`
 - ✅ GitHub Pages: `https://username.github.io/repo-name/`
@@ -17,10 +18,10 @@ The dashboard now works on **any deployment path** - not just the root `/`:
 The frontend now uses **dynamic BASE_URL** to determine the correct path:
 
 ```typescript
-const base = import.meta.env.BASE_URL || './';
+const base = import.meta.env.BASE_URL || "./";
 const url = `${base}movement-data.json`;
 
-fetch(url)  // Resolves to correct path based on deployment
+fetch(url); // Resolves to correct path based on deployment
 ```
 
 ### Vite Configuration
@@ -42,30 +43,35 @@ const base = process.env.BASE_URL || "/";
 ## Files Modified for Production Support
 
 ### 1. **client/lib/localDataFetcher.ts**
+
 - Updated `loadMovementData()` to use `import.meta.env.BASE_URL`
 - Updated `loadNeverMovedCows()` to use `import.meta.env.BASE_URL`
 - Added console logging for debugging: `📍 Fetching from: ${url}`
 
 **Before:**
+
 ```typescript
-fetch('/movement-data.json')
-fetch('/never-moved-cows.json')
+fetch("/movement-data.json");
+fetch("/never-moved-cows.json");
 ```
 
 **After:**
+
 ```typescript
-const base = import.meta.env.BASE_URL || './';
-fetch(`${base}movement-data.json`)
-fetch(`${base}never-moved-cows.json`)
+const base = import.meta.env.BASE_URL || "./";
+fetch(`${base}movement-data.json`);
+fetch(`${base}never-moved-cows.json`);
 ```
 
 ### 2. **vite.config.ts**
+
 - Added `fs` import for file operations
 - Updated `resolve.alias` to use `process.cwd()` instead of `__dirname`
 - Added `copyJsonPlugin()` to ensure JSON files are copied to build output
 - Plugin runs only during `build` mode (production)
 
 ### 3. **server/index.ts**
+
 - Configured Express to serve static files from `/public`
 - Used `path.resolve(process.cwd(), "public")` for path resolution
 
@@ -80,6 +86,7 @@ pnpm run build
 ```
 
 **Output Structure:**
+
 ```
 dist/spa/
   ├── index.html
@@ -108,6 +115,7 @@ For GitHub Actions automatic deployment:
 ```
 
 **Environment Variables (set by GitHub):**
+
 - `GITHUB_PAGES=true`
 - `GITHUB_REPOSITORY=owner/repo-name`
 
@@ -116,6 +124,7 @@ For GitHub Actions automatic deployment:
 ### Step 3: Builder Static Export
 
 The app works with Builder's static export as-is:
+
 1. Builder runs: `pnpm run build`
 2. Static files from `dist/spa/` are deployed
 3. BASE_URL is handled by Builder's deployment configuration
@@ -160,6 +169,7 @@ https://username.github.io/repo-name/
 ### ✅ Builder Export Test
 
 Visit the deployed app URL and:
+
 1. Open Developer Tools (F12)
 2. Check Console for success messages:
    - `📍 Fetching from: /movement-data.json`
@@ -195,6 +205,7 @@ VITE_BASE_URL=/your-project-name/
 ```
 
 Then during build:
+
 ```bash
 pnpm run build
 # or
@@ -206,22 +217,26 @@ VITE_BASE_URL=/your-project-name/ pnpm run build
 ## Why This Is STC Cypher-Safe
 
 ### ✅ No External APIs
+
 - No Google Sheets API calls
 - No backend dependencies
 - Pure static JSON files
 
 ### ✅ No Network Calls (Except CDN)
+
 - Only external call: Highcharts geo data (one-time, cached)
 - All analytics data served locally
 - Works offline after first load
 
 ### ✅ Enterprise Security
+
 - No credentials needed
 - No sensitive data transmitted
 - Full data control
 - Can be deployed on internal networks
 
 ### ✅ Scalable Architecture
+
 - Works on any static hosting
 - No server capacity issues
 - Unlimited concurrent users
@@ -236,6 +251,7 @@ VITE_BASE_URL=/your-project-name/ pnpm run build
 **Cause:** JSON files not in build output
 
 **Solution:**
+
 ```bash
 # Verify files were copied
 ls -lh dist/spa/movement-data.json
@@ -251,6 +267,7 @@ pnpm run build --debug
 **Cause:** Incorrect BASE_URL resolution
 
 **Solution:**
+
 1. Open DevTools (F12)
 2. Check Console for actual fetch URL
 3. Should see: `📍 Fetching from: <correct-path>`
@@ -261,6 +278,7 @@ pnpm run build --debug
 **Cause:** BASE_URL mismatch
 
 **Solution:**
+
 ```bash
 # Set correct BASE_URL before build
 export VITE_BASE_URL=/your-actual-path/
@@ -276,11 +294,13 @@ pnpm run build
 ## Performance Notes
 
 ### Data Loading
+
 - Movement data: ~2.3 MB (minified JSON)
 - Never-moved cows: ~66 KB
 - Total additional payload: ~2.4 MB
 
 ### Optimization Tips
+
 1. Gzip compression (recommended): ~200 KB
 2. Browser caching: Set cache headers for JSON files
 3. Lazy loading: Map only loads on tab click
@@ -289,6 +309,7 @@ pnpm run build
 ### Recommended CDN Settings
 
 For GitHub Pages / Netlify:
+
 ```
 Cache-Control: public, max-age=3600
 Content-Encoding: gzip
@@ -301,6 +322,7 @@ Content-Encoding: gzip
 If deployment fails:
 
 1. **GitHub Pages:** Previous deploy is still available
+
    ```bash
    # Revert to previous commit and trigger redeploy
    git revert <commit>
@@ -349,6 +371,7 @@ Possible improvements while maintaining Cypher compliance:
 ## Summary
 
 ✅ **Your dashboard is now production-ready for:**
+
 - GitHub Pages
 - Builder static export
 - Any subpath deployment
@@ -356,4 +379,3 @@ Possible improvements while maintaining Cypher compliance:
 - Enterprise Cypher compliance
 
 The JSON files are automatically included in builds and served correctly regardless of deployment location.
-
