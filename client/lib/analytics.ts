@@ -1155,46 +1155,33 @@ export function calculateOneTimeMovedCows(movements: any[]): number {
   return oneTimeMovedCount;
 }
 
-// List of active warehouses to track (using canonical names)
-const ACTIVE_WAREHOUSES = [
-  "stc Jeddah WH",
-  "ACES Makkah WH",
-  "stc Al Ula WH",
-  "ACES Muzahmiya WH",
-  "ACES Dammam WH",
-  "stc Sharma WH",
-  "stc Madinah WH",
-];
-
-// Calculate count of active warehouses with movements in current period
+// Calculate count of unique warehouses with movements in current period
 // Supports both CowMovementsFact (PascalCase: To_Location_ID) and MapLine (camelCase: toLocationId)
 export function calculateActiveWarehouses(
   movements: any[],
   locations: DimLocation[],
 ): number {
-  // Create location name map for quick lookup
+  // Create location map for quick lookup
   const locationMap = new Map(
-    locations.map((loc) => [
-      loc.Location_ID,
-      loc.Location_Name.trim().toUpperCase(),
-    ]),
+    locations.map((loc) => [loc.Location_ID, loc]),
   );
 
-  // Track which active warehouses have movements
+  // Track unique warehouses with movements
   const activeWarehouses = new Set<string>();
 
   movements.forEach((mov) => {
     // Support both field name formats
     const toLocationId = mov.To_Location_ID || mov.toLocationId;
     if (toLocationId) {
-      const locationName = locationMap.get(toLocationId);
-      if (locationName) {
-        // Check if this location is in our active warehouses list (case-insensitive)
-        const activeWarehouse = ACTIVE_WAREHOUSES.find(
-          (wh) => wh.toUpperCase() === locationName,
-        );
-        if (activeWarehouse) {
-          activeWarehouses.add(activeWarehouse);
+      const location = locationMap.get(toLocationId);
+      if (location) {
+        // Check if this location is a warehouse
+        const isWarehouse =
+          location.Location_Type === "Warehouse" ||
+          location.Location_Name.toUpperCase().includes("WH");
+
+        if (isWarehouse) {
+          activeWarehouses.add(location.Location_Name);
         }
       }
     }
