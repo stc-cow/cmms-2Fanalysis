@@ -1,0 +1,140 @@
+cow_id,site_label,ebu_royal,region,district,city,remote_and_metropolitan,location,latitude,longitude,site_status,last_deploying_date,1st_deploying_date,vendor,2g_3g_lte_5g,shelter_outdoor
+COW002,Normal,EBU,Central,Riyadh City,Riyadh City,Metropolitan,Salbuk are MOI Medical City,24.902333,46.526439,ON-AIR,1-Mar-16,1-Apr-13,Ericsson,2G/LTE,Shelter
+COW013,Normal,EBU,Central,Riyadh District,Riyadh District,Remote,Qiddiyah Area,24.556721,46.28677,ON-AIR,28-Jan-20,10-Nov-19,Ericsson,2G/LTE,Outdoor
+,,,,,,,,,,,,,,,
+COW310,Normal,EBU,EAST,NORTHERN BORDER,ARAR,Remote,Arar Military Camp ,31.53616,40.671320,ON-AIR,13-Feb-19,1-Apr-13,Huawei,2G/LTE,Shelter
+COW511,VIP,EBU,Central,Riyadh District,Wadi Dawaseer,Remote,ARMY Camp Al sulayiel,20.78241,45.79936,ON-AIR,24-Nov-13,1-Apr-13,Ericsson,2G/LTE,Shelter
+COW522,VIP,NON EBU,WEST,JEDDAH,JEDDAH,Metropolitan,Red Sea Mall Event,21.63269,39.115680,ON-AIR,25-May-21,1-Apr-13,Ericsson,2G/LTE,Outdoor
+COW600,VIP,EBU,Central,Riyadh City,Riyadh City,Metropolitan,Salbouk Road Army Camp,24.86842,46.56649,ON-AIR,26-Oct-19,1-Apr-13,Ericsson,2G/LTE,Shelter
+COW542,Normal,EBU,Central,Riyadh District,Durma,Remote,PRINCE NAIF CENTER FOR SPECIAL OPERATION(DURMA),24.71627,46.09091,ON-AIR,29-Apr-15,1-Apr-13,Ericsson,2G,Shelter
+COW543,Normal,NON EBU,EAST,Al-AHSA,Hofuf,Remote,Garhash Village Abqaiq,25.9558,49.569720,ON-AIR,21-May-18,12-Aug-18,Huawei,2G/LTE,Shelter
+COW601,Normal,EBU,EAST,Al-AHSA,Hofuf,Remote,SHAYBAH ARAMCO,22.430492,53.976356,ON-AIR,11-Apr-14,1-Apr-13,Huawei,2G,Shelter
+COW621,Normal,NON EBU,Central,Riyadh District,Riyadh District,Remote,WADI NISSAH - prince Ahmed Bin Abdul-Aziz Farm,24.42355,46.37908,ON-AIR,1-Jan-14,1-Apr-13,Ericsson,2G/LTE,Outdoor
+COW714,VIP,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,Dewan Al-Maliki FRONT OF DIPLOMATIC QUARTER,24.67543,46.64043,ON-AIR,19-Feb-14,1-Apr-13,Ericsson,2G/LTE,Shelter
+COW632,Normal,EBU,Central,Riyadh City,Riyadh City,Metropolitan,MOD Riyadh,24.66057,46.67427,ON-AIR,2-Apr-19,1-Apr-13,Ericsson,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+COW641,VIP,NON EBU,EAST,DAMMAM,DAMMAM,Metropolitan,PETROLEUM UNIVERSITY DHAHRAN,26.296738,50.159038,ON-AIR,16-Dec-13,1-Apr-13,Huawei,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+COW655,Normal,EBU,EAST,DAMMAM,DAMMAM,Metropolitan,King Abdu Aziz Airbase Housing Dhahran,26.2322,50.110990,ON-AIR,4-Apr-18,18-Nov-13,Huawei,2G/LTE,Shelter
+COW729,VIP,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,King Abdulaziz conference palace /Ritz Hotel,24.669031,46.630623,ON-AIR,8-May-17,16-Oct-14,Ericsson,2G/LTE/5G,Shelter
+COW732,VIP,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,Nakheel mall Imam Saud bin Abdul Aziz Road,24.769476,46.717529,ON-AIR,13-Feb-18,17-Nov-14,Ericsson,2G/LTE/5G,Shelter
+COW739,VIP,EBU,Central,Riyadh District,Riyadh District,Remote,Jillah Farm,24.70187,45.59598,ON-AIR,20-Nov-18,2-Jan-15,Ericsson,2G/LTE/5G,Shelter
+COW720,Normal,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,King SALMAN ROAD/NEAR CHECK POINT,24.84925,46.66972,ON-AIR,17-Jun-13,1-Apr-13,Ericsson,2G/LTE/5G,Shelter
+COW725,Normal,EBU,Central,Riyadh City,Riyadh City,Metropolitan,Prince Naïf Military Academy Dammam road,24.892043,46.921048,ON-AIR,1-Jun-16,1-Apr-13,Ericsson,2G/LTE,Shelter
+COW742,Normal,EBU,Central,Riyadh District,Riyadh District,Remote,Qiddiyah Area,24.5304,46.40582,ON-AIR,17-Jul-20,8-Feb-15,Ericsson,2G/LTE,Shelter
+COW776,VIP,EBU,Central,Riyadh City,Riyadh City,Metropolitan,Riyadh -Dammam road Military Camp,24.97483,46.92809,ON-AIR,19-Jun-17,19-Jun-17,Ericsson,2G/LTE,Shelter
+COW755,Normal,EBU,WEST,JEDDAH,JEDDAH,Metropolitan,MOI Sharaa Al Hzam Dahban,21.87292,39.103560,ON-AIR,20-Mar-15,25-Dec-14,Ericsson,2G/LTE,Shelter
+COW759,Normal,EBU,WEST,JEDDAH,JEDDAH,Metropolitan,Ministry of Defense -Al Harma road Jeddah,21.53236,39.169511,ON-AIR,2-Jul-15,16-Feb-15,Ericsson,2G/LTE,Shelter
+COW768,Normal,EBU,Central,Riyadh District,Dowadmi,Remote,Dowadmi Military Area,24.29376,44.62865,ON-AIR,1-Dec-17,1-Dec-17,Ericsson,2G/LTE,Shelter
+COW769,Normal,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,Janadriya Railway Station,24.85803,46.76889,ON-AIR,26-Dec-17,26-Dec-17,Ericsson,2G/LTE,Outdoor
+COW770,Normal,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,Al-Urabah Road,24.7377,46.74686,ON-AIR,24-Nov-18,24-Nov-18,Ericsson,2G/LTE,Shelter
+COW773,Normal,EBU,Central,Riyadh District,Wadi Dawaseer,Remote,Military Camp Wadi Dawaseer,20.14477,45.13062,ON-AIR,1-Dec-17,1-Dec-17,Ericsson,2G/LTE,Shelter
+CWH013,VIP,EBU,SOUTH,JIZAN,Jizan,Remote,Military Camp Abu Araish Jizan,16.98059,42.910860,ON-AIR,27-Oct-15,21-Jan-15,Huawei,2G/LTE,Shelter
+CWH014,VIP,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Royal Tulip Sharma Resort,28.04903,35.222710,ON-AIR,31-Mar-18,12-Feb-15,Huawei,2G/LTE/5G,Shelter
+CWH038,VIP,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Airport Sharma,27.92164,35.288150,ON-AIR,26-Dec-19,28-Sep-16,Huawei,2G/LTE/5G,Shelter
+COW822,Normal,NON EBU,Central,Riyadh City,Riyadh City,Metropolitan,Al-Haeer Road,24.41521,46.8424,ON-AIR,1-Jan-20,1-Jan-20,Ericsson,2G/LTE/5G,Outdoor
+CWH046,VIP,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Nesma Accommodation,28.0163,35.193320,ON-AIR,17-Jul-18,12-Jan-17,Huawei,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+CWN013,VIP,EBU,WEST,MAKKAH,MAKKAH,Remote,EWAA Compound (Shamesi Jail Makkah),21.342206,39.568845,ON-AIR,22-Oct-20,22-Oct-20,Nokia,2G/LTE/5G,Outdoor
+COWJN1,Normal,EBU,EAST,NORTHERN BORDER,Rafah,Remote,Rafah Military Camp,29.003612,44.722982,ON-AIR,2-Mar-17,10-Jan-20,Huawei,2G/LTE,Shelter
+CWN041,VIP,EBU,SOUTH,Asir,Khamis,Metropolitan,King Khaled Air Defense Khamis,18.277897,42.797088,ON-AIR,11-May-15,11-Aug-14,Nokia,2G/LTE,Shelter
+CWA004,Normal,NON EBU,EAST,NORTHERN BORDER,Al-Jouf,Remote,Skaka Housing Area,29.9765,40.169560,ON-AIR,7-Jul-20,1-Apr-13,Huawei,2G/LTE,Shelter
+CWN046,VIP,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Project Gayal Area,28.11425,35.001060,ON-AIR,24-Nov-18,25-Jan-15,Huawei,2G/LTE,Shelter
+CWH003,Normal,EBU,SOUTH,Najran,Najran,Remote,Military Camp Sharurah,17.40391,47.163520,ON-AIR,4-Nov-15,4-Nov-15,Huawei,2G/LTE,Shelter
+CWH004,Normal,EBU,EAST,JUBAIL,JUBAIL,Remote,As Summan Near Quraya Olayah Prince Farm,27.11578,47.368910,ON-AIR,1-Dec-15,27-Dec-14,Huawei,2G/LTE,Shelter
+CWH012,Normal,EBU,EAST,Al-AHSA,Hofuf,Remote,AL HASA -Aramco,24.96059,49.439820,ON-AIR,28-Jul-15,28-Dec-14,Huawei,2G/LTE,Shelter
+CWH015,Normal,EBU,SOUTH,Asir,Dahran Aljanob,Remote,Military Camp Dahran Al-Janub,17.65085,43.462020,ON-AIR,14-Mar-20,24-Feb-15,Huawei,2G/LTE,Shelter
+CWN081,VIP,EBU,WEST,MAKKAH,MAKKAH,Remote,Makkah Remote,20.99354,39.588150,ON-AIR,28-Jul-17,25-Jul-15,Nokia,2G/LTE,Shelter
+CWH018,Normal,EBU,SOUTH,Najran,Sharura,Metropolitan,ميدان نادي الهجن بشرورة,17.378909,47.052158,ON-AIR,2-May-15,25-Feb-15,Huawei,2G/LTE,Shelter
+CWH026,Normal,EBU,SOUTH,Najran,Najran,Remote,Army Camp,17.465332,44.205111,ON-AIR,22-Sep-19,12-Sep-15,Huawei,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+CWH044,Normal,EBU,SOUTH,JIZAN,Jizan,Remote,Military Camp Jizan,17.0358,42.960700,ON-AIR,21-Sep-17,21-Jan-17,Huawei,2G/LTE,Shelter
+CWH045,Normal,EBU,EAST,NORTHERN BORDER,ARAR,Remote,35KM Arar Rafah HW /Military Camp,30.88407,41.203390,ON-AIR,18-Jan-17,18-Jan-17,Huawei,2G/LTE,Shelter
+CWH047,Normal,EBU,SOUTH,Najran,Najran,Remote,Military Camp Location,17.54492,43.980660,ON-AIR,4-Feb-20,15-Feb-17,Huawei,2G/LTE,Shelter
+CWH048,Normal,EBU,WEST,TABUK,Tabuk,Metropolitan,Tabuk City,28.350223,36.381380,ON-AIR,15-Jun-17,7-Jan-17,Huawei,2G/LTE,Shelter
+CWH316,Normal,NON EBU,EAST,JUBAIL,JUBAIL,Remote,Hay Al Telal - Hafer Al Baten,28.4367,45.919040,ON-AIR,7-May-20,2-Dec-13,Huawei,2G/LTE,Shelter
+CWH338,Normal,EBU,WEST,TABUK,Sherma,Metropolitan,NEOM Trojena CoW 4 - Lake Area,28.67835,35.322380,ON-AIR,18-Aug-24,18-Aug-24,Huawei,2G/LTE,Shelter
+CWH339,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Gulf of Aqaba-1,29.028364,35.029919,ON-AIR,14-Jul-24,14-Jul-24,Huawei,2G/LTE,Shelter
+CWH340,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Gulf of Aqaba-2,28.994833,34.994242,ON-AIR,18-Jul-24,18-Jul-24,Huawei,2G/LTE,Shelter
+CWH341,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Gulf of Aqaba-3,28.38558,34.920865,ON-AIR,14-Jul-24,14-Jul-24,Huawei,2G/LTE,Shelter
+CWH344,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM  Oxagon -Sothern Corridor,27.47192,35.642460,ON-AIR,14-Jul-24,14-Jul-24,Huawei,2G/LTE,Shelter
+CWH345,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM  LINE-Viewing Area,28.129674,34.977988,ON-AIR,18-Aug-24,18-Aug-24,Huawei,2G/LTE/5G,Shelter
+CWH347,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Camp NC-1,28.102491,35.118754,ON-AIR,23-Jul-24,23-Jul-24,Huawei,2G/LTE/5G,Shelter
+CWH348,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM Camp NRC-13 2nd COW,28.188473,35.107314,ON-AIR,18-Jul-24,18-Jul-24,Huawei,2G/LTE,Shelter
+CWH349,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM West arrival road,28.131223,36.004256,ON-AIR,18-Jul-24,18-Jul-24,Huawei,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+CWH354,Normal,EBU,WEST,TABUK,NEOM,Remote, ENOWA Oxagon South Corridor,27.487426,35.671524,ON-AIR,18-Nov-24,18-Nov-24,Huawei,2G/LTE,Shelter
+CWH357,Normal,EBU,WEST,TABUK,NEOM,Remote,BEACH GAMES 3,28.761137,35.448557,ON-AIR,7-Dec-24,7-Dec-24,Huawei,2G/LTE,Shelter
+CWH360,Normal,EBU,WEST,TABUK,NEOM,Remote,Nature reserve CoW,28.709574,35.48078,ON-AIR,,,Huawei,2G/LTE,Shelter
+CWH361,Normal,EBU,WEST,TABUK,NEOM,Remote,NC-1 HD offices,28.736674,35.388219,ON-AIR,,,Huawei,2G/LTE,Shelter
+CWH362,Normal,EBU,WEST,TABUK,NEOM,Remote,Tabuk Fishery,27.784722,35.420003,ON-AIR,5-Nov-24,5-Nov-24,Huawei,2G/LTE,Shelter
+CWN001,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Arafat Police Station (Special Forces Compound),21.33712,39.957790,ON-AIR,15-Feb-20,15-Feb-20,Nokia,2G/LTE/5G,Outdoor
+CWN002,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Mina Jamarath,21.42045,39.871420,ON-AIR,5-Sep-16,4-May-16,Nokia,2G/LTE/5G,Shelter
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+CWN026,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Replacing ZMKA830,21.41169,39.828520,ON-AIR,30-Oct-20,31-Oct-20,Nokia,2G/LTE/5G,Outdoor
+CWN032,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Hada Road MOI Muzdalifa,21.35995,39.912277,ON-AIR,12-Mar-20,12-Mar-20,Nokia,2G/LTE/5G,Outdoor
+CWN033,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Sultan Road(NEW SHARAYA ROAD),21.446924,39.923982,ON-AIR,15-Jan-20,15-Jan-20,Nokia,2G/LTE/5G,Outdoor
+CWN036,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Bus Parking Coverage Purpose Arafat,21.380049,39.944192,ON-AIR,18-Jun-19,8-Dec-14,Nokia,2G/LTE/5G,Shelter
+CWN711,Normal,EBU,WEST,MADINAH,Al Ula,Metropolitan,RCU Sharaan Nature Reserve Al Ula,26.86254,38.306960,ON-AIR,22-Oct-24,22-Oct-24,Nokia,2G/LTE/5G,Shelter
+CWN040,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,NEOM  Nesma Accommodation Area,28.009994,35.190820,ON-AIR,22-Mar-18,18-Nov-14,Huawei,2G/LTE,Shelter
+CWN916,Normal,EBU,WEST,MADINAH,Al Ula,Remote,Al Ula Sahary Resort,26.6653,38.003100,ON-AIR,31-Dec-20,20-May-18,Nokia,2G/LTE,Shelter
+CWN918,VIP,EBU,SOUTH,JIZAN,Samtah,Remote,Military CAMP SAMTA,16.64758,42.920125,ON-AIR,23-Jan-16,1-Apr-13,Huawei,2G/LTE,Shelter
+CWN962,VIP,NON EBU,WEST,MAKKAH,Haram ,Metropolitan,Near Hijla medical centre Makkah,21.411579,39.821467,ON-AIR,5-Jul-15,1-Apr-13,Nokia,2G/LTE/5G,Outdoor
+CWN050,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Arafat,21.385366,40.005054,ON-AIR,30-Jul-17,2-Feb-15,Nokia,2G/LTE/5G,Shelter
+,,,,,,,,,,,,,,,
+CWN054,Normal,EBU,SOUTH,JIZAN,Samtah,Remote,Military camp SAMTA Jizan,16.49797,42.850050,ON-AIR,11-May-15,18-Oct-14,Huawei,2G/LTE,Shelter
+CWN055,Normal,EBU,SOUTH,JIZAN,Jizan,Remote,Military Camp Jizan,16.782775,43.080047,ON-AIR,18-Feb-20,5-Sep-14,Huawei,2G/LTE,Shelter
+CWN065,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Umm Al Qura University  Makkha,21.44125,39.806439,ON-AIR,7-Nov-20,2-Sep-15,Nokia,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+CWN998,VIP,EBU,WEST,TAIF,Taif,Metropolitan,Bahitah Check Point,21.647214,40.389186,ON-AIR,1-Sep-19,16-Jul-19,Nokia,2G/LTE/5G,Outdoor
+CWN079,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Muzdalifah Outside MOI,21.36149,39.917990,ON-AIR,31-May-19,14-Jul-15,Nokia,2G/LTE/5G,Shelter
+CWN999,VIP,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Awali Road signal Mashayre Road,21.36449,39.884630,ON-AIR,16-Jan-20,16-Jan-20,Nokia,2G/LTE/5G,Outdoor
+CWN085,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Arafat,21.366936,39.964243,ON-AIR,24-Jul-16,6-Sep-15,Nokia,2G/LTE/5G,Shelter
+CWN086,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Near Haram Makkah,21.41579,39.785380,ON-AIR,18-May-19,25-Jul-15,Nokia,2G/LTE/5G,Shelter
+CWS811,Normal,NON EBU,WEST,MADINAH,Al Ula,Remote,Al-Ula City,26.545376,37.953056,ON-AIR,12-Dec-20,22-Jun-16,Nokia,2G/LTE/5G,Shelter
+CWN093,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Arafat,21.35665,39.935350,ON-AIR,11-Jun-17,6-Aug-16,Nokia,2G/LTE/5G,Shelter
+COW780,VVIP,EBU,WEST,JEDDAH,JEDDAH,Metropolitan,MOI Dahban,21.88038,39.115990,ON-AIR,28-Apr-18,26-Dec-17,Ericsson,2G/LTE,Outdoor
+CWH017,Normal,EBU,SOUTH,Najran,Najran,Remote,Military Base camp Al sharfha2,17.5248,44.408210,ON-AIR,18-Apr-17,24-Feb-15,Huawei,2G/LTE,Shelter
+CWN104,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Muzdalifah,21.376627,39.919002,ON-AIR,15-Jun-20,15-Aug-16,Nokia,2G/LTE/5G,Shelter
+CWN106,Normal,EBU,WEST,JEDDAH,JEDDAH,Metropolitan,Tekfen Saudi Aramco pipeline project camp,22.74421,39.233240,ON-AIR,16-Sep-17,7-Aug-16,Nokia,2G/LTE,Shelter
+CWH034,Normal,EBU,SOUTH,Asir,Asir,Remote,Military Compound,17.54944,43.590520,ON-AIR,27-Oct-20,24-Sep-16,Huawei,2G/LTE,Shelter
+CWN108,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Arafat General Hospital  Area,21.34916,39.983670,ON-AIR,12-Jun-19,10-Aug-16,Nokia,2G/LTE/5G,Shelter
+CWN037,Normal,EBU,SOUTH,Najran,Najran,Remote,Military Camp NAJRAN,17.53707,44.437480,ON-AIR,13-Apr-15,11-Aug-14,Huawei,2G/LTE,Shelter
+CWN900,Normal,EBU,SOUTH,JIZAN,JIZAN,Remote,Military Camp near ZJZ206 ALMDMDAMAH,17.07355,43.004460,ON-AIR,10-Oct-19,1-Apr-13,Huawei,2G/LTE,Shelter
+COW529,VIP,NON EBU,Central,Riyadh District,Thumama,Remote,Prince Khalid Bin Salman Camp Thumama,25.3349,46.458,ON-AIR,9-Nov-20,27-Nov-19,Ericsson,2G/LTE,Outdoor
+CWN902,Normal,EBU,SOUTH,Asir,Dahran Aljanob,Remote,Military CAMP Najran Border,17.565023,43.630664,ON-AIR,8-Jan-21,8-Jan-21,Huawei,2G/LTE/5G,Outdoor
+CWN915,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Muzdalifah,21.382,39.923200,ON-AIR,5-Jan-21,1-Jan-21,Nokia,2G/LTE,Shelter
+COW535,VVVIP,NON EBU,Central,Riyadh District,Thumama,Remote,Prince Khalid Bin Salman Camp Thumama,25.33344,46.47846,ON-AIR,20-Oct-19,4-Apr-18,Ericsson,2G/LTE,Shelter
+CWN925,Normal,EBU,SOUTH,Asir,Bisha,Remote,Army Training Center in Bisha,19.82167,42.972120,ON-AIR,15-Oct-19,1-Apr-13,Huawei,2G/LTE,Shelter
+CWN950,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,Near Haram(UMER BIN HATAB ROAD),21.43161,39.826640,ON-AIR,1-Jul-20,25-Jun-20,Nokia,2G/LTE,Shelter
+CWN952,Normal,EBU,SOUTH,Asir,Abha,Metropolitan,Airbase Abha,18.155706,42.434680,ON-AIR,22-Feb-20,22-Feb-20,Nokia,2G/LTE,Outdoor
+,,,,,,,,,,,,,,,
+CWN963,Normal,EBU,Central,Riyadh District,AL-HAYSYA,Remote,Army Camp AL-HAYSYA / SALBUK ROAD,24.90069,46.13858,ON-AIR,10-Feb-15,1-Apr-13,Nokia,2G/LTE,Shelter
+CWN964,Normal,NON EBU,Central,Riyadh District,Dirab,Remote,Dirab satellite Station,24.42661,46.58741,ON-AIR,4-Apr-18,1-Apr-13,Nokia,,Shelter
+CWN965,Normal,EBU,SOUTH,Najran,Najran,Remote,Yaman Border Najran,17.411717,44.210471,ON-AIR,18-Nov-20,18-Nov-20,Nokia,2G,Outdoor
+CWN968,Normal,NON EBU,WEST,MADINAH,Al Mahd,Remote,Mahd Althahab City,23.50043,40.899730,ON-AIR,19-Jan-20,19-Jan-20,Nokia,2G/LTE,Outdoor
+CWN972,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,911 Compound Muzdalifah,21.360682,39.916155,ON-AIR,18-Mar-20,18-Mar-20,Nokia,2G/LTE/5G,Outdoor
+CWN973,Normal,NON EBU,Central,Riyadh District,Dirab,Remote,Dirab satellite Station,24.42661,46.58741,ON-AIR,4-Apr-18,1-Apr-13,Nokia,,Shelter
+,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,
+CWN976,Normal,NON EBU,WEST,MAKKAH,Mashaer,Metropolitan,Mina Camp,21.40275,39.897510,ON-AIR,18-Jul-18,14-Jul-19,Nokia,2G/LTE,Outdoor
+,,,,,,,,,,,,,,,
+CWN983,Normal,NON EBU,WEST,MAKKAH,MAKKAH,Metropolitan,South Gate,21.389922,39.859418,ON-AIR,19-Dec-17,26-Jan-20,Nokia,2G/LTE/5G,Outdoor
+CWN986,Normal,EBU,EAST,NORTHERN BORDER,ARAR,Remote,Al Uwayqilah/Iraq Border/ Army Camp,30.46544,42.649410,ON-AIR,11-Jun-20,11-Jun-20,Nokia,2G/LTE,Outdoor
+,,,,,,,,,,,,,,,
+CWN988,Normal,EBU,EAST,NORTHERN BORDER,TURAIF,Remote,Turaif Military Camp ,31.88932,39.657170,ON-AIR,1-Nov-15,1-Apr-13,Nokia,2G/LTE,Shelter
+CWN995,Normal,NON EBU,WEST,TAIF,Taif,Metropolitan,Prince Ahmed Palace,21.49114,40.593420,ON-AIR,16-Sep-20,16-Sep-20,Nokia,2G/LTE,Outdoor
+CWS801,Normal,NON EBU,WEST,MADINAH,MADINAH,Metropolitan,Haraj Area Madinah,24.59469,39.669790,ON-AIR,5-Mar-17,23-Aug-16,Nokia,2G/LTE/5G,Shelter
+CWS803,Normal,EBU,WEST,TABUK,Tabuk,Metropolitan,TABUK/ARMY CAMP,28.79099,36.451960,ON-AIR,15-Nov-16,1-Apr-13,Huawei,2G/LTE,Shelter
+CWS810,Normal,NON EBU,WEST,TABUK,Tabuk,Metropolitan,Prince Fahad bin Sultan Park,28.4327,36.575500,ON-AIR,28-Nov-20,1-Jan-21,Huawei,2G/LTE/5G,Shelter
+,,,,,,,,,,,,,,,
+CWS817,Normal,NON EBU,WEST,MADINAH,MADINAH,Metropolitan,the Knowledge Economy City King Abdul Aziz Road,24.475347,39.681684,ON-AIR,8-Nov-17,25-Nov-20,Nokia,2G/LTE/5G,Outdoor
+,,,,,,,,,,,,,,,
+CWS821,Normal,NON EBU,EAST,JUBAIL,JUBAIL,Metropolitan,Jubail/ Near Expertise Workshop/ Near Khonaini Station No 50,26.90673,49.49295 ,ON-AIR,6-Jan-21,6-Jan-21,Huawei,2G/LTE/5G,Shelter
+CWH355,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,Jebel Al Lawz Neom,28.675932,35.300798,ON-AIR,,,Huawei,2G/LTE,Shelter
+,,,,,,,,,,,,,,,
+CWH342,Normal,EBU,WEST,TABUK,Sharma,Metropolitan,Tiran island,27.96283,34.572150,ON-AIR,,,Huawei,2G/LTE,Shelter
