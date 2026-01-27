@@ -62,13 +62,13 @@ function expressPlugin(): Plugin {
 // Note: Vite's public folder is automatically copied to build root, but this plugin
 // ensures the JSON files are explicitly included for better reliability
 function copyJsonPlugin(): Plugin {
-  const fs = require("fs");
   return {
     name: "copy-json-plugin",
     apply: "build", // Only apply during production build
     generateBundle() {
       // Read JSON files from public folder
-      const publicPath = path.resolve(__dirname, "public");
+      const projectRoot = process.cwd();
+      const publicPath = path.resolve(projectRoot, "public");
       const jsonFiles = ["movement-data.json", "never-moved-cows.json"];
 
       for (const file of jsonFiles) {
