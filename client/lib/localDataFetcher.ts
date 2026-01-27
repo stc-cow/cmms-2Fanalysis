@@ -357,15 +357,25 @@ export async function loadMovementData(): Promise<DashboardDataResponse> {
 
 /**
  * Load never-moved cows data from local JSON file
+ * Uses BASE_URL to support subpath deployments (GitHub Pages, Builder export)
  */
 export async function loadNeverMovedCows(): Promise<any[]> {
   try {
     console.log("📥 Loading Never Moved COWs from local JSON...");
 
-    const response = await fetch("/never-moved-cows.json");
+    // Use BASE_URL for dynamic path resolution based on deployment
+    // In dev: BASE_URL is '/' (root)
+    // On GitHub Pages: BASE_URL is '/repo-name/'
+    // On Builder: BASE_URL is configured by the platform
+    const base = import.meta.env.BASE_URL || './';
+    const url = `${base}never-moved-cows.json`;
+
+    console.log(`📍 Fetching from: ${url}`);
+
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error(
-        `HTTP ${response.status}: Failed to load never-moved cows`,
+        `HTTP ${response.status}: Failed to load never-moved cows from ${url}`,
       );
     }
 
