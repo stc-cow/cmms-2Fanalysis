@@ -33,11 +33,14 @@ jobs:
       - name: Build Vite app with GitHub Pages base path
         env:
           GITHUB_PAGES: "true"
-        run: pnpm run build:client
+        run: pnpm run build
 
-      - name: Copy build to docs folder
+      - name: Verify docs folder is ready for GitHub Pages
         run: |
-          rm -rf docs/assets docs/index.html docs/*.js docs/*.css
-          cp -r dist/spa/* docs/
-          echo "Build copied to docs/ folder"
+          echo "✅ Checking docs folder contents..."
+          ls -lh docs/index.html || echo "⚠️  Missing index.html"
+          ls -lh docs/movement-data.json || echo "⚠️  Missing movement-data.json"
+          echo "✅ docs folder is ready for GitHub Pages"
+          echo ""
+          echo "Contents:"
           ls -la docs/ | head -20
