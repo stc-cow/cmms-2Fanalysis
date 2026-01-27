@@ -173,68 +173,53 @@ export default function Dashboard() {
               Unable to Load Dashboard Data
             </p>
             <p className="text-sm text-gray-300">
-              {error?.includes("404")
-                ? "Google Sheet is not accessible (404 error)"
-                : error || "Unknown error occurred"}
+              {error || "Unknown error occurred"}
             </p>
           </div>
 
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 text-left w-full">
             <p className="text-sm font-semibold text-blue-200 mb-3">
-              📋 Diagnostic Info:
+              📋 Error Details:
             </p>
             <p className="text-xs text-blue-100 font-mono bg-slate-900 p-2 rounded mb-2 break-all">
-              Error: {error}
+              {error}
             </p>
             <p className="text-xs text-blue-100">
-              Check the server logs or visit{" "}
-              <code className="bg-slate-900 px-1 rounded">
-                /api/data/diagnostic
-              </code>{" "}
-              for detailed diagnostics.
+              Data is loaded from local JSON files in the <code className="bg-slate-900 px-1 rounded">/public</code> folder.
             </p>
           </div>
 
           <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 text-left w-full">
             <p className="text-sm font-semibold text-amber-200 mb-3">
-              ⚙️ Steps to Fix:
+              ⚙️ Troubleshooting Steps:
             </p>
             <ol className="text-xs text-amber-100 space-y-2 list-decimal list-inside">
-              <li className="font-semibold">Get the correct Sheet ID:</li>
+              <li className="font-semibold">Verify JSON files exist:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
-                <li>Open your Google Sheet in edit mode</li>
-                <li>Look at the URL bar</li>
-                <li>Copy the ID between /d/ and /edit</li>
+                <li>Check that <code className="bg-slate-900 px-1 rounded">public/movement-data.json</code> exists</li>
+                <li>Check that <code className="bg-slate-900 px-1 rounded">public/never-moved-cows.json</code> exists</li>
               </ol>
-              <li className="font-semibold mt-2">Update the configuration:</li>
+              <li className="font-semibold mt-2">Regenerate JSON files:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
-                <li>
-                  In{" "}
-                  <code className="bg-slate-900 px-1 rounded">
-                    server/routes/data.ts
-                  </code>
-                </li>
-                <li>
-                  Change{" "}
-                  <code className="bg-slate-900 px-1 rounded">
-                    ACTUAL_SHEET_ID
-                  </code>{" "}
-                  to your Sheet ID
-                </li>
-                <li>Or set environment variable: GOOGLE_SHEET_ID=YOUR_ID</li>
+                <li>Run: <code className="bg-slate-900 px-1 rounded">pnpm exec node convert-csv-to-json.mjs</code></li>
+                <li>This will update both JSON files from CSV sources</li>
               </ol>
-              <li className="font-semibold mt-2">Test the connection:</li>
+              <li className="font-semibold mt-2">Check browser console:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
-                <li>Visit /api/data/diagnostic in your browser</li>
-                <li>Check which URLs are working</li>
+                <li>Open DevTools (F12) and check the Console tab</li>
+                <li>Look for specific error messages about JSON loading</li>
+              </ol>
+              <li className="font-semibold mt-2">Verify server is running:</li>
+              <ol className="ml-4 space-y-1 list-disc list-inside">
+                <li>Dev server must be running to serve static files</li>
+                <li>Run: <code className="bg-slate-900 px-1 rounded">pnpm run dev</code></li>
               </ol>
             </ol>
           </div>
 
           <div className="bg-gray-700 rounded-lg p-3 w-full">
             <p className="text-xs text-gray-300 text-center">
-              For detailed setup instructions, see GOOGLE_SHEET_SETUP.md in the
-              project root
+              See API_REMOVAL_COMPLETE.md for detailed setup and troubleshooting
             </p>
           </div>
         </div>
