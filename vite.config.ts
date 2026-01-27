@@ -4,14 +4,23 @@ import path from "path";
 import fs from "fs";
 
 // https://vitejs.dev/config/
-// CRITICAL: Use relative base './' for subpath-safe deployment
-// This ensures the app works on:
-// - GitHub Pages (/repo-name/)
-// - Vercel (root or subpath)
-// - STC Cypher (internal subpaths)
-// - Builder static export
-// DO NOT use absolute paths - they break on subpath deployments
-const base = "./"; // Relative base is mandatory for all deployment targets
+// CRITICAL: Determine base path for deployment
+// GitHub repository: stc-cow/movement-analysis
+// Deployed to: https://stc-cow.github.io/movement-analysis/
+// Use environment variable GITHUB_PAGES_BASE or default to repo-specific path
+const getBase = (): string => {
+  // If GITHUB_PAGES is set (from GitHub Actions), use the repo name
+  if (process.env.GITHUB_PAGES === "true") {
+    const repoName = process.env.GITHUB_REPOSITORY?.split("/")[1];
+    if (repoName && repoName !== "stc-cow.github.io") {
+      return `/${repoName}/`; // Project repo: /movement-analysis/
+    }
+    return "/"; // User/org page: /
+  }
+  // For other deployments (Vercel, local, etc.), use relative paths
+  return "./";
+};
+const base = getBase();
 
 export default defineConfig(({ mode }) => ({
   // For GitHub Pages: if deployed to https://username.github.io/repo-name/
