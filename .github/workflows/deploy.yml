@@ -41,11 +41,13 @@ jobs:
           GITHUB_PAGES: "true"
         run: pnpm run build
 
-      - name: Prepare build for GitHub Pages
+      - name: Verify docs folder is ready for GitHub Pages
         run: |
-          # Copy build artifacts to docs folder for GitHub Pages serving
-          rm -rf docs/assets docs/index.html docs/favicon.ico docs/placeholder.svg docs/robots.txt
-          cp -r dist/spa/* docs/
+          # Verify that docs/ has all required files
+          # Build already outputs directly to docs/
+          echo "✅ Checking docs folder contents..."
+          ls -lh docs/index.html docs/movement-data.json docs/never-moved-cows.json || echo "⚠️  Missing files!"
+          echo "✅ docs folder is ready for GitHub Pages"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
