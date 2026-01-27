@@ -13,7 +13,10 @@ export function createServer() {
 
   // Serve static files from /public folder
   // This allows /movement-data.json and /never-moved-cows.json to be served
-  app.use(express.static(path.join(__dirname, "../public")));
+  // In dev mode: serves from ./public relative to project root
+  // In production: serves from dist/public or ./public
+  const publicPath = path.resolve(process.cwd(), "public");
+  app.use(express.static(publicPath));
 
   // Health check endpoint
   app.get("/api/health", (_req, res) => {
