@@ -11,7 +11,7 @@ import fs from "fs";
 // - STC Cypher (internal subpaths)
 // - Builder static export
 // DO NOT use absolute paths - they break on subpath deployments
-const base = "./";  // Relative base is mandatory for all deployment targets
+const base = "./"; // Relative base is mandatory for all deployment targets
 
 export default defineConfig(({ mode }) => ({
   // For GitHub Pages: if deployed to https://username.github.io/repo-name/

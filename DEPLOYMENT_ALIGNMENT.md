@@ -7,6 +7,7 @@
 All production deployments now build to a **single output directory**: `/docs`
 
 This folder contains:
+
 - `index.html` - React app entry point
 - `assets/` - JavaScript, CSS, and images
 - `movement-data.json` - COW movement data
@@ -28,11 +29,13 @@ The same `/docs` output serves:
 ### 1. Build Configuration (`vite.config.ts`)
 
 **Base Path (Mandatory)**:
+
 ```javascript
-const base = "./";  // Relative base for subpath safety
+const base = "./"; // Relative base for subpath safety
 ```
 
 **Output Directory**:
+
 ```javascript
 build: {
   outDir: "docs",  // Single production output
@@ -40,6 +43,7 @@ build: {
 ```
 
 **Why `./ ` base is critical**:
+
 - GitHub Pages serves from `/repo-name/` subpath
 - Vercel may serve from custom subpaths
 - STC internal hosting uses subpaths
@@ -55,11 +59,13 @@ build: {
 ```
 
 **What this does**:
+
 1. Runs `vite build` → outputs to `/docs`
 2. Copies JSON files from `/public` to `/docs`
 3. Ensures JSON is always available at root of `/docs`
 
 **Verification after build**:
+
 ```bash
 ls -la docs/
 # Expected output:
@@ -72,6 +78,7 @@ ls -la docs/
 ### 3. JSON Fetching (`client/lib/localDataFetcher.ts`)
 
 **Already Correct**:
+
 ```typescript
 const base = import.meta.env.BASE_URL || "./";
 const url = `${base}movement-data.json`;
@@ -79,6 +86,7 @@ const response = await fetch(url);
 ```
 
 **Works across all deployments**:
+
 - GitHub Pages: `base` = `/repo-name/` → fetches `/repo-name/movement-data.json`
 - Vercel root: `base` = `/` → fetches `/movement-data.json`
 - Vercel subpath: `base` = `/app/` → fetches `/app/movement-data.json`
@@ -96,6 +104,7 @@ const response = await fetch(url);
 ```
 
 **Critical settings**:
+
 - `outputDirectory: "docs"` - tells Vercel where to find static assets
 - `buildCommand: "pnpm run build"` - runs full build process
 - Framework: "vite" - Vercel recognizes Vite configuration
@@ -119,6 +128,7 @@ pnpm run build:client
 ```
 
 **Check build output exists**:
+
 ```bash
 # All of these must exist:
 ls docs/index.html
@@ -130,18 +140,21 @@ ls docs/assets/
 ### After Deployment
 
 **GitHub Pages**:
+
 ```bash
 # Visit: https://stc-cow.github.io
 curl https://stc-cow.github.io/movement-data.json | jq . | head -5
 ```
 
 **Vercel**:
+
 ```bash
 # Visit deployment URL (check Vercel dashboard)
 curl <VERCEL_URL>/movement-data.json | jq . | head -5
 ```
 
 **Expected Response**:
+
 ```json
 [
   {
@@ -153,6 +166,7 @@ curl <VERCEL_URL>/movement-data.json | jq . | head -5
 ```
 
 If you get **404**, check:
+
 1. File exists: `docs/movement-data.json` ✓
 2. Build ran copy step: `cp public/*.json docs/` ✓
 3. Base path is relative: `base: "./"` ✓
@@ -183,6 +197,7 @@ git push origin main
 ```
 
 **GitHub Actions**:
+
 - Detects changes in main branch
 - Runs `pnpm run build`
 - Publishes `/docs` folder to GitHub Pages
@@ -191,6 +206,7 @@ git push origin main
 ### 3. Vercel Deployment
 
 **Automatic** - Vercel webhook triggers on push to main:
+
 - Builds with `vercel.json` config
 - Outputs to `/docs` (from `outputDirectory`)
 - Publishes to production URL
@@ -199,6 +215,7 @@ git push origin main
 ### 4. STC Cypher
 
 Use static export of `/docs`:
+
 - Download `/docs` folder
 - Serve from STC internal server
 - All paths are relative (base: `./`)
@@ -232,11 +249,13 @@ Use static export of `/docs`:
 ### Issue: "404 when fetching movement-data.json"
 
 **Check 1**: Build created the file?
+
 ```bash
 ls docs/movement-data.json
 ```
 
 **Check 2**: Is `/docs` being served?
+
 ```bash
 # GitHub Pages: main branch → /docs ✓
 # Vercel: outputDirectory: "docs" ✓
@@ -244,13 +263,14 @@ ls docs/movement-data.json
 ```
 
 **Check 3**: Fetch path is correct?
+
 ```javascript
 // ✓ Correct - uses relative base
 const base = import.meta.env.BASE_URL || "./";
-fetch(`${base}movement-data.json`)
+fetch(`${base}movement-data.json`);
 
 // ✗ Wrong - absolute path fails on subpaths
-fetch('/movement-data.json')
+fetch("/movement-data.json");
 ```
 
 ### Issue: "Dashboard works on localhost but 404 on GitHub Pages"
@@ -258,13 +278,14 @@ fetch('/movement-data.json')
 **Root cause**: Absolute paths `/` don't work on `/repo-name/` subpath
 
 **Fix**: Use relative base `./`
+
 ```typescript
 // In vite.config.ts
-const base = "./";  // NOT "/"
+const base = "./"; // NOT "/"
 
 // In localDataFetcher.ts
 const base = import.meta.env.BASE_URL || "./";
-fetch(`${base}movement-data.json`)
+fetch(`${base}movement-data.json`);
 ```
 
 ### Issue: "Vercel deployment has stale data"
@@ -320,7 +341,7 @@ Final request: https://internal.stc/cow-dashboard/movement-data.json ✓ Works
 **Changes Made**:
 
 1. ✅ Updated `vite.config.ts`:
-   - `base: "./"`  (relative for subpath safety)
+   - `base: "./"` (relative for subpath safety)
    - `outDir: "docs"` (single production output)
 
 2. ✅ Updated `package.json`:

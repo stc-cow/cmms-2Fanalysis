@@ -5,6 +5,7 @@
 ### 1. `vite.config.ts` ✅
 
 **Changes**:
+
 ```diff
 - const base = isGitHubPages && repoName ? `/${repoName}/` : process.env.BASE_URL || "/";
 + const base = "./";  // Relative base for subpath safety
@@ -17,7 +18,8 @@
 + }
 ```
 
-**Why**: 
+**Why**:
+
 - Relative base `./` works on any subpath (GitHub Pages, Vercel, STC Cypher)
 - Output to `/docs` for GitHub Pages (reads from main/docs folder)
 - Single source of truth for all deployment platforms
@@ -27,6 +29,7 @@
 ### 2. `package.json` ✅
 
 **Changes**:
+
 ```diff
   "pkg": {
     "assets": [
@@ -42,6 +45,7 @@
 ```
 
 **Why**:
+
 - Ensures JSON files are copied from `/public` to `/docs` after Vite build
 - No manual copying required
 - Pkg assets updated to point to `/docs`
@@ -51,6 +55,7 @@
 ### 3. `vercel.json` ✅ (NEW FILE)
 
 **Created**:
+
 ```json
 {
   "buildCommand": "pnpm run build",
@@ -63,6 +68,7 @@
 ```
 
 **Why**:
+
 - Tells Vercel to use `/docs` as output directory
 - Matches GitHub Pages structure
 - Ensures identical builds across platforms
@@ -72,6 +78,7 @@
 ### 4. `client/lib/localDataFetcher.ts` ✅ (NO CHANGES NEEDED)
 
 **Already Correct**:
+
 ```typescript
 const base = import.meta.env.BASE_URL || "./";
 const url = `${base}movement-data.json`;
@@ -84,6 +91,7 @@ const url = `${base}movement-data.json`;
 ## Build Process Flow
 
 ### Before Changes
+
 ```
 pnpm run build
   └─ vite build
@@ -93,6 +101,7 @@ pnpm run build
 ```
 
 ### After Changes
+
 ```
 pnpm run build
   ├─ npm run build:client
@@ -112,6 +121,7 @@ pnpm run build
 ## Deployment Alignment
 
 ### GitHub Pages
+
 - **Branch**: main
 - **Source**: `/docs` folder
 - **Output**: `https://stc-cow.github.io/`
@@ -119,6 +129,7 @@ pnpm run build
 - **Status**: ✅ Works (reads from /docs)
 
 ### Vercel
+
 - **Build command**: `pnpm run build`
 - **Output directory**: `docs` (from vercel.json)
 - **Output URL**: `https://<project>.vercel.app/`
@@ -126,11 +137,13 @@ pnpm run build
 - **Status**: ✅ Works (uses /docs)
 
 ### STC Cypher
+
 - **Deployment**: Static export of `/docs`
 - **Base path**: `./` (relative, works on any subpath)
 - **Status**: ✅ Works (relative paths)
 
 ### Builder Export
+
 - **Source**: `/docs` folder
 - **Type**: Static content
 - **Status**: ✅ Works (direct static files)
@@ -172,23 +185,26 @@ jq . docs/movement-data.json | head -5
 ✅ **Vercel ready**: Output directory configured  
 ✅ **STC Cypher ready**: Relative paths work on any subpath  
 ✅ **Builder compatible**: Direct static content  
-✅ **No breaking changes**: Existing functionality preserved  
+✅ **No breaking changes**: Existing functionality preserved
 
 ---
 
 ## Next Steps
 
 1. **Run build**:
+
    ```bash
    pnpm run build:client
    ```
 
 2. **Verify `/docs` output**:
+
    ```bash
    ls -lh docs/*.json
    ```
 
 3. **Push to GitHub**:
+
    ```bash
    git add .
    git commit -m "chore: align deployments to /docs output"
@@ -214,11 +230,11 @@ Relative base path makes the app work everywhere:
 
 ```javascript
 // Absolute base (fails on subpaths):
-base: "/"
+base: "/";
 // GitHub Pages: fetch('/movement-data.json') → 404 ❌
 
 // Relative base (works everywhere):
-base: "./"
+base: "./";
 // GitHub Pages: fetch('./movement-data.json') → works ✅
 // Vercel: fetch('./movement-data.json') → works ✅
 // STC subpath: fetch('./movement-data.json') → works ✅
@@ -227,6 +243,7 @@ base: "./"
 ### Why copy JSON to `/docs`?
 
 Vite's `public/` folder is copied to build root during production build, but:
+
 - Using explicit copy command ensures JSON is always present
 - Vite plugin provides fallback reliability
 - No version mismatches between data and app
