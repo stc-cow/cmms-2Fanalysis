@@ -55,7 +55,6 @@ export function WarehouseHubTimeCard({
   >(null);
   const [forceRender, setForceRender] = useState(false);
 
-
   // Calculate off-air warehouse aging data (memoized to prevent unnecessary recalculations)
   const { buckets, tableData, cowAgingMap, bucketCows } = useMemo(
     () => calculateOffAirWarehouseAging(movements, locations),
@@ -283,7 +282,11 @@ export function WarehouseHubTimeCard({
           {!hasChartData && (
             <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded text-sm text-amber-700 dark:text-amber-300">
               <p className="font-semibold mb-1">No Data Available</p>
-              <p>No Off-Air (Half/Zero) movements found in the current dataset. This card displays warehouse idle time analysis for COWs that were temporarily parked at warehouses.</p>
+              <p>
+                No Off-Air (Half/Zero) movements found in the current dataset.
+                This card displays warehouse idle time analysis for COWs that
+                were temporarily parked at warehouses.
+              </p>
             </div>
           )}
         </div>
@@ -390,7 +393,10 @@ export function WarehouseHubTimeCard({
           {shortIdleChartData.every((d) => d.count === 0) && (
             <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded text-sm text-amber-700 dark:text-amber-300">
               <p className="font-semibold mb-1">No Data Available</p>
-              <p>No short idle time (1-15 days) found in warehouse placements. Short idle time shows COWs that stayed at warehouses briefly.</p>
+              <p>
+                No short idle time (1-15 days) found in warehouse placements.
+                Short idle time shows COWs that stayed at warehouses briefly.
+              </p>
             </div>
           )}
         </div>
@@ -461,8 +467,12 @@ export function WarehouseHubTimeCard({
           ) : (
             <div className="flex items-center justify-center py-8">
               <div className="text-center text-gray-400">
-                <p className="text-sm font-medium">No COWs with Off-Air aging found</p>
-                <p className="text-xs text-gray-500 mt-1">Warehouse Hub Time data will appear here</p>
+                <p className="text-sm font-medium">
+                  No COWs with Off-Air aging found
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Warehouse Hub Time data will appear here
+                </p>
               </div>
             </div>
           )}

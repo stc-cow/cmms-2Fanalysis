@@ -19,6 +19,7 @@ const toLoc = normalizeWarehouseName(row.to_location?.trim() || "Unknown");
 ## Impact of the Typo
 
 When the CSV had a "to_location" field with actual warehouse names like:
+
 - "stc Jeddah WH"
 - "ACES Muzahmiya WH"
 - "stc EXIT 18 Riyad WH"
@@ -37,11 +38,13 @@ But the code was looking for `row.to_locatio` (which doesn't exist), it would:
 ### File: `client/lib/localDataFetcher.ts` (Line 137)
 
 **Before:**
+
 ```typescript
 const toLoc = normalizeWarehouseName(row.to_locatio?.trim() || "Unknown");
 ```
 
 **After:**
+
 ```typescript
 const toLoc = normalizeWarehouseName(row.to_location?.trim() || "Unknown");
 ```
@@ -61,13 +64,14 @@ if (rawMovementType.includes("FULL")) {
 } else if (rawMovementType.includes("ZERO") || rawMovementType === "0") {
   movementType = "Zero";
 }
-// If movement_type is not recognized, leave undefined 
+// If movement_type is not recognized, leave undefined
 // and let enrichMovements() calculate it from location types
 ```
 
 ## What This Fixes
 
 ### Before the Fix:
+
 - ❌ Active Warehouses: 0
 - ❌ All locations treated as "Sites"
 - ❌ Movement_Type misclassified
@@ -75,6 +79,7 @@ if (rawMovementType.includes("FULL")) {
 - ❌ Warehouse analysis broken
 
 ### After the Fix:
+
 - ✅ Active Warehouses: 17 (properly identified)
 - ✅ Warehouses correctly identified by "WH" in location name
 - ✅ Movement_Type properly classified (Full, Half, Zero)
@@ -84,18 +89,22 @@ if (rawMovementType.includes("FULL")) {
 ## How Warehouse HUB Time Analysis Works Now
 
 ### Step 1: Location Identification
+
 - Reads `from_location` and `to_location` fields from CSV
 - Identifies if location is a warehouse (contains "WH" in name)
 - Creates location records with correct `Location_Type` ("Warehouse" or "Site")
 
 ### Step 2: Movement Classification
+
 - Classifies each movement as Full, Half, or Zero based on location types:
   - **Full:** Site → Site (no warehouse)
   - **Half:** Warehouse ↔ Site (warehouse-involved)
   - **Zero:** Warehouse → Warehouse (warehouse-to-warehouse)
 
 ### Step 3: Warehouse Stay Calculation
+
 For Half and Zero movements only:
+
 1. Groups movements by COW ID
 2. Sorts chronologically by Moved_DateTime
 3. For each consecutive pair of movements:
@@ -109,6 +118,7 @@ For Half and Zero movements only:
    - More than 12 Months
 
 ### Step 4: Short Idle Time Analysis
+
 - Identifies warehouse stays of 1-15 days (quick turnarounds)
 - Buckets: 1-5 Days, 6-10 Days, 11-15 Days
 - Shows COWs with brief warehouse placements
@@ -116,11 +126,13 @@ For Half and Zero movements only:
 ## Verification
 
 ### KPIs Now Show:
+
 - **Active Warehouses:** 17 ✓ (was 0, now correctly identified)
 - **Movement Classification:** Properly distributed across Full, Half, Zero ✓
 - **Warehouse HUB Time Tab:** Shows data with charts and tables ✓
 
 ### Movement Data Now:
+
 - Correctly reads `from_location` field ✓
 - Correctly reads `to_location` field ✓ (was failing before)
 - Properly classifies warehouses vs sites ✓
@@ -135,6 +147,7 @@ pnpm exec node convert-csv-to-json.mjs
 ```
 
 This ensured that:
+
 1. Movement data is loaded correctly
 2. transformMovementData() applies the typo fix
 3. All location references are correct
@@ -152,6 +165,7 @@ This ensured that:
 ## Why This Was Hard to Find
 
 The typo was subtle:
+
 - `to_locatio` looks similar to `to_location`
 - The field is only one character wrong
 - It silently fell back to "Unknown" without raising errors
@@ -161,6 +175,7 @@ The typo was subtle:
 ## Technical Lesson
 
 This highlights the importance of:
+
 1. Field name validation in data transformation
 2. Testing with actual field values (not just existence checks)
 3. Verifying data consistency between source and output
@@ -171,6 +186,7 @@ This highlights the importance of:
 ✅ **FULLY FIXED**
 
 The Warehouse HUB Time card now correctly:
+
 - Shows active warehouses
 - Tracks COW idle time at warehouses
 - Displays Off-Air Warehouse Aging distribution

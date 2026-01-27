@@ -52,6 +52,7 @@ if (rawMovementType.includes("FULL")) {
 ## Result
 
 The Warehouse Hub Time card now:
+
 - ✅ Correctly identifies warehouse-involved movements (Half and Zero)
 - ✅ Calculates idle time at warehouses accurately
 - ✅ Shows Off-Air Warehouse Aging distribution
@@ -61,6 +62,7 @@ The Warehouse Hub Time card now:
 ## Why This Matters
 
 The warehouse analysis depends on:
+
 - **Half Movements:** One end is warehouse, one is site → Warehouse involvement ✓
 - **Zero Movements:** Both ends are warehouses → Warehouse movement ✓
 - **Full Movements:** Both ends are sites → No warehouse (excluded)

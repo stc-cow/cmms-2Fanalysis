@@ -1,10 +1,13 @@
 # Warehouse Hub Time Card Charts - Fixes Summary
 
 ## Overview
+
 Fixed the Warehouse Hub Time Card charts to improve data visualization, tooltips, error messages, and overall user experience.
 
 ## Issues Identified
+
 Based on the repository's `DATA_FIXES_SUMMARY.md`, the Warehouse Hub Time Card had:
+
 - Incomplete tooltip labels (showing "Move" instead of "COWs")
 - Inconsistent chart styling and gradient definitions
 - Poorly formatted empty state messages
@@ -13,14 +16,17 @@ Based on the repository's `DATA_FIXES_SUMMARY.md`, the Warehouse Hub Time Card h
 ## Changes Made
 
 ### 1. Fixed Short Idle Time Chart Tooltips
+
 **File:** `client/components/dashboard/cards/WarehouseHubTimeCard.tsx`
 
 **Before:**
+
 ```typescript
 formatter={(value: number) => `count: ${value} Move`}
 ```
 
 **After:**
+
 ```typescript
 formatter={(value: number) => `${value} COWs`}
 ```
@@ -30,16 +36,19 @@ formatter={(value: number) => `${value} COWs`}
 ---
 
 ### 2. Fixed Short Idle Time Chart Labels
+
 **File:** `client/components/dashboard/cards/WarehouseHubTimeCard.tsx`
 
 **Before:**
+
 ```typescript
-formatter: (value: number) => `count: ${value} Move`
+formatter: (value: number) => `count: ${value} Move`;
 ```
 
 **After:**
+
 ```typescript
-formatter: (value: number) => value.toString()
+formatter: (value: number) => value.toString();
 ```
 
 **Impact:** Chart labels are now clean and consistent with the Off-Air Warehouse Aging chart.
@@ -47,11 +56,13 @@ formatter: (value: number) => value.toString()
 ---
 
 ### 3. Unified Gradient Definitions
+
 **File:** `client/components/dashboard/cards/WarehouseHubTimeCard.tsx`
 
 **Change:** Moved gradient definitions from standalone SVG element into the BarChart's defs element for proper rendering.
 
 **Before:**
+
 ```typescript
 <svg width="0" height="0">
   <defs>
@@ -66,6 +77,7 @@ formatter: (value: number) => value.toString()
 ```
 
 **After:**
+
 ```typescript
 <BarChart>
   <defs>
@@ -81,7 +93,9 @@ formatter: (value: number) => value.toString()
 ### 4. Improved Empty State Messages
 
 #### Off-Air Warehouse Aging Chart
+
 **Before:**
+
 ```typescript
 <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded text-sm text-gray-600 dark:text-gray-400">
   No Off-Air (Half/Zero) movements found in the current dataset.
@@ -89,6 +103,7 @@ formatter: (value: number) => value.toString()
 ```
 
 **After:**
+
 ```typescript
 <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded text-sm text-amber-700 dark:text-amber-300">
   <p className="font-semibold mb-1">No Data Available</p>
@@ -97,7 +112,9 @@ formatter: (value: number) => value.toString()
 ```
 
 #### Short Idle Time Chart
+
 **Before:**
+
 ```typescript
 <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700/30 rounded text-sm text-gray-600 dark:text-gray-400">
   No short idle time (1-15 days) found in warehouse placements.
@@ -105,6 +122,7 @@ formatter: (value: number) => value.toString()
 ```
 
 **After:**
+
 ```typescript
 <div className="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/40 rounded text-sm text-amber-700 dark:text-amber-300">
   <p className="font-semibold mb-1">No Data Available</p>
@@ -113,7 +131,9 @@ formatter: (value: number) => value.toString()
 ```
 
 #### Table Empty State
+
 **Before:**
+
 ```typescript
 <div className="flex items-center justify-center py-8 text-gray-400">
   No COWs with Off-Air aging found
@@ -121,6 +141,7 @@ formatter: (value: number) => value.toString()
 ```
 
 **After:**
+
 ```typescript
 <div className="flex items-center justify-center py-8">
   <div className="text-center text-gray-400">
@@ -137,18 +158,21 @@ formatter: (value: number) => value.toString()
 ## Chart Structure
 
 ### Off-Air Warehouse Aging Chart
+
 - **Purpose:** Shows distribution of COWs by their total off-air idle duration
 - **Buckets:** 0-3 Months, 4-6 Months, 7-9 Months, 10-12 Months, More than 12 Months
 - **Colors:** Red, Teal, Purple, Light Red, Light Teal (with gradients)
 - **Interactive:** Click on bars to see detailed list of COWs in that bucket
 
 ### Short Idle Time Chart
+
 - **Purpose:** Shows distribution of COWs that stayed at warehouses briefly (1-15 days)
 - **Buckets:** 1-5 Days, 6-10 Days, 11-15 Days
 - **Colors:** Red, Teal, Purple (with gradients)
 - **Interactive:** Click on bars to see detailed list of COWs in that bucket
 
 ### Details Table
+
 - **Purpose:** Shows comprehensive list of COWs with off-air aging metrics
 - **Columns:** COW ID, Total Movement Times, Average Off-Air Idle Days, Top Off-Air Warehouse
 - **Features:** Sortable columns, clickable rows to open detailed modal
@@ -159,12 +183,14 @@ formatter: (value: number) => value.toString()
 ## Modal Integration
 
 ### BucketCowsModal
+
 - Shows all COWs in a selected bucket
 - Includes search functionality
 - Sortable columns
 - Displays count of matching COWs
 
 ### COWOffAirDetailsModal
+
 - Shows detailed warehouse stay information for a specific COW
 - Displays summary KPIs (Total Movements, Total Idle Days, Average Idle Days, Top Warehouse)
 - Shows detailed breakdown of each off-air stay period
@@ -175,18 +201,21 @@ formatter: (value: number) => value.toString()
 ## Data Source Functions (Analytics)
 
 ### calculateOffAirWarehouseAging()
+
 - Filters movements for Movement_Type === "Half" or "Zero"
 - Groups by COW and calculates idle time between consecutive warehouse visits
 - Converts days to months for bucketing
 - Returns: buckets, table data, COW-to-aging map, bucket membership
 
 ### calculateShortIdleTime()
+
 - Filters for Half/Zero movements
 - Identifies warehouse stays of 1-15 days
 - Creates three bucket categories
 - Returns: buckets, bucket membership
 
 ### getCOWOffAirAgingDetails()
+
 - Retrieves detailed stay information for a specific COW
 - Calculates totals and averages
 - Returns: movement count, idle days, average days, top warehouse, detailed stays
@@ -196,12 +225,14 @@ formatter: (value: number) => value.toString()
 ## Responsiveness & Styling
 
 ### Charts
+
 - Both BarCharts use ResponsiveContainer for automatic sizing
 - Charts adapt to viewport width and height
 - Mobile-optimized with proper margins and label rotation
 - Dark mode support throughout
 
 ### Tables
+
 - Horizontal scrollable on small screens
 - Responsive grid layout for summary KPIs
 - Sticky headers for easy scrolling
@@ -236,6 +267,7 @@ formatter: (value: number) => value.toString()
 ## Related Analytics Functions
 
 The Warehouse Hub Time Card depends on these analytics functions:
+
 - `enrichMovements()` - Ensures Movement_Type is correctly classified
 - `classifyMovement()` - Determines movement type based on location types
 - `calculateOffAirWarehouseAging()` - Core calculation function
@@ -243,6 +275,7 @@ The Warehouse Hub Time Card depends on these analytics functions:
 - `getCOWOffAirAgingDetails()` - Detailed COW information
 
 All functions properly handle:
+
 - Missing/invalid timestamps
 - Location ID mismatches
 - Warehouse detection via Location_Type or "WH" in name
@@ -262,6 +295,7 @@ All functions properly handle:
 ## Summary
 
 All fixes have been applied to enhance the user experience of the Warehouse Hub Time Card:
+
 - ✅ Fixed tooltip and label text formatting
 - ✅ Unified gradient definitions for consistent rendering
 - ✅ Improved empty state messaging with better visual styling

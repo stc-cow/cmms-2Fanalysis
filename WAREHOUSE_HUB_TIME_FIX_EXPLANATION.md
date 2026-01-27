@@ -17,6 +17,7 @@ Movement_Type: row.movement_type?.includes("Full")
 ```
 
 **The Problem:**
+
 - If the CSV field `movement_type` didn't contain exactly "Full" or "Half", it would default to "Zero"
 - This meant all movements were classified as "Zero" instead of being properly classified as "Full", "Half", or "Zero"
 - The Warehouse Hub Time analysis requires BOTH "Half" and "Zero" movements to calculate warehouse stay times
@@ -25,11 +26,13 @@ Movement_Type: row.movement_type?.includes("Full")
 ### Data Flow Issue
 
 **Before the CSV conversion (when using Google Sheets API):**
+
 1. Google Sheets had the Movement_Type field properly set
 2. API directly returned this field
 3. Charts worked correctly
 
 **After CSV conversion:**
+
 1. CSV data is parsed by `convert-csv-to-json.mjs` → creates JSON
 2. JSON is loaded by `loadMovementData()` in localDataFetcher.ts
 3. `transformMovementData()` tried to parse Movement_Type from raw CSV data
@@ -43,6 +46,7 @@ Movement_Type: row.movement_type?.includes("Full")
 Changed the Movement_Type classification logic in `client/lib/localDataFetcher.ts`:
 
 ### Before (Broken Logic):
+
 ```typescript
 Movement_Type: row.movement_type?.includes("Full")
   ? "Full"
@@ -52,6 +56,7 @@ Movement_Type: row.movement_type?.includes("Full")
 ```
 
 ### After (Fixed Logic):
+
 ```typescript
 // Parse Movement_Type from CSV, or leave undefined for enrichMovements to calculate
 let movementType: "Full" | "Half" | "Zero" | undefined = undefined;
@@ -128,6 +133,7 @@ export function classifyMovement(
 ### Warehouse Detection:
 
 A location is identified as a warehouse if:
+
 - `Location_Type === "Warehouse"` (explicitly set), OR
 - `Location_Name.toUpperCase().includes("WH")` (contains "WH")
 
@@ -173,6 +179,7 @@ pnpm exec node convert-csv-to-json.mjs
 ```
 
 This:
+
 1. Downloads latest CSV from Builder.io assets
 2. Parses CSV to JSON
 3. Applies the new movement_type parsing logic (via `localDataFetcher.ts`)
@@ -254,6 +261,7 @@ export function enrichMovements(
 Key line: `const movementType = mov.Movement_Type || classifyMovement(mov, locMap);`
 
 This means:
+
 - If Movement_Type is already set (from CSV), use it
 - If Movement_Type is undefined/null, calculate it using `classifyMovement()`
 - This ensures every movement gets properly classified
@@ -263,6 +271,7 @@ This means:
 ## Summary
 
 The fix ensures that:
+
 1. Movement types are correctly parsed from CSV when available
 2. When not available in CSV, they're calculated based on location types
 3. The Warehouse Hub Time analysis gets both Half and Zero movements
