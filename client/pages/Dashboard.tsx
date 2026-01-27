@@ -37,23 +37,23 @@ export default function Dashboard() {
 
   // Fetch "Never Moved COWs" data - single request, no retries
   useEffect(() => {
-    const fetchNeverMovedCows = async () => {
+    const fetchNeverMovedCowsData = async () => {
       try {
         setNeverMovedLoading(true);
 
         console.log(
-          `📊 Loading Never Moved COWs from Google Sheets (client-side)...`,
+          `📊 Loading Never Moved COWs from local JSON...`,
         );
 
-        const { fetchNeverMovedCows: fetchData } = await import(
-          "@/lib/googleSheetsFetcher"
+        const { loadNeverMovedCows } = await import(
+          "@/lib/localDataFetcher"
         );
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
         try {
-          const result = await fetchData();
+          const result = await loadNeverMovedCows();
 
           clearTimeout(timeoutId);
 
@@ -72,7 +72,7 @@ export default function Dashboard() {
       }
     };
 
-    fetchNeverMovedCows();
+    fetchNeverMovedCowsData();
   }, []);
 
   // Initialize with empty data and update when data loads
