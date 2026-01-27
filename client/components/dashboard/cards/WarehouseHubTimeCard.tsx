@@ -55,6 +55,33 @@ export function WarehouseHubTimeCard({
   >(null);
   const [forceRender, setForceRender] = useState(false);
 
+  // Debug: Log movement data
+  useEffect(() => {
+    const offAirMovements = movements.filter(
+      (mov) => mov.Movement_Type === "Half" || mov.Movement_Type === "Zero",
+    );
+    console.log(
+      `[WarehouseHubTimeCard] Total movements: ${movements.length}`,
+    );
+    console.log(
+      `[WarehouseHubTimeCard] Off-Air (Half/Zero) movements: ${offAirMovements.length}`,
+    );
+    console.log(
+      `[WarehouseHubTimeCard] Movement types distribution:`,
+      movements.reduce((acc, m) => {
+        const type = m.Movement_Type || 'undefined';
+        return {...acc, [type]: (acc[type] || 0) + 1};
+      }, {} as Record<string, number>),
+    );
+    console.log(
+      `[WarehouseHubTimeCard] Unique locations: ${locations.length}`,
+    );
+    const warehouseCount = locations.filter(
+      (l) => l.Location_Type === "Warehouse",
+    ).length;
+    console.log(`[WarehouseHubTimeCard] Warehouse locations: ${warehouseCount}`);
+  }, [movements, locations]);
+
   // Calculate off-air warehouse aging data (memoized to prevent unnecessary recalculations)
   const { buckets, tableData, cowAgingMap, bucketCows } = useMemo(
     () => calculateOffAirWarehouseAging(movements, locations),
