@@ -375,10 +375,9 @@ export function filterMovements(
       if (!fromRegionMatch && !toRegionMatch) return false;
     }
 
-    // Filter by vendor
-    if (filters.vendor && cows) {
-      const cow = cows.find((c) => c.COW_ID === mov.COW_ID);
-      if (cow?.Vendor !== filters.vendor) return false;
+    // Filter by vendor - use movement's Vendor field directly
+    if (filters.vendor) {
+      if (mov.Vendor !== filters.vendor) return false;
     }
 
     // Filter by movement type
