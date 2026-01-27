@@ -137,8 +137,23 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
     const toLoc = normalizeWarehouseName(row.to_locatio?.trim() || "Unknown");
 
     // Parse region and governorate
-    const regionFrom = row.region_from?.trim()?.toUpperCase() || "CENTRAL";
-    const regionTo = row.region_to?.trim()?.toUpperCase() || "CENTRAL";
+    // If region_from/region_to not in CSV, determine from coordinates
+    let regionFrom = row.region_from?.trim()?.toUpperCase();
+    let regionTo = row.region_to?.trim()?.toUpperCase();
+
+    const fromLat = parseFloat(row.from_latitude || "0");
+    const fromLon = parseFloat(row.from_longitude || "0");
+    const toLat = parseFloat(row.to_latitude || "0");
+    const toLon = parseFloat(row.to_longitude || "0");
+
+    // If region not in CSV, determine from coordinates
+    if (!regionFrom || regionFrom.trim() === "") {
+      regionFrom = getRegionFromCoordinates(fromLat, fromLon);
+    }
+    if (!regionTo || regionTo.trim() === "") {
+      regionTo = getRegionFromCoordinates(toLat, toLon);
+    }
+
     const governorate = row.goverment?.trim() || undefined;
 
     // Determine EBU/Royal classification
