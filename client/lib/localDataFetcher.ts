@@ -284,10 +284,27 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
     `✓ Transformed ${movements.length} movements, ${cowMap.size} cows, ${locationMap.size} locations`,
   );
 
+  // DEBUG: Log region distribution
+  const locations = Array.from(locationMap.values());
+  const regionCounts: Record<string, number> = {};
+  locations.forEach((loc) => {
+    regionCounts[loc.Region] = (regionCounts[loc.Region] || 0) + 1;
+  });
+  console.log("📍 Location Region Distribution:", regionCounts);
+  console.log(
+    "📍 Sample locations:",
+    locations.slice(0, 5).map((l) => ({
+      name: l.Location_Name,
+      region: l.Region,
+      lat: l.Latitude,
+      lon: l.Longitude,
+    })),
+  );
+
   return {
     movements,
     cows: Array.from(cowMap.values()),
-    locations: Array.from(locationMap.values()),
+    locations,
     events: [],
   };
 }
