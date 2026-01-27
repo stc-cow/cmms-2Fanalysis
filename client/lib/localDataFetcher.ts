@@ -137,7 +137,7 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
     // Parse region and governorate
     const regionFrom = row.region_from?.trim()?.toUpperCase() || "CENTRAL";
     const regionTo = row.region_to?.trim()?.toUpperCase() || "CENTRAL";
-    const governorate = row.governorate?.trim() || undefined;
+    const governorate = row.goverment?.trim() || undefined;
 
     // Determine EBU/Royal classification
     let category = "NON EBU";
