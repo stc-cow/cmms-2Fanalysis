@@ -55,3 +55,36 @@ function expressPlugin(): Plugin {
     },
   };
 }
+
+// Copy JSON files from public folder to build output
+// This ensures movement-data.json and never-moved-cows.json are available at build root
+function copyJsonPlugin(): Plugin {
+  return {
+    name: "copy-json-plugin",
+    apply: "build", // Only apply during production build
+    async generateBundle() {
+      const fs = await import("fs");
+      const path = await import("path");
+
+      // Read JSON files from public folder
+      const publicPath = path.resolve(__dirname, "public");
+      const jsonFiles = ["movement-data.json", "never-moved-cows.json"];
+
+      for (const file of jsonFiles) {
+        const filePath = path.join(publicPath, file);
+        try {
+          const content = fs.readFileSync(filePath, "utf-8");
+          // Add to build output
+          this.emitFile({
+            type: "asset",
+            fileName: file,
+            source: content,
+          });
+          console.log(`✅ Copied ${file} to build output`);
+        } catch (error) {
+          console.error(`⚠️  Failed to copy ${file}:`, error);
+        }
+      }
+    },
+  };
+}
