@@ -5,7 +5,7 @@ import {
   DimEvent,
   CowMovementsFact,
 } from "@shared/models";
-import { fetchMovementData } from "@/lib/googleSheetsFetcher";
+import { loadMovementData } from "@/lib/localDataFetcher";
 
 interface DashboardDataResponse {
   movements: CowMovementsFact[];
