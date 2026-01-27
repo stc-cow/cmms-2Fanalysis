@@ -113,6 +113,15 @@ export function SaudiMapCard({
       }
     });
 
+    // DEBUG: Log region metrics
+    console.log(`🗺️  Region Metrics for ${currentMonth.month}:`, {
+      movementCount: currentMonth.movements.length,
+      regions: Object.entries(metrics).sort((a, b) => b[1] - a[1]),
+      toRegionSample: currentMonth.movements
+        .slice(0, 10)
+        .map((m) => m.toRegion),
+    });
+
     return metrics;
   }, [currentMonth]);
 
