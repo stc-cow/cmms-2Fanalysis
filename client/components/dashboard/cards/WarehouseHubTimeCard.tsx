@@ -493,8 +493,11 @@ export function WarehouseHubTimeCard({
               </Table>
             </div>
           ) : (
-            <div className="flex items-center justify-center py-8 text-gray-400">
-              No COWs with Off-Air aging found
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center text-gray-400">
+                <p className="text-sm font-medium">No COWs with Off-Air aging found</p>
+                <p className="text-xs text-gray-500 mt-1">Warehouse Hub Time data will appear here</p>
+              </div>
             </div>
           )}
         </div>
