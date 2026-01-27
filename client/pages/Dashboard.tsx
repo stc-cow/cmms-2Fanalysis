@@ -185,7 +185,8 @@ export default function Dashboard() {
               {error}
             </p>
             <p className="text-xs text-blue-100">
-              Data is loaded from local JSON files in the <code className="bg-slate-900 px-1 rounded">/public</code> folder.
+              Data is loaded from local JSON files in the{" "}
+              <code className="bg-slate-900 px-1 rounded">/public</code> folder.
             </p>
           </div>
 
@@ -196,12 +197,29 @@ export default function Dashboard() {
             <ol className="text-xs text-amber-100 space-y-2 list-decimal list-inside">
               <li className="font-semibold">Verify JSON files exist:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
-                <li>Check that <code className="bg-slate-900 px-1 rounded">public/movement-data.json</code> exists</li>
-                <li>Check that <code className="bg-slate-900 px-1 rounded">public/never-moved-cows.json</code> exists</li>
+                <li>
+                  Check that{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    public/movement-data.json
+                  </code>{" "}
+                  exists
+                </li>
+                <li>
+                  Check that{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    public/never-moved-cows.json
+                  </code>{" "}
+                  exists
+                </li>
               </ol>
               <li className="font-semibold mt-2">Regenerate JSON files:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
-                <li>Run: <code className="bg-slate-900 px-1 rounded">pnpm exec node convert-csv-to-json.mjs</code></li>
+                <li>
+                  Run:{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    pnpm exec node convert-csv-to-json.mjs
+                  </code>
+                </li>
                 <li>This will update both JSON files from CSV sources</li>
               </ol>
               <li className="font-semibold mt-2">Check browser console:</li>
@@ -212,7 +230,12 @@ export default function Dashboard() {
               <li className="font-semibold mt-2">Verify server is running:</li>
               <ol className="ml-4 space-y-1 list-disc list-inside">
                 <li>Dev server must be running to serve static files</li>
-                <li>Run: <code className="bg-slate-900 px-1 rounded">pnpm run dev</code></li>
+                <li>
+                  Run:{" "}
+                  <code className="bg-slate-900 px-1 rounded">
+                    pnpm run dev
+                  </code>
+                </li>
               </ol>
             </ol>
           </div>
