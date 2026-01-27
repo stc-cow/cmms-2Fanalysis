@@ -202,7 +202,7 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
       });
     }
 
-    // Add location records
+    // Add location records - handle from_location
     const normalizedFromLoc = normalizeWarehouseName(fromLoc);
     const fromLocId = `LOC-${normalizedFromLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
 
@@ -219,8 +219,15 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
         Location_Type: isWarehouse ? "Warehouse" : "Site",
         Owner: row.vehicle_make?.trim() || "Unknown",
       });
+    } else {
+      // Update region if we have better data from regionFrom
+      const existing = locationMap.get(fromLocId);
+      if (existing && regionFrom && regionFrom !== "CENTRAL") {
+        existing.Region = regionFrom;
+      }
     }
 
+    // Add location records - handle to_location
     const normalizedToLoc = normalizeWarehouseName(toLoc);
     const toLocId = `LOC-${normalizedToLoc.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
 
@@ -237,6 +244,12 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
         Location_Type: isWarehouse ? "Warehouse" : "Site",
         Owner: row.vehicle_make?.trim() || "Unknown",
       });
+    } else {
+      // Update region if we have better data from regionTo
+      const existing = locationMap.get(toLocId);
+      if (existing && regionTo && regionTo !== "CENTRAL") {
+        existing.Region = regionTo;
+      }
     }
   }
 
