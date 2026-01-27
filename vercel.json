@@ -1,0 +1,8 @@
+{
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "docs",
+  "framework": "vite",
+  "env": {
+    "VITE_BASE_URL": "./"
+  }
+}
