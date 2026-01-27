@@ -1162,9 +1162,7 @@ export function calculateActiveWarehouses(
   locations: DimLocation[],
 ): number {
   // Create location map for quick lookup
-  const locationMap = new Map(
-    locations.map((loc) => [loc.Location_ID, loc]),
-  );
+  const locationMap = new Map(locations.map((loc) => [loc.Location_ID, loc]));
 
   // Track unique warehouses with movements
   const activeWarehouses = new Set<string>();
