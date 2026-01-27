@@ -170,6 +170,19 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
       isEBU = true;
     }
 
+    // Parse Movement_Type from CSV, or leave undefined for enrichMovements to calculate
+    let movementType: "Full" | "Half" | "Zero" | undefined = undefined;
+    const rawMovementType = row.movement_type?.trim()?.toUpperCase() || "";
+
+    if (rawMovementType.includes("FULL")) {
+      movementType = "Full";
+    } else if (rawMovementType.includes("HALF")) {
+      movementType = "Half";
+    } else if (rawMovementType.includes("ZERO") || rawMovementType === "0") {
+      movementType = "Zero";
+    }
+    // If movement_type is not recognized, leave undefined and let enrichMovements calculate it
+
     const movement = {
       SN: i + 1,
       COW_ID: cowId,
@@ -179,11 +192,7 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
       To_Sub_Location: row.to_sub_location?.trim() || undefined,
       Moved_DateTime: parseDate(row.moved_date_time),
       Reached_DateTime: parseDate(row.reached_date_time),
-      Movement_Type: row.movement_type?.includes("Full")
-        ? "Full"
-        : row.movement_type?.includes("Half")
-          ? "Half"
-          : "Zero",
+      Movement_Type: movementType,
       Top_Event: row.top_events?.trim() || undefined,
       Distance_KM: parseFloat(row.distance || "0") || 0,
       Is_Royal: isRoyal,
