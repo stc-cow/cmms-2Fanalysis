@@ -21,9 +21,9 @@ interface UseDashboardDataResult {
 }
 
 /**
- * Hook to load dashboard data from Google Sheets (client-side)
- * Single source of truth: Google Sheets CSV (published to web)
- * No backend required - works 100% on GitHub Pages
+ * Hook to load dashboard data from local JSON files
+ * Single source of truth: Local JSON files in public/
+ * No API calls - fully offline capable
  */
 export function useDashboardData(): UseDashboardDataResult {
   const [data, setData] = useState<DashboardDataResponse | null>(null);
@@ -41,15 +41,15 @@ export function useDashboardData(): UseDashboardDataResult {
         setError(null);
 
         console.log(
-          "📊 Loading dashboard data from Google Sheets (client-side)...",
+          "📊 Loading dashboard data from local JSON files...",
         );
 
         const controller = new AbortController();
-        // 30 second timeout for Google Sheets fetch
+        // 30 second timeout for JSON fetch
         const timeoutId = setTimeout(() => controller.abort(), 30000);
 
         try {
-          const realData = await fetchMovementData();
+          const realData = await loadMovementData();
 
           clearTimeout(timeoutId);
 
@@ -76,7 +76,7 @@ export function useDashboardData(): UseDashboardDataResult {
         const errorMessage =
           err instanceof Error ? err.message : "Unknown error";
         console.error(
-          "❌ Failed to load data from Google Sheets:",
+          "❌ Failed to load data from local JSON:",
           errorMessage,
         );
         setError(errorMessage);
