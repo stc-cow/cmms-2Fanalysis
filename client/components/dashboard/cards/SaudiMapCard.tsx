@@ -97,9 +97,10 @@ export function SaudiMapCard({
     if (!currentMonth) return {};
     const metrics: Record<string, number> = {};
     const regionMap: Record<string, string> = {
+      NORTH: "Tabuk",
       WEST: "Makkah",
-      EAST: "Eastern Province",
-      CENTRAL: "Riyadh",
+      EAST: "Ash Sharqiyah",
+      CENTRAL: "Ar Riyad",
       SOUTH: "Asir",
     };
 
