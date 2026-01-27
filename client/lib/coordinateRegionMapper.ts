@@ -25,11 +25,11 @@ const REGION_BOUNDS: RegionBounds[] = [
   {
     name: "NORTH",
     minLat: 30.5,
-    maxLat: 33.1,
+    maxLat: 33.5,
     minLon: 29.0,
-    maxLon: 60.0, // Full width when in northern latitudes
+    maxLon: 60.0,
   },
-  // EAST: Eastern Province (Dammam, Khobar) - eastern longitude (>47.5E)
+  // EAST: Eastern Province (Dammam, Khobar) - eastern longitude (>47.5E) AND lat 24-30.5N
   {
     name: "EAST",
     minLat: 24.0,
@@ -37,7 +37,7 @@ const REGION_BOUNDS: RegionBounds[] = [
     minLon: 47.5,
     maxLon: 60.0,
   },
-  // CENTRAL: Riyadh, Qassim - central region
+  // CENTRAL: Riyadh, Qassim - central region (lat 23-27.5N, lon 41-47.5E)
   {
     name: "CENTRAL",
     minLat: 23.0,
@@ -45,21 +45,22 @@ const REGION_BOUNDS: RegionBounds[] = [
     minLon: 41.0,
     maxLon: 47.5,
   },
-  // WEST: Makkah, Madinah - western coast and highlands
+  // SOUTH: Asir, Jazan, Najran - southern regions (lat 16-23N, all longitudes)
+  {
+    name: "SOUTH",
+    minLat: 16.0,
+    maxLat: 23.0,
+    minLon: 29.0,
+    maxLon: 60.0,
+  },
+  // WEST: Makkah, Madinah - western coast (lat 19-27.5N, lon 29-41E)
+  // NOTE: Ordered last so SOUTH catches southern-western coords
   {
     name: "WEST",
     minLat: 19.0,
     maxLat: 27.5,
     minLon: 29.0,
     maxLon: 41.0,
-  },
-  // SOUTH: Asir, Jazan, Najran - southern regions
-  {
-    name: "SOUTH",
-    minLat: 16.0,
-    maxLat: 23.0,
-    minLon: 41.0,
-    maxLon: 55.0,
   },
 ];
 
