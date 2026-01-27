@@ -67,7 +67,7 @@ const REGION_BOUNDS: RegionBounds[] = [
 /**
  * Determine which region a coordinate belongs to
  * Returns the region code (NORTH, WEST, CENTRAL, EAST, SOUTH)
- * If coordinate doesn't match any region, returns CENTRAL as default
+ * Uses latitude bands as primary separator, longitude as secondary
  */
 export function getRegionFromCoordinates(
   latitude: number,
@@ -77,18 +77,33 @@ export function getRegionFromCoordinates(
     return "CENTRAL"; // Default fallback
   }
 
-  for (const bounds of REGION_BOUNDS) {
-    if (
-      latitude >= bounds.minLat &&
-      latitude <= bounds.maxLat &&
-      longitude >= bounds.minLon &&
-      longitude <= bounds.maxLon
-    ) {
-      return bounds.name;
-    }
+  // NORTH: lat > 30.5 (all longitudes)
+  if (latitude > 30.5) {
+    return "NORTH";
   }
 
-  // If no exact match, find the closest region
+  // SOUTH: lat < 23 (all longitudes)
+  if (latitude < 23.0) {
+    return "SOUTH";
+  }
+
+  // For middle band (lat 23-30.5): use longitude to separate
+  // EAST: lon > 47.5
+  if (longitude > 47.5) {
+    return "EAST";
+  }
+
+  // CENTRAL: lon 41-47.5
+  if (longitude >= 41.0 && longitude <= 47.5) {
+    return "CENTRAL";
+  }
+
+  // WEST: lon < 41
+  if (longitude < 41.0) {
+    return "WEST";
+  }
+
+  // Fallback (shouldn't reach here with valid data)
   return findClosestRegion(latitude, longitude);
 }
 
