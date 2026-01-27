@@ -225,13 +225,18 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
 
     if (!locationMap.has(fromLocId)) {
       const isWarehouse = normalizedFromLoc.toUpperCase().includes("WH");
+      // Determine region: use explicit region or infer from coordinates
+      let finalRegionFrom = regionFrom;
+      if (!finalRegionFrom || finalRegionFrom === "CENTRAL") {
+        finalRegionFrom = getRegionFromCoordinates(fromLat, fromLon);
+      }
       locationMap.set(fromLocId, {
         Location_ID: fromLocId,
         Location_Name: normalizedFromLoc,
         Sub_Location: row.from_sub_location?.trim() || "",
-        Latitude: parseFloat(row.from_latitude || "0") || 0,
-        Longitude: parseFloat(row.from_longitude || "0") || 0,
-        Region: regionFrom,
+        Latitude: fromLat || 0,
+        Longitude: fromLon || 0,
+        Region: finalRegionFrom,
         Governorate: governorate,
         Location_Type: isWarehouse ? "Warehouse" : "Site",
         Owner: row.vehicle_make?.trim() || "Unknown",
