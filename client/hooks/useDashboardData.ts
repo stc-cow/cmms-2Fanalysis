@@ -40,9 +40,7 @@ export function useDashboardData(): UseDashboardDataResult {
         setLoading(true);
         setError(null);
 
-        console.log(
-          "📊 Loading dashboard data from local JSON files...",
-        );
+        console.log("📊 Loading dashboard data from local JSON files...");
 
         const controller = new AbortController();
         // 30 second timeout for JSON fetch
@@ -75,10 +73,7 @@ export function useDashboardData(): UseDashboardDataResult {
 
         const errorMessage =
           err instanceof Error ? err.message : "Unknown error";
-        console.error(
-          "❌ Failed to load data from local JSON:",
-          errorMessage,
-        );
+        console.error("❌ Failed to load data from local JSON:", errorMessage);
         setError(errorMessage);
         setData(null);
         setLoading(false);

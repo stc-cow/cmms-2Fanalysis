@@ -130,11 +130,9 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
     if (!cowId) continue;
 
     const fromLoc = normalizeWarehouseName(
-      row.from_location?.trim() || "Unknown"
+      row.from_location?.trim() || "Unknown",
     );
-    const toLoc = normalizeWarehouseName(
-      row.to_locatio?.trim() || "Unknown"
-    );
+    const toLoc = normalizeWarehouseName(row.to_locatio?.trim() || "Unknown");
 
     // Parse region and governorate
     const regionFrom = row.region_from?.trim()?.toUpperCase() || "CENTRAL";
@@ -243,7 +241,7 @@ function transformMovementData(rawData: any[]): DashboardDataResponse {
   }
 
   console.log(
-    `✓ Transformed ${movements.length} movements, ${cowMap.size} cows, ${locationMap.size} locations`
+    `✓ Transformed ${movements.length} movements, ${cowMap.size} cows, ${locationMap.size} locations`,
   );
 
   return {
@@ -273,7 +271,7 @@ function transformNeverMovedCows(rawData: any[]): any[] {
         const today = new Date();
         if (!isNaN(deployDate.getTime())) {
           daysOnAir = Math.floor(
-            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24)
+            (today.getTime() - deployDate.getTime()) / (1000 * 60 * 60 * 24),
           );
         }
       } catch (e) {
@@ -326,9 +324,7 @@ export async function loadMovementData(): Promise<DashboardDataResponse> {
     const rawData = await response.json();
     const data = transformMovementData(rawData);
 
-    console.log(
-      `✅ Loaded ${data.movements.length} movements from local JSON`
-    );
+    console.log(`✅ Loaded ${data.movements.length} movements from local JSON`);
     return data;
   } catch (error) {
     console.error("❌ Failed to load movement data:", error);
@@ -346,7 +342,7 @@ export async function loadNeverMovedCows(): Promise<any[]> {
     const response = await fetch("/never-moved-cows.json");
     if (!response.ok) {
       throw new Error(
-        `HTTP ${response.status}: Failed to load never-moved cows`
+        `HTTP ${response.status}: Failed to load never-moved cows`,
       );
     }
 

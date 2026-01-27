@@ -41,13 +41,9 @@ export default function Dashboard() {
       try {
         setNeverMovedLoading(true);
 
-        console.log(
-          `📊 Loading Never Moved COWs from local JSON...`,
-        );
+        console.log(`📊 Loading Never Moved COWs from local JSON...`);
 
-        const { loadNeverMovedCows } = await import(
-          "@/lib/localDataFetcher"
-        );
+        const { loadNeverMovedCows } = await import("@/lib/localDataFetcher");
 
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
