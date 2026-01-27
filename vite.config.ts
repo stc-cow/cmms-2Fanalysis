@@ -36,8 +36,8 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), expressPlugin(), copyJsonPlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./client"),
-      "@shared": path.resolve(__dirname, "./shared"),
+      "@": path.resolve(process.cwd(), "./client"),
+      "@shared": path.resolve(process.cwd(), "./shared"),
     },
   },
 }));
